@@ -1,7 +1,7 @@
 # Decision log
 
 Append-only. IDs are stable; flip Status when the operator decides. Code must not
-depend on an OPEN decision. D1-D9 originate in the epic doc's "Open decisions".
+depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 ## Decided
 
