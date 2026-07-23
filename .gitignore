@@ -149,3 +149,9 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+
+# =========================
+# Claude Code local files
+# =========================
+CLAUDE.local.md
+.claude/settings.local.json
