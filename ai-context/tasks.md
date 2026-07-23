@@ -34,7 +34,9 @@ every session)
   evaluation-phase confirmations, the R-006 correction candidate, six missed
   candidates as engine-predicate input, effort table).
 - D1 DECIDED (no live users/DB -- live-data rigor track dropped); D10 DECIDED
-  (sprint-scale branching, large PRs; guardrails retained). PR #2 raised.
+  (pragmatic PR granularity; guardrails retained). PR #2 raised; Copilot loop
+  took 4 runs (5 comments, all consistency-class), run 4 clean -- ready for
+  operator merge.
 
 ### 2026-07-23 -- Evaluation, epic, foundation
 - Evaluated Evincia LMRR (primary spec), secondary gap report, and full codebase
