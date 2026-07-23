@@ -404,6 +404,14 @@ namespace SocialGoal.Web.Controllers
                 if (model.IsUrl)
                 {
                     errorField = "Url";
+                    // SSRF containment (Sprint 1): the server-side URL fetch is
+                    // disabled unless explicitly re-enabled in config; permanent
+                    // disposition is decision D3 (default: removed in Sprint 11).
+                    if (!string.Equals(System.Web.Configuration.WebConfigurationManager.AppSettings["Feature.ImageUrlImport"], "true", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ModelState.AddModelError(errorField, Resources.UploadError);
+                        return View("ImageUpload", model);
+                    }
                     name = GetUrlFileName(model.Url);
                     original = GetImageFromUrl(model.Url);
                 }
