@@ -67,7 +67,7 @@ jobs:
           jq -r --arg ws "$GITHUB_WORKSPACE/" \
             '.[] | .file as $f | .results[] | "\($f | sub("^" + $ws; ""))|\(.component)|\(.version)"' \
             retire-scripts.json retire-content.json | sort -u > found.txt
-          tr -d '\r' < docs/security/retire-baseline.txt | grep -v '^\s*$' | sort -u > baseline.txt
+          tr -d '\r' < docs/security/retire-baseline.txt | grep -v '^[[:space:]]*$' | sort -u > baseline.txt
           echo "Found $(wc -l < found.txt) findings; baseline holds $(wc -l < baseline.txt)."
           comm -13 baseline.txt found.txt > new.txt
           comm -23 baseline.txt found.txt | sed 's/^/Baseline entry no longer reported (candidate for removal): /'
