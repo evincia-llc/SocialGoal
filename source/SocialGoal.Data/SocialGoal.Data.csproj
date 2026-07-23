@@ -82,7 +82,7 @@
     <Compile Include="Configuration\RegistrationTokenConfiguration.cs" />
     <Compile Include="Configuration\SupportConfiguration.cs" />
     <Compile Include="Configuration\UserProfileConfiguration.cs" />
-    <Compile Include="GoalsSampleData.cs" />
+    <Compile Include="DatabaseInitializers.cs" />
     <Compile Include="Infrastructure\DatabaseFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IDatabaseFactory.cs" />

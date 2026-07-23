@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Configuration;
 using System.Web.Routing;
 
 namespace SocialGoal
@@ -13,7 +14,8 @@ namespace SocialGoal
     {
         protected void Application_Start()
         {
-            System.Data.Entity.Database.SetInitializer(new GoalsSampleData());
+            System.Data.Entity.Database.SetInitializer(
+                DatabaseInitializerFactory.FromSetting(WebConfigurationManager.AppSettings["DatabaseInitializer"]));
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
