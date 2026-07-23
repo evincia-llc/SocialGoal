@@ -46,6 +46,15 @@ methodology input, not scoring errors.
   Identity 1.0; Forms auth exists only as a Web.config remnant (`timeout="1"`,
   module removed) and fully commented-out scaffolding in Web.Core. Remediation
   unchanged; description imprecise. Sprint 8 will confirm.
+  Sprint 1 nuance: the scaffolding is *not* uniformly dead. Tests build
+  principals through `DefaultFormsAuthentication`/`SocialGoalUser`,
+  `Bootstrapper.cs:38` anchors DI scanning on the type, and
+  `_UpdateView.cshtml:154` casts `User.Identity` to `SocialGoalUser` -- a cast
+  that throws under the live OWIN stack (`ClaimsIdentity`), i.e. a latent
+  runtime defect. "Config remnant + dead scaffolding" should read "config
+  remnant + inert-for-auth types with live references, one of them broken."
+  Candidate engine signal: casts of `IPrincipal.Identity`/`User.Identity` to a
+  concrete type not produced by the configured auth stack.
 
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 

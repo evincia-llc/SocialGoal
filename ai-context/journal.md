@@ -25,6 +25,32 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-23 · Sprint 1 · "Dead" Forms-auth scaffolding is load-bearing in three places
+
+- **Problem:** the plan said remove the dead Web.Core Forms-auth scaffolding,
+  but only `UserAuthenticationTicketBuilder.cs` is truly dead (fully commented
+  out). `DefaultFormsAuthentication`/`IFormsAuthentication`/`SocialGoalUser`
+  are referenced by ~30 test fixtures (principals built from
+  `FormsAuthenticationTicket`), by `Bootstrapper.cs:38` as the assembly-scan
+  anchor for Web.Core DI registrations, and by
+  `Views/Group/_UpdateView.cshtml:154`, which casts `User.Identity` to
+  `SocialGoalUser` at runtime. Bonus defect: under OWIN the identity is a
+  `ClaimsIdentity`, so that view cast must throw `InvalidCastException`
+  whenever the block renders -- the "am I the author" UI path in group updates
+  is broken in the legacy app as committed.
+- **Where:** Web.Core Authentication/Models; Tests; `_UpdateView.cshtml`.
+- **Impact:** scope trim, no time lost beyond the survey; full removal of the
+  types moves to Phase 2 (Web.Core retirement, Sprints 8/11). Removing them
+  now would shred the 113-test safety net during the containment sprint.
+- **Resolution:** worked around -- deleted only the truly dead file, replaced
+  the Forms `<authentication>` remnant with `mode="None"` (behavior-preserving:
+  `FormsAuthenticationModule` was already removed from the pipeline), left the
+  referenced types in place. View-cast defect left as-is (behavioral
+  reference); the rebuild slices replace it.
+- **Report note:** hidden behavior + legacy defect. "Dead code" verdicts need
+  reference-level verification, not file-level; and remnant auth types can
+  keep compiling precisely because tests fake identity through them.
+
 ### 2026-07-23 · Sprint 1 · Legacy build needs two NuGet shims on modern tooling
 
 - **Problem:** the 2014 solution no longer builds on stock modern tooling.
