@@ -25,5 +25,17 @@ decision ID.
 
 ## Log (newest first)
 
-*(No entries yet -- epic implementation has not started. First entries expected
-in Sprint 1.)*
+### 2026-07-23 · Pre-Sprint 1 · origin pointed at upstream; no Evincia remote existed
+
+- **Problem:** the local repo's `origin` was `MarlabsInc/SocialGoal` (upstream,
+  no push rights); a push or PR would have targeted a third party's public repo.
+  No evincia-llc copy existed.
+- **Where:** first run of the `pr-flow` skill (foundation PR).
+- **Impact:** minutes of delay; required an operator decision on repo home and
+  visibility.
+- **Resolution:** fixed -- created public `evincia-llc/SocialGoal`, retargeted
+  remotes (`origin` = evincia-llc, `upstream` = MarlabsInc), pushed baseline
+  `master` + branch, raised PR #1 against evincia-llc `master`.
+- **Report note:** tooling/process gap (environment assumption in the clone),
+  not a legacy defect. Standing guard from here: never push or PR against
+  `upstream`.
