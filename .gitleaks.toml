@@ -8,3 +8,7 @@ useDefault = true
 description = "Well-known .NET assembly PublicKeyToken attributes (public identifiers, not secrets)"
 regexTarget = "line"
 regexes = ['''PublicKeyToken=[0-9a-fA-F]{16}''']
+# Deliberately NOT adding a paths condition: gitleaks v8.18 ORs allowlist
+# conditions, so paths would allowlist entire files rather than narrowing
+# this regex. Residual risk (a real secret sharing a line with a
+# PublicKeyToken attribute) accepted -- reviewed 2026-07-23.

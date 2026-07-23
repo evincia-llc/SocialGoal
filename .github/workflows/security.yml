@@ -29,7 +29,9 @@ jobs:
           fetch-depth: 0
       - name: Run gitleaks over full history
         run: |
-          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz | tar -xz gitleaks
+          curl -sSfL -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          echo "ba6dbb656933921c775ee5a2d1c13a91046e7952e9d919f9bac4cec61d628e7d  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
           ./gitleaks detect --source . --redact --no-banner
 
   nuget-audit:
@@ -60,8 +62,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Scan vendored browser assets and diff against baseline
         run: |
-          npx --yes retire@5 --path source/SocialGoal/Scripts --outputformat jsonsimple --outputpath retire-scripts.json || true
-          npx --yes retire@5 --path source/SocialGoal/Content --outputformat jsonsimple --outputpath retire-content.json || true
+          npx --yes retire@5.4.3 --path source/SocialGoal/Scripts --outputformat jsonsimple --outputpath retire-scripts.json || true
+          npx --yes retire@5.4.3 --path source/SocialGoal/Content --outputformat jsonsimple --outputpath retire-content.json || true
           jq -r --arg ws "$GITHUB_WORKSPACE/" \
             '.[] | .file as $f | .results[] | "\($f | sub("^" + $ws; ""))|\(.component)|\(.version)"' \
             retire-scripts.json retire-content.json | sort -u > found.txt
