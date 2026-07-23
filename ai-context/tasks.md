@@ -2,12 +2,12 @@
 
 **Phase:** pre-Sprint 1 (foundation)
 **Current sprint:** none started
-**Branch state:** all foundation files untracked on `master`; nothing committed yet
+**Branch state:** `docs/epic-foundation` pushed to `evincia-llc/SocialGoal`;
+PR #1 open, awaiting operator review/merge (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review/merge the foundation (this folder, `CLAUDE.md`,
-   `.claude/rules/`, epic doc) via feature branch + PR.
+1. Operator: review and merge PR #1 (epic foundation).
 2. Operator: answer D1 (live data?) and D2 (hosting) in `decisions.md` -- both
    gate Sprint 5; D1 shapes Sprint 2's database work.
 3. Start Sprint 1 (containment + reproducible legacy build) per
@@ -43,3 +43,6 @@
   `security-reviewer` agent, master-branch guard hook, settings.json read denies
   for build artifacts. Deferred: characterization-tests skill (Sprint 2),
   slice-migration skill (Sprint 9).
+- Created public `evincia-llc/SocialGoal` (origin; MarlabsInc kept as
+  `upstream`, never a push/PR target), raised PR #1 with the foundation.
+  Copilot run 1: one comment (stale branch-state line in this file) -- fixed.
