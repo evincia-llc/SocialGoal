@@ -25,6 +25,23 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-23 · Sprint 1 · Secret scan's first run flagged Microsoft's public key token
+
+- **Problem:** the new gitleaks lane failed its first CI run with 5 "leaks" --
+  all the same string, `b77a5c561934e089`, the standard .NET assembly
+  `PublicKeyToken` in Web.config/App.config, matched by the generic-api-key
+  rule across historical commits.
+- **Where:** `.github/workflows/security.yml` secret-scan job; verified
+  locally with the same gitleaks build.
+- **Impact:** ~15 minutes; first security-lane run red on a false positive.
+- **Resolution:** fixed -- `.gitleaks.toml` allowlist scoped to
+  `PublicKeyToken=<16 hex>` on the matched line; local re-scan clean (76
+  commits, 0 leaks).
+- **Report note:** tooling gap. Secret scanners need framework-aware
+  allowlists before they're credible gates on .NET Framework repos; the very
+  first artifact a scanner meets in a legacy .NET tree is a public key token
+  that looks like a key.
+
 ### 2026-07-23 · Sprint 1 · "Dead" Forms-auth scaffolding is load-bearing in three places
 
 - **Problem:** the plan said remove the dead Web.Core Forms-auth scaffolding,

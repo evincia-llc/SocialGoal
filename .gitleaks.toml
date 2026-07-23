@@ -1,0 +1,10 @@
+# Gitleaks config for the security workflow (picked up automatically from the
+# repo root). Baseline scan flagged .NET assembly public key tokens in
+# Web.config/App.config as generic-api-key -- they are public, not secrets.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Well-known .NET assembly PublicKeyToken attributes (public identifiers, not secrets)"
+regexTarget = "line"
+regexes = ['''PublicKeyToken=[0-9a-fA-F]{16}''']
