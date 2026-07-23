@@ -33,9 +33,9 @@ with the code. Log friction and LMRR confirmations/corrections as they happen.
 - **Feature branches only. Never commit to `master`**, for any change class.
   Merges are operator-only (see Workflow, permissions, and roles).
 - **Decisions are recorded before code relies on them.** Open decisions
-  (currently D2-D9) and new ones land in `ai-context/decisions.md` with status
-  and date. D2 (hosting) gates Sprint 5; D1 was decided 2026-07-23 (no live
-  users/data).
+  (currently D3-D9) and new ones land in `ai-context/decisions.md` with status
+  and date. Sprint 5's decision gate is cleared (D1 no live data, D2 Azure
+  private hosting -- both decided 2026-07-23).
 - **Legacy code is a behavioral reference, not a trusted design.** Never port
   verbatim: naked-ID authorization, GET mutations, the `GetImageFromUrl` fetch,
   `DropCreateDatabaseIfModelChanges`, the inert security filters.

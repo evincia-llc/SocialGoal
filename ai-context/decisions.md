@@ -28,6 +28,21 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   compatibility is proven against seeded users only. The LMRR trigger question
   closes by construction (no pre-existing DB to drift), documented in Sprint 2.
 
+### D2 -- Hosting: Azure, private (non-public) access
+
+- **Status:** DECIDED · 2026-07-23 · Owner: Jerry
+- **Decision:** Host on Azure, internally/not publicly. Default shape: Azure
+  App Service (Linux) with Entra ID authentication (Easy Auth) plus IP
+  restrictions -- no anonymous public surface. Default `*.azurewebsites.net`
+  hostname; operator's domains stay in reserve. The stronger VNet/Private
+  Endpoint posture is a deliberate option at Sprint 14 hardening, not the POC
+  default (adds VPN/Bastion + higher tier for little POC value).
+- **Consequence:** Sprint 5's decision gate is cleared. Cascading defaults now
+  concrete: D8 -> Application Insights; D9 -> Azure Blob Storage (also Data
+  Protection key store); deployment via GitHub Actions with OIDC federated
+  credentials (no publish-profile secrets in the repo). Exact Easy Auth/IP
+  wiring is proven during the Sprint 5 host spike.
+
 ### D10 -- Sprint-scale branching and large PRs
 
 - **Status:** DECIDED · 2026-07-23 · Owner: Jerry
@@ -47,11 +62,10 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 | ID | Decision | Default recommendation | Blocks |
 |---|---|---|---|
-| D2 | Hosting target (App Service / containers / on-prem) | Needed before Sprint 5; drives D8, D9, Data Protection keys | Sprint 5 gate |
 | D3 | Image URL import: remove or harden | Remove | Sprint 11 |
 | D4 | `SearchController`: authorize or documented-public | Add `[Authorize]` | Sprint 11 |
 | D5 | External logins | Remove dead Google OpenID; add Google OAuth 2.0 only if wanted | Sprint 8 |
 | D6 | Bootstrap 3.4.1 parity vs Bootstrap 5 rebuild | 3.4.1 parity this epic; BS5 as follow-on | Sprint 12 |
 | D7 | Must email flows actually send? | No-op mailer with logging unless invites/reset required | Sprint 13 |
-| D8 | Observability backend (App Insights vs OTel+APM) | Follows D2 | Sprint 13 |
-| D9 | Profile images: local disk vs object storage | Object storage if D2 = containers/multi-instance | Sprint 11 |
+| D8 | Observability backend (App Insights vs OTel+APM) | Application Insights (per D2 = Azure); confirm at Sprint 13 | Sprint 13 |
+| D9 | Profile images: local disk vs object storage | Azure Blob Storage (per D2 = Azure); confirm at Sprint 11 | Sprint 11 |

@@ -13,11 +13,10 @@ every session)
 2. Start Sprint 1 (containment + reproducible legacy build) on
    `sprint/s1-containment` per `ai-context/backlog.md` -- first items: legacy CI
    workflow, initializer disable, ELMAH lockdown.
-3. Operator: answer D2 (hosting target) in `decisions.md` before Sprint 5.
 
 ## Blocked / waiting
 
-- Sprint 5 exit gate blocked on D2 only (D1 decided 2026-07-23).
+- None. Sprint 5's decision gate cleared (D1, D2 decided 2026-07-23).
 
 ## Later (scheduled automation)
 
