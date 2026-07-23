@@ -1,0 +1,1573 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:440a24ca-d198-4255-a13e-60e76427d9a2",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-23T21:30:24Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "authors": [
+            {
+              "name": "CycloneDX"
+            }
+          ],
+          "name": "CycloneDX module for .NET",
+          "version": "6.2.0.0",
+          "externalReferences": [
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-dotnet",
+              "type": "website"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "SocialGoal@0.0.0",
+      "name": "SocialGoal",
+      "version": "0.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Antlr@3.4.1.9004",
+      "authors": [
+        {
+          "name": "Terence Parr"
+        }
+      ],
+      "name": "Antlr",
+      "version": "3.4.1.9004",
+      "description": "ANother Tool for Language Recognition, is a language tool that provides a framework for constructing recognizers, interpreters, compilers, and translators from grammatical descriptions containing actions in a variety of target languages.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "B7846AA81FF2BD21D4F2892BC924B52F629A68FB003820CCF0D3DB88ECBC389C3FA223488E35334B98A021525DB349B993902663219657D8C156915072AF37D3"
+        }
+      ],
+      "purl": "pkg:nuget/Antlr@3.4.1.9004"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Autofac@3.1.5",
+      "authors": [
+        {
+          "name": "Autofac Contributors"
+        }
+      ],
+      "name": "Autofac",
+      "version": "3.1.5",
+      "description": "Autofac is an IoC container for Microsoft .NET. It manages the dependencies between classes so that applications stay easy to change as they grow in size and complexity.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "B54B76F2FADAB9A53F207685C8FFAB25305658CE08E851E365636E8C15254A709BDB5CAB36E9801B5966656DD5D2FCBF7676820AF71B921F9CAE7501164942A5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Autofac@3.1.5",
+      "externalReferences": [
+        {
+          "url": "http://autofac.org",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Autofac.Mvc5@3.0.0",
+      "authors": [
+        {
+          "name": "Autofac Contributors"
+        }
+      ],
+      "name": "Autofac.Mvc5",
+      "version": "3.0.0",
+      "description": "Provides an IControllerFactory implementation and other integration points for System.Web.Mvc.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "DD0175533A38A8FE70328A76B236C2B3F327BF02674E0D1AD39CCEF39BF472B1BC9DA51A9ABD834FDE8D64FE1B99CEE479231C240366E9B53C46AFEFB4EE4759"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Autofac.Mvc5@3.0.0",
+      "externalReferences": [
+        {
+          "url": "http://autofac.org",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/AutoMapper@3.1.1-ci1000",
+      "authors": [
+        {
+          "name": "Jimmy Bogard"
+        }
+      ],
+      "name": "AutoMapper",
+      "version": "3.1.1-ci1000",
+      "description": "A convention-based object-object mapper",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BF177B9EFBC593BB1E9AC28B55F3B9CD7B2FA666D399190FC3FA8B0BFB117316C180FF9E81BE9395EEB07FD61BDC85E785DB0CFA906507A1DC9F6F8217FECCCF"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/AutoMapper/AutoMapper/blob/master/LICENSE.txt"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/AutoMapper@3.1.1-ci1000",
+      "externalReferences": [
+        {
+          "url": "http://automapper.org",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/bootstrap@3.0.0",
+      "authors": [
+        {
+          "name": "Mark Otto,Jacob Thornton"
+        }
+      ],
+      "name": "bootstrap",
+      "version": "3.0.0",
+      "description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "53D07053066CDC8CA48A0554A2EC84594CECFCFD208E02E08EE649DCE1E800A72035D6C71FBAF266D469829E1EEEE32BE028CB20409C4C8C45DB9CC11898D1DE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/twbs/bootstrap/blob/master/LICENSE"
+          }
+        }
+      ],
+      "copyright": "Copyright 2013",
+      "purl": "pkg:nuget/bootstrap@3.0.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/twbs/bootstrap",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/elmah.corelibrary@1.2.2",
+      "authors": [
+        {
+          "name": "Atif Aziz"
+        }
+      ],
+      "name": "elmah.corelibrary",
+      "version": "1.2.2",
+      "description": "Core library for ELMAH (Error Logging Modules and Handlers) without any configuration.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "38D58B98F8B03B5FEE1040659B7725FF6A1C91E75DAD465961CA677271EE56A8A8BA7A6E7D5C2DA8415031DB66785C327F582EEFB2E98E5065EA60B8FCD10B91"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/elmah.corelibrary@1.2.2",
+      "externalReferences": [
+        {
+          "url": "https://elmah.github.io/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Elmah.MVC@2.1.1",
+      "authors": [
+        {
+          "name": "Atif Aziz, James Driscoll, Alexander Beletsky"
+        }
+      ],
+      "name": "Elmah.MVC",
+      "version": "2.1.1",
+      "description": "Painless integration of ELMAH functionality into ASP.NET MVC Application. Just drop the package inside you ASP.NET MVC application and access /elmah URL. It will also install global HandleError filter, that guarantees all unhandled errors is logged (even if customerError turned \u0022On\u0022).",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "99A433C0C74E2D4C08E46DDE1E9CE4A0B5691442017A3F2DC20DE7D69F5D91A1C47DDE5F6D9D872E1EC7F103D30A1873BD10268B496E1984D216F1B86054EA52"
+        }
+      ],
+      "purl": "pkg:nuget/Elmah.MVC@2.1.1",
+      "externalReferences": [
+        {
+          "url": "https://github.com/alexanderbeletsky/elmah.mvc",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/EntityFramework@6.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "EntityFramework",
+      "version": "6.0.0",
+      "description": "Entity Framework is Microsoft\u0027s recommended data access technology for new applications.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2D6CC24A534E77D6F4169807EA6D57BA8EF7AAA3077EA7317DCCC24E14EABED02D2872C8B3EEF99EA032A469B01372A2CC75803EEEFDF74717E19E6034624E27"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkID=320539"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/EntityFramework@6.0.0",
+      "externalReferences": [
+        {
+          "url": "http://go.microsoft.com/fwlink/?LinkID=320540",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/EntityFramework@6.0.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "EntityFramework",
+      "version": "6.0.1",
+      "description": "Entity Framework is Microsoft\u0027s recommended data access technology for new applications.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3E606592F8083DA806F9B1AEC210F354DDA5546051826EBBA67E391887CFCA6CCBFEA1A070BAEED3DC715C975F64E94F886AABFEACE4B37C09399018150095A5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkID=320539"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/EntityFramework@6.0.1",
+      "externalReferences": [
+        {
+          "url": "http://go.microsoft.com/fwlink/?LinkID=320540",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/EntityFramework@6.0.2-beta1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "EntityFramework",
+      "version": "6.0.2-beta1",
+      "description": "Entity Framework is Microsoft\u0027s recommended data access technology for new applications.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "25EB210A87F993690E56422FB914CD23F252E70B052BA2C922B537D15972C8076FA8D5F4928A9F6EC77E57727024EA943FB50DEEEDFF1CF79ADCBC4C69000382"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkId=335913"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/EntityFramework@6.0.2-beta1",
+      "externalReferences": [
+        {
+          "url": "http://go.microsoft.com/fwlink/?LinkId=335912",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/jQuery@1.10.2",
+      "authors": [
+        {
+          "name": "jQuery Foundation, Inc."
+        }
+      ],
+      "name": "jQuery",
+      "version": "1.10.2",
+      "description": "jQuery is a new kind of JavaScript Library.\n        jQuery is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development. jQuery is designed to change the way that you write JavaScript.\n        NOTE: This package is maintained on behalf of the library owners by the NuGet Community Packages project at http://nugetpackages.codeplex.com/",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "79F0BB49C6BECE8D14E15C65526A963B992F5F46872DDDE8CA5927AA02825A5B039BB0427428E01F1EA6DFA195AD4050F86F322B162B727F951F122B8F669868"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://jquery.org/license"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/jQuery@1.10.2",
+      "externalReferences": [
+        {
+          "url": "http://jquery.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/jQuery.Validation@1.11.1",
+      "authors": [
+        {
+          "name": "J\u00F6rn Zaefferer"
+        }
+      ],
+      "name": "jQuery.Validation",
+      "version": "1.11.1",
+      "description": "This jQuery plugin makes simple clientside form validation trivial, while offering lots of option for customization. That makes a good choice if you\u2019re building something new from scratch, but also when you\u2019re trying to integrate it into an existing application with lots of existing markup. The plugin comes bundled with a useful set of validation methods, including URL and email validation, while providing an API to write your own methods. All bundled methods come with default error messages in english and translations into 32 languages.\n    NOTE: This package is maintained on behalf of the library owners by the NuGet Community Packages project at http://nugetpackages.codeplex.com/",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "91675A9B967918BC58F0206370B21632777E9EF9E0F68A205DDC2EE479FB1098084EB60C72C6542C52D582EDC996BE483747984AF6E395B7D496AA93742A97DA"
+        }
+      ],
+      "purl": "pkg:nuget/jQuery.Validation@1.11.1",
+      "externalReferences": [
+        {
+          "url": "http://bassistance.de/jquery-plugins/jquery-plugin-validation/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Identity.Core@1.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Identity.Core",
+      "version": "1.0.0",
+      "description": "Core interfaces for ASP.NET Identity.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "564D81F20C921BD52F8E7FA13CFF2137BB6F1CE7523CFF17B7714F063FFBD7EE82839074932F9BFF5772E4C3851AB8ABF8475AB4F414A56FC6C19699336291D0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Identity.Core@1.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Identity.EntityFramework@1.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Identity.EntityFramework",
+      "version": "1.0.0",
+      "description": "ASP.NET Identity providers that use Entity Framework.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9201991805424219615749E197AE34E41802E0A672ED45C156816B10AAD82D004CFB8BCC4A2D01782F40FCAB9CD59A3FD0DE1C42623773A91F29A5AE0E501E4E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Identity.EntityFramework@1.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Identity.Owin@1.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Identity.Owin",
+      "version": "1.0.0",
+      "description": "Owin implementation for ASP.NET Identity.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "C70B5169F061CF847445B72FE35693D96F55EC313B70BC70CC332B454DBA02E5FD3EF42C68D6C3C3A4716EE4464B07DDDE80A1C28EDAFC815D775A66EE2CAB03"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Identity.Owin@1.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Mvc@5.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Mvc",
+      "version": "5.0.0",
+      "description": "This package contains the runtime assemblies for ASP.NET MVC.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2C05DCD5798539D0AA10860A590CA39CF3A925D3CE65B103E7B17FDACA2F746B48590AFC5AEE73F616039710B8ABF19596E3F57B3974C784EB97E3CCD18FB148"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Mvc@5.0.0",
+      "externalReferences": [
+        {
+          "url": "http://www.asp.net/mvc",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Razor@3.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Razor",
+      "version": "3.0.0",
+      "description": "This package contains the runtime assemblies for ASP.NET Web Pages.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "E79D3851D2F1249066A7E5F3A38A10A41F10C12A32ED57D7D9D14DE55BE761A2BBD6947C5F290CB2D23DC044F1CF8112E849FBF49F5860A9BEFBECEA7F87A010"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Razor@3.0.0",
+      "externalReferences": [
+        {
+          "url": "http://www.asp.net/web-pages",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.Web.Optimization@1.1.1",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.Web.Optimization",
+      "version": "1.1.1",
+      "description": "ASP.NET Optimization introduces a way to bundle and optimize CSS and JavaScript files.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1F3AFEDAB7569C6002E39BED31E157AC8334341AD12E13DF0D7ED7776C4E37871C4B7727CCD1C75B39F90E7ED3F37A0D5B699B99A1206F12E08814DDAA89438C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.Web.Optimization@1.1.1"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNet.WebPages@3.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.AspNet.WebPages",
+      "version": "3.0.0",
+      "description": "This package contains core runtime assemblies shared between ASP.NET MVC and ASP.NET Web Pages.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "05F4DC6C5CFA5E5E31A60C33A1795A6E3842F85468E38706E963A2C8F36052457116BC81E9156DE35833F60AEBCEB1B11E3F3F6755F2992A6864FCBD70926FF1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.AspNet.WebPages@3.0.0",
+      "externalReferences": [
+        {
+          "url": "http://www.asp.net/web-pages",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.jQuery.Unobtrusive.Validation@3.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.jQuery.Unobtrusive.Validation",
+      "version": "3.0.0",
+      "description": "jQuery plugin that unobtrusively sets up jQuery.Validation.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "B63CCC926ACF02473346A8B68A5B98E8A4061FD974C9A8AB15F5C04DCBF57F0F287E21E4061C28002741359B2E84C4526520B10D38E3E19320872994A79017BC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm"
+          }
+        }
+      ],
+      "copyright": "\u00A9 Microsoft Corporation. All rights reserved.",
+      "purl": "pkg:nuget/Microsoft.jQuery.Unobtrusive.Validation@3.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin",
+      "version": "2.0.0",
+      "description": "Provides a set of helper types and abstractions for simplifying the creation of OWIN components.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "DD9A4F19B3BDB412AD7118488E1B44551379AAB5B882ED0E7F917245634794283F333FF61748CF9617CE36D2858294A4AF6BA4EA5E2A272419918AF8BA06A3AA"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Host.SystemWeb@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Host.SystemWeb",
+      "version": "2.0.0",
+      "description": "OWIN server that enables OWIN-based applications to run on IIS using the ASP.NET request pipeline.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0C149623BFD10E8E120D0BF91FCB43644EC7CCCB4FB2589E9FCB13A7A92F9A9FC5740C9D6A3A8DBE55115CF034009EC9666BB91487039A782DCE1A9D4EFB41EC"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Host.SystemWeb@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security",
+      "version": "2.0.0",
+      "description": "Common types which are shared by the various authentication middleware components.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2F479AAA239E9A3AF1F1F4C1B4D1E21587E0414422F3BCDFE4B6C9086AC82697333BCD409EF2D1F2734A1954FD7EE9D28D86E0259326E9D2E9D4793D36A518DE"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.Cookies@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.Cookies",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to use cookie based authentication, similar to ASP.NET\u0027s forms authentication.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9F1D3539E85688077BCDDF015F6992ECCEAD29B29EAFB966C3910741B937D4FF2532FFF482E48842C20BCAAA7DB375400A6576808E761B08DBF777186191C202"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.Cookies@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.Facebook@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.Facebook",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to support Facebook\u0027s OAuth 2.0 authentication workflow.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "74D57F58A35F73D29F74DF7F82294C8EE07F5197E63C315640222EA7190E9D9514C90F321998D65E77CC92A8480BF56680B031EF60E5275EC48A0D0BEDA83578"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.Facebook@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.Google@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.Google",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to support Google\u0027s OpenId authentication workflow.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4F5A24A912C88B4F877C0E806E59843AB1FCE24E32DE5BB7FA17ACDB76668F430F60B216894B55418658F8AE4A832EF62616F556BDA39278EA810F060353A756"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.Google@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.MicrosoftAccount@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.MicrosoftAccount",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to support the Microsoft Account authentication workflow.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "11D95C9CD4EAE430180A2EFD3EF0818D1D70E78F0B17ACEBFCC75D1CD079DEA23C6ECA8F9298B0DE9A862F652717533A9778537FA9A373D5B14F2E6B2B49F07D"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.MicrosoftAccount@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.OAuth@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.OAuth",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to support any standard OAuth 2.0 authentication workflow.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5972D882F4772A020CA4A1E534EAC997EE3A75BF4D1ACC29910A7D79BCE9952ACD30AF6DAFA6773233DC58D1368896BE1C8DB0598EC6D4F118611FFB48A3A2F7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.OAuth@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Owin.Security.Twitter@2.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Owin.Security.Twitter",
+      "version": "2.0.0",
+      "description": "Middleware that enables an application to support Twitter\u0027s OAuth 2.0 authentication workflow.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "011AFAA47FEA762DBA7B57C09A80E04BA3A2115193C64865B9683C4F13C1A340459D9FD2601E939E61B6B034A946B1C7D0EF6F86AD4AFFEB8F61D3C8E5ABDDE0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Owin.Security.Twitter@2.0.0",
+      "externalReferences": [
+        {
+          "url": "http://katanaproject.codeplex.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Web.Infrastructure@1.0.0.0",
+      "authors": [
+        {
+          "name": "Microsoft"
+        }
+      ],
+      "name": "Microsoft.Web.Infrastructure",
+      "version": "1.0.0.0",
+      "description": "This package contains the Microsoft.Web.Infrastructure assembly that lets you dynamically register HTTP modules at run time.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "064F8595E1375A438207BD3BF9E0FD9E9C77F20BC7080E058A45D25B51130DAF80D083EB84F4D6A6EFE72C6006C6491778F55107E9F08C363564EB39684E9806"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://go.microsoft.com/fwlink/?LinkID=214339"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Microsoft.Web.Infrastructure@1.0.0.0",
+      "externalReferences": [
+        {
+          "url": "http://www.asp.net",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Modernizr@2.6.2",
+      "authors": [
+        {
+          "name": "Faruk Ate\u015F, Paul Irish, Alex Sexton"
+        }
+      ],
+      "name": "Modernizr",
+      "version": "2.6.2",
+      "description": "Modernizr is a small and simple JavaScript library that helps you take advantage of emerging web technologies (CSS3, HTML 5) while still maintaining a fine level of control over older browsers that may not yet support these new technologies.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "65D7203B793461C7DA15EEA0DB7A0F46488C210261FE5C32CA77342800BC9952D5FC1E595EDB2991F2F3E8A677AFF788488349582473DAF76E5D4959F1A2CA43"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.modernizr.com/license/"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Modernizr@2.6.2",
+      "externalReferences": [
+        {
+          "url": "http://www.modernizr.com/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Moq@4.1.1311.0615",
+      "authors": [
+        {
+          "name": "Daniel Cazzulino"
+        }
+      ],
+      "name": "Moq",
+      "version": "4.1.1311.0615",
+      "description": "The most popular and friendly mocking framework for .NET",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "BA2EDF197536D447297CA3286AE995CF70021E6B990EFD9419C58F4F2F6A529D3B2D321D17A936009E21CB1A6FC0213753428E78FD5B23615483C542F5ECF06E"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/bsd-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Moq@4.1.1311.0615",
+      "externalReferences": [
+        {
+          "url": "http://www.moqthis.com",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/MvcMailer@4.5",
+      "authors": [
+        {
+          "name": "S. M. SOHAN, Tyler Mercier"
+        }
+      ],
+      "name": "MvcMailer",
+      "version": "4.5",
+      "description": "MvcMailer sends emails using the MVC views as Email Body with no effort. Here\u0027s a quick list of features: a) Use Razor/WebForms views b) Use Master pages c) Write Testable Code d) Pass values to your view using ViewBag or ViewModel and e) Generate Absolute URL using Url.Abs method and f) create multi-part emails by just adding a view file, g) scaffold your mailers.\nMvcMailer has a MailerBase class that extends ControllerBase class. So, Mailers are just like your Controllers. As a result, you can use all the controller goodies without any learning curve, period. The end result is a professional looking HTML email body ready for your to send to your website users.\nVisit the Project site for a comprehensive tutorial on MvcMailer. This version is for ASP.Net MVC 4.5. For other versions, please check MvcMailer4 and MvcMailer3 packages.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "30C1B641DA83D72C3F40AA6626E51199EB5B531D13FE5115C5846B8151D394687232F7C08FA024CB303ACC9E0D2EC28B628F5948CC6663CE250CE0974072C4E1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/MvcMailer@4.5",
+      "externalReferences": [
+        {
+          "url": "https://github.com/smsohan/MvcMailer",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Newtonsoft.Json@5.0.6",
+      "authors": [
+        {
+          "name": "James Newton-King"
+        }
+      ],
+      "name": "Newtonsoft.Json",
+      "version": "5.0.6",
+      "description": "Json.NET is a popular high-performance JSON framework for .NET",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "15877BBC87A3A44E42CE0D2ABECABB870DBE622CF12E04CC1AC95FEA295FF58168464215FF44DE9EAA09EB6D2493113A03A900171D5F178ECD09F7B1A31C4A32"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://json.codeplex.com/license"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Newtonsoft.Json@5.0.6",
+      "externalReferences": [
+        {
+          "url": "http://james.newtonking.com/projects/json-net.aspx",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/NUnit@2.6.3",
+      "authors": [
+        {
+          "name": "Charlie Poole"
+        }
+      ],
+      "name": "NUnit",
+      "version": "2.6.3",
+      "description": "NUnit is a unit-testing framework for all .Net languages with a strong TDD focus.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "D17F22EB431D9F1B832FD93AF1EBCEDBF3DE43E2D90867E17445D88FE802DDCAF3461CF27F48EA95253A3F94F47BCB11BF0A0AF415A8D84C604F31C9103D8BB9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://nunit.org/nuget/license.html"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/NUnit@2.6.3",
+      "externalReferences": [
+        {
+          "url": "http://nunit.org",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Owin@1.0",
+      "authors": [
+        {
+          "name": "OWIN startup components contributors"
+        }
+      ],
+      "name": "Owin",
+      "version": "1.0",
+      "description": "OWIN IAppBuilder startup interface",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8EAD139BC5547764612CDE543384B19E8758990A48204F6E4100C0608E5727F35C0133F442DF3FB131806255300B997979841F81EB1A02B35C4B9AA6EC81101C"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/owin-contrib/owin-hosting/blob/master/LICENSE.txt"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/Owin@1.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/owin-contrib/owin-hosting/",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/PagedList@1.17.0.0",
+      "authors": [
+        {
+          "name": "Troy Goode"
+        }
+      ],
+      "name": "PagedList",
+      "version": "1.17.0.0",
+      "description": "PagedList makes it easier for .Net developers to write paging code. It allows you to take any IEnumerable(T) and by specifying the page size and desired page index, select only a subset of that list. PagedList also provides properties that are useful when building UI paging controls.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4B7D7257B83EA41445F1BFC3562490EBF4F811D8A3F57C1AB6C06B19252D61CD3F9CBFF17BDB0E25F092ABA8C70380C671A11561A1696EA99085B8E868634A4F"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/PagedList@1.17.0.0",
+      "externalReferences": [
+        {
+          "url": "http://github.com/TroyGoode/PagedList",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/PagedList.Mvc@4.5.0.0",
+      "authors": [
+        {
+          "name": "Troy Goode"
+        }
+      ],
+      "name": "PagedList.Mvc",
+      "version": "4.5.0.0",
+      "description": "Asp.Net MVC HtmlHelper method for generating paging control for use with PagedList library.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "C464D3DBAF3FEBFBD2FA64E4DFD30D2FD676D38D747804C9BD9FD4544D1B1488DED7B69BE1C3161E890AE3736863B3CB4251BD979EF6180F07E09B09F5CFE530"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/PagedList.Mvc@4.5.0.0",
+      "externalReferences": [
+        {
+          "url": "http://github.com/TroyGoode/PagedList",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Respond@1.2.0",
+      "authors": [
+        {
+          "name": "Scott Jehl"
+        }
+      ],
+      "name": "Respond",
+      "version": "1.2.0",
+      "description": "A fast \u0026 lightweight polyfill for min/max-width CSS3 Media Queries (for IE 6-8, and more)",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9D7169278710B56BAA58A0072E992FBF8A5636210E986CE502C0B45F8CA6F27AC0E633338D0BDB2E336FDD0DEBC797420FEE1E237051C7A7B23A19856FA0B702"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "https://github.com/scottjehl/Respond"
+          }
+        }
+      ],
+      "copyright": "2011: Scott Jehl, scottjehl.com",
+      "purl": "pkg:nuget/Respond@1.2.0",
+      "externalReferences": [
+        {
+          "url": "https://github.com/scottjehl/Respond",
+          "type": "website"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/T4Scaffolding.Core@1.0.0",
+      "authors": [
+        {
+          "name": "David Fowler, Scott Hanselman, Steve Sanderson"
+        }
+      ],
+      "name": "T4Scaffolding.Core",
+      "version": "1.0.0",
+      "description": "A fast and customizable way to build parts of your .NET application via templates",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9E94818B0C53C7743A2E95956976853620B43404CEA89B6741F836F254DF48B072482CAA754EF90E63D40A1BA95756916F595FA4AEF73DC33515DBA4A7E23640"
+        }
+      ],
+      "purl": "pkg:nuget/T4Scaffolding.Core@1.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/WebGrease@1.5.2",
+      "authors": [
+        {
+          "name": "webgrease@microsoft.com"
+        }
+      ],
+      "name": "WebGrease",
+      "version": "1.5.2",
+      "description": "Web Grease is a suite of tools for optimizing javascript, css files and images.",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "453FA7A3483B424DBC27F5D5C07827E6527FAA6E21C96169EF0B7423BD54C348F749F4DF3A636A3CCC5F79D1DA9C08ED7F7741DBFD0A8D0DDF424BD57B0B2FB0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "name": "Unknown - See URL",
+            "url": "http://www.microsoft.com/web/webpi/eula/msn_webgrease_eula.htm"
+          }
+        }
+      ],
+      "purl": "pkg:nuget/WebGrease@1.5.2"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:nuget/Antlr@3.4.1.9004",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Autofac.Mvc5@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Autofac@3.1.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/AutoMapper@3.1.1-ci1000",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/bootstrap@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/elmah.corelibrary@1.2.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Elmah.MVC@2.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/EntityFramework@6.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/EntityFramework@6.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/EntityFramework@6.0.2-beta1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/jQuery.Validation@1.11.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/jQuery@1.10.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Identity.Core@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Identity.EntityFramework@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Identity.Owin@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Mvc@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Razor@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.Web.Optimization@1.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.AspNet.WebPages@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.jQuery.Unobtrusive.Validation@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Host.SystemWeb@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.Cookies@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.Facebook@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.Google@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.MicrosoftAccount@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.OAuth@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security.Twitter@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin.Security@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Owin@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Microsoft.Web.Infrastructure@1.0.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Modernizr@2.6.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Moq@4.1.1311.0615",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/MvcMailer@4.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Newtonsoft.Json@5.0.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/NUnit@2.6.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Owin@1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/PagedList.Mvc@4.5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/PagedList@1.17.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/Respond@1.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/T4Scaffolding.Core@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:nuget/WebGrease@1.5.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "SocialGoal@0.0.0",
+      "dependsOn": [
+        "pkg:nuget/Antlr@3.4.1.9004",
+        "pkg:nuget/Autofac@3.1.5",
+        "pkg:nuget/Autofac.Mvc5@3.0.0",
+        "pkg:nuget/AutoMapper@3.1.1-ci1000",
+        "pkg:nuget/bootstrap@3.0.0",
+        "pkg:nuget/elmah.corelibrary@1.2.2",
+        "pkg:nuget/Elmah.MVC@2.1.1",
+        "pkg:nuget/EntityFramework@6.0.2-beta1",
+        "pkg:nuget/jQuery@1.10.2",
+        "pkg:nuget/jQuery.Validation@1.11.1",
+        "pkg:nuget/Microsoft.AspNet.Identity.Core@1.0.0",
+        "pkg:nuget/Microsoft.AspNet.Identity.EntityFramework@1.0.0",
+        "pkg:nuget/Microsoft.AspNet.Identity.Owin@1.0.0",
+        "pkg:nuget/Microsoft.AspNet.Mvc@5.0.0",
+        "pkg:nuget/Microsoft.AspNet.Razor@3.0.0",
+        "pkg:nuget/Microsoft.AspNet.Web.Optimization@1.1.1",
+        "pkg:nuget/Microsoft.AspNet.WebPages@3.0.0",
+        "pkg:nuget/Microsoft.jQuery.Unobtrusive.Validation@3.0.0",
+        "pkg:nuget/Microsoft.Owin@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Host.SystemWeb@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.Cookies@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.Facebook@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.Google@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.MicrosoftAccount@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.OAuth@2.0.0",
+        "pkg:nuget/Microsoft.Owin.Security.Twitter@2.0.0",
+        "pkg:nuget/Microsoft.Web.Infrastructure@1.0.0.0",
+        "pkg:nuget/Modernizr@2.6.2",
+        "pkg:nuget/MvcMailer@4.5",
+        "pkg:nuget/Newtonsoft.Json@5.0.6",
+        "pkg:nuget/Owin@1.0",
+        "pkg:nuget/PagedList@1.17.0.0",
+        "pkg:nuget/PagedList.Mvc@4.5.0.0",
+        "pkg:nuget/Respond@1.2.0",
+        "pkg:nuget/T4Scaffolding.Core@1.0.0",
+        "pkg:nuget/WebGrease@1.5.2",
+        "pkg:nuget/EntityFramework@6.0.1",
+        "pkg:nuget/EntityFramework@6.0.0",
+        "pkg:nuget/Moq@4.1.1311.0615",
+        "pkg:nuget/NUnit@2.6.3"
+      ]
+    }
+  ]
+}
