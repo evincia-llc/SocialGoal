@@ -3,7 +3,8 @@
 **Phase:** pre-Sprint 1 (foundation)
 **Current sprint:** none started
 **Branch state:** `docs/epic-foundation` pushed to `evincia-llc/SocialGoal`;
-PR #1 open, awaiting operator review/merge (update this line every session)
+PR #1 open, Copilot loop complete (4 runs, run 4 clean) -- ready for operator
+merge (update this line every session)
 
 ## Now (next actions, in order)
 

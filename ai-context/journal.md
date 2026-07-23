@@ -25,6 +25,22 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-23 · Pre-Sprint 1 · Copilot loop took 4 runs on a docs-only PR
+
+- **Problem:** reaching a clean Copilot review took 4 runs even with no
+  application code in the PR. The branch-guard hook alone needed two fix cycles
+  (GNU-only `\b` portability; then verb-position false positives and missing
+  PowerShell-tool coverage). Separately, the review-arrival poll first
+  false-triggered on Claude's own thread reply, which GitHub records as a
+  review object.
+- **Where:** PR #1; `protect-master.sh`/`.ps1`; gh API polling.
+- **Impact:** roughly an hour of iteration; no scope change.
+- **Resolution:** fixed -- hooks are now tested twins (sh 9/9, ps1 6/6 pattern
+  cases); poll filters to bot-authored reviews only.
+- **Report note:** tooling gap, twice over. Guardrail automation is code and
+  needs test cases and adversarial review like any code; and bot-review
+  plumbing has its own edge cases (replies counted as reviews).
+
 ### 2026-07-23 · Pre-Sprint 1 · origin pointed at upstream; no Evincia remote existed
 
 - **Problem:** the local repo's `origin` was `MarlabsInc/SocialGoal` (upstream,
