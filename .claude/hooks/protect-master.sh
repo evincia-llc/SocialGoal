@@ -5,9 +5,12 @@
 
 input=$(cat)
 
-# POSIX ERE only (no \b, a GNU extension): require whitespace before the verb
-# and a non-verb character (or end) after it, so `git commit-graph` etc. pass.
-if printf '%s' "$input" | grep -qE 'git[^"]*[[:space:]](commit|push|merge)([^a-zA-Z-]|$)'; then
+# POSIX ERE only (no \b, a GNU extension). The verb must be the first
+# non-option token after `git` (allowing option tokens and args for
+# -C/-c/--git-dir/--work-tree/--namespace), so read-only commands that merely
+# mention a verb as an argument (`git log --grep commit`) are not blocked,
+# and `git commit-graph` etc. pass. Keep in sync with protect-master.ps1.
+if printf '%s' "$input" | grep -qE 'git([[:space:]]+(-[Cc]|--git-dir|--work-tree|--namespace)[[:space:]]+[^[:space:]"]+|[[:space:]]+--?[^[:space:]"]+)*[[:space:]]+(commit|push|merge)([^a-zA-Z-]|$)'; then
   branch=$(git branch --show-current 2>/dev/null)
   if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
     echo "BLOCKED by .claude/hooks/protect-master.sh: git commit/push/merge attempted on '$branch'." >&2
