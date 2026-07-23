@@ -33,9 +33,11 @@ every session)
   evaluation-phase confirmations, the R-006 correction candidate, six missed
   candidates as engine-predicate input, effort table).
 - D1 DECIDED (no live users/DB -- live-data rigor track dropped); D10 DECIDED
-  (pragmatic PR granularity; guardrails retained). PR #2 raised; Copilot loop
-  took 4 runs (5 comments, all consistency-class), run 4 clean -- ready for
-  operator merge.
+  (pragmatic PR granularity; guardrails retained). PR #2 raised; Copilot loop:
+  runs 1-3 found 5 consistency-class comments (all fixed), run 4 clean.
+- D2 DECIDED (Azure App Service Linux, private via Easy Auth + IP restrictions;
+  cascades D8/D9/OIDC) appended to PR #2 with a grep-first cross-ref sweep;
+  run 5 clean. Sprint 5 decision gate fully cleared -- PR #2 ready for merge.
 
 ### 2026-07-23 -- Evaluation, epic, foundation
 - Evaluated Evincia LMRR (primary spec), secondary gap report, and full codebase
