@@ -209,9 +209,12 @@ Standing constraints for every slice: policy-based authorization with resource h
 * **Safe during Sprints 6-11:** sandboxed AI code transformation for the System.Web rewrite, EF6→EF Core migration, and Identity scaffolding -- behind the Phase 0 net, in non-production environments.
 * **Safe after Sprint 13:** AI in the live pipeline (assisted review, observability/anomaly tooling on the new logging stack, dependency maintenance).
 
-## Open decisions
+## Decision register
 
-| # | Decision | Default recommendation |
+Live status is tracked in `ai-context/decisions.md`; decided entries are marked
+here and retained for traceability.
+
+| # | Decision | Status / default recommendation |
 |---|---|---|
 | D1 | Is there any live deployment/database/user population? | **DECIDED 2026-07-23: none** (see `ai-context/decisions.md`). Live-data rigor track dropped from Sprints 7-8 and 14. |
 | D2 | Hosting target (App Service, containers, on-prem) | Affects D8, image storage (D9), and Data Protection key persistence. Needed by Sprint 5. |
