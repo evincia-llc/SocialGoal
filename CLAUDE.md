@@ -4,6 +4,10 @@ Legacy ASP.NET MVC 5 / .NET Framework 4.5 reference app (MarlabsInc/SocialGoal) 
 modernized to ASP.NET Core MVC on .NET 10 under a 14-sprint epic. This repo is the
 implementation project; the risk reports in `docs/` are the specification.
 
+**This epic is an Evincia POC** (see `ai-context/context.md`, Goal/vision): the
+journal, the LMRR feedback register, and effort actuals are deliverables on par
+with the code. Log friction and LMRR confirmations/corrections as they happen.
+
 ## Read first, every session
 
 1. `ai-context/tasks.md` -- current sprint, in-flight work, next action.
@@ -44,6 +48,11 @@ implementation project; the risk reports in `docs/` are the specification.
 - **Git permissions:** Claude may create feature branches, commit, push, raise
   PRs, and run the Copilot review iterations (delegated by the operator
   2026-07-23). **Claude never merges -- only the operator merges.**
+- **Branching strategy (D10):** no PR-per-work-item ceremony. PR granularity is
+  pragmatic -- a sprint, a workstream, or a slice, sized by what reviews
+  sensibly (`sprint/s<n>-<slug>` naming). Large PRs fine when coherent; small
+  ones fine too. Keep in-branch commits small and labeled -- bisect/rollback
+  granularity lives at commit level.
 - **Every PR passes code review and a security scan before merge.** The CI
   security lane (SCA/secret scan, a Sprint 1 deliverable) is the scan of record;
   until it exists, the scan is run manually and noted on the PR.
@@ -63,6 +72,10 @@ implementation project; the risk reports in `docs/` are the specification.
   it is hit, not retrospectively. The journal is the raw material for the
   end-of-epic report on the problems discovered while modernizing legacy
   SocialGoal.
+- **LMRR feedback:** when implementation confirms, corrects, or contradicts an
+  LMRR finding -- or surfaces something the LMRR missed -- record it in
+  `ai-context/lmrr-feedback.md` with the R-id and evidence. Tag journal entries
+  with R-ids where applicable.
 
 ## Build and test (legacy solution, pre-Sprint 4)
 

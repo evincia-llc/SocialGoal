@@ -2,22 +2,22 @@
 
 **Phase:** pre-Sprint 1 (foundation)
 **Current sprint:** none started
-**Branch state:** `docs/epic-foundation` pushed to `evincia-llc/SocialGoal`;
-PR #1 open, Copilot loop complete (4 runs, run 4 clean) -- ready for operator
-merge (update this line every session)
+**Branch state:** PR #1 merged to `master` (3b3b289). Current branch
+`docs/poc-vision-governance` -- PR #2 pending operator merge (update this line
+every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge PR #1 (epic foundation).
-2. Operator: answer D1 (live data?) and D2 (hosting) in `decisions.md` -- both
-   gate Sprint 5; D1 shapes Sprint 2's database work.
-3. Start Sprint 1 (containment + reproducible legacy build) per
-   `ai-context/backlog.md` -- first items: feature branch, legacy CI workflow,
-   initializer disable, ELMAH lockdown.
+1. Operator: review and merge PR #2 (POC vision, D1/D10 decisions, LMRR
+   feedback register).
+2. Start Sprint 1 (containment + reproducible legacy build) on
+   `sprint/s1-containment` per `ai-context/backlog.md` -- first items: legacy CI
+   workflow, initializer disable, ELMAH lockdown.
+3. Operator: answer D2 (hosting target) in `decisions.md` before Sprint 5.
 
 ## Blocked / waiting
 
-- Sprint 5 exit gate blocked on D1, D2 (not urgent yet).
+- Sprint 5 exit gate blocked on D2 only (D1 decided 2026-07-23).
 
 ## Later (scheduled automation)
 
@@ -27,6 +27,14 @@ merge (update this line every session)
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-23 (later) -- POC vision, D1/D10, feedback register
+- Operator merged PR #1; framed the epic as an Evincia POC: the modernization
+  itself validates/corrects the LMRR. Created `lmrr-feedback.md` (seeded with
+  evaluation-phase confirmations, the R-006 correction candidate, six missed
+  candidates as engine-predicate input, effort table).
+- D1 DECIDED (no live users/DB -- live-data rigor track dropped); D10 DECIDED
+  (sprint-scale branching, large PRs; guardrails retained). PR #2 raised.
 
 ### 2026-07-23 -- Evaluation, epic, foundation
 - Evaluated Evincia LMRR (primary spec), secondary gap report, and full codebase

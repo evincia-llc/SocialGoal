@@ -12,6 +12,7 @@ context is worse than none.
 | `tasks.md` | Current sprint state, in-flight work, next action, session log | **Every working session**, at session end |
 | `backlog.md` | Sprint checklist with status and exit gates | When a sprint item or gate changes state |
 | `journal.md` | Problems/roadblocks log -- raw material for the end-of-epic report | The moment a problem is hit, not retrospectively |
+| `lmrr-feedback.md` | Per-finding LMRR validation ledger + effort actuals (the POC instrument) | When implementation confirms/corrects/contradicts a finding; effort at each sprint gate |
 
 Rules:
 
