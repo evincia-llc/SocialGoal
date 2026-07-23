@@ -26,8 +26,9 @@ MVC on .NET 10, EF Core, ASP.NET Core Identity. Single epic, 14 two-week sprints
 in 4 phases -- see `docs/SocialGoal_Modernization_Epic.md`. LMRR readiness score
 at baseline: 44/100 (Red); target after Phase 3: ~88 (Green).
 
-Assumed: no live deployment, users, or production database (decision D1 -- confirm
-before Sprint 5). The epic's rigor escalates if that assumption breaks.
+Confirmed (D1, DECIDED 2026-07-23): no live deployment, users, or production
+database. The live-data rigor track is dropped; the Sprint 5 gate waits on D2
+(hosting) only.
 
 ## Solution shape (7 projects, all .NET Framework 4.5)
 

@@ -12,7 +12,7 @@ This epic executes the LMRR's full four-phase program: Phase 0 (safety gate), Ph
 
 Sequencing law (from the LMRR): **the safety net precedes structural change.** Sprints 1-3 earn the right to refactor; everything after runs behind that net.
 
-Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. The plan assumes -- pending confirmation via open decision D1 -- no live users or production database; if that assumption breaks, Sprints 7-8 acquire the LMRR/secondary report's live-data rigor (identity compatibility proofs on real rows, reconciliation runs, delta cutover).
+Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. D1 (DECIDED 2026-07-23) confirms no live users or production database, so the live-data rigor track (identity compatibility proofs on real rows, reconciliation runs, delta cutover) is out of scope for Sprints 7-8 and 14.
 
 ## Traceability: LMRR risk register disposition
 
@@ -213,7 +213,7 @@ Standing constraints for every slice: policy-based authorization with resource h
 
 | # | Decision | Default recommendation |
 |---|---|---|
-| D1 | Is there any live deployment/database/user population? | Assumed none (public sample). If wrong: Sprints 7-8 and 14 acquire live-data rigor (real-row hash tests, reconciliation, delta cutover). |
+| D1 | Is there any live deployment/database/user population? | **DECIDED 2026-07-23: none** (see `ai-context/decisions.md`). Live-data rigor track dropped from Sprints 7-8 and 14. |
 | D2 | Hosting target (App Service, containers, on-prem) | Affects D8, image storage (D9), and Data Protection key persistence. Needed by Sprint 5. |
 | D3 | Image URL import: remove or harden | Remove. The bounded-fetch service is significant scope for a marginal feature. |
 | D4 | `SearchController` anonymous or authorized | Add `[Authorize]`; the rest of the app is authenticated-only. |

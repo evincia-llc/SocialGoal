@@ -7,8 +7,10 @@ the end-of-epic report.
 
 **Statuses:** `CONFIRMED` (finding held up in practice) · `CORRECTION-CANDIDATE`
 (finding real, description/severity needs adjustment) · `FALSE-POSITIVE-CANDIDATE`
-· `MISSED-CANDIDATE` (real issue the LMRR did not carry) · `METHODOLOGY-NOTE` ·
-all suffixed `(pending)` until implementation evidence lands.
+· `MISSED-CANDIDATE` (real issue the LMRR did not carry) · `METHODOLOGY-NOTE`.
+Suffix `(pending)` marks entries whose remaining evidence must come from the
+implementation phase; entries fully verifiable by static source inspection
+(e.g., R-016) may be confirmed outright.
 
 **Rules:** every entry cites evidence (file:line, commit, journal entry, or
 sprint result). Candidate engine predicates route to the evincia-ai-workflows
