@@ -5,7 +5,9 @@
 
 input=$(cat)
 
-if printf '%s' "$input" | grep -qE 'git[^"]*\b(commit|push|merge)\b'; then
+# POSIX ERE only (no \b, a GNU extension): require whitespace before the verb
+# and a non-verb character (or end) after it, so `git commit-graph` etc. pass.
+if printf '%s' "$input" | grep -qE 'git[^"]*[[:space:]](commit|push|merge)([^a-zA-Z-]|$)'; then
   branch=$(git branch --show-current 2>/dev/null)
   if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
     echo "BLOCKED by .claude/hooks/protect-master.sh: git commit/push/merge attempted on '$branch'." >&2

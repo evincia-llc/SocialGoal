@@ -33,8 +33,8 @@ PR #1 open, awaiting operator review/merge (update this line every session)
 - Epic drafted as 4.8.x scope, then restructured per operator decision D0 to a
   single 14-sprint .NET 10 epic (`docs/SocialGoal_Modernization_Epic.md`).
 - Created foundation: root `CLAUDE.md`, `ai-context/` (this folder),
-  `.claude/rules/modernization.md`, .gitignore entries. Nothing committed;
-  awaiting feature-branch/PR instruction.
+  `.claude/rules/modernization.md`, .gitignore entries (committed later this
+  session via PR #1; see below).
 - Governance added per operator: PR review + security scan before merge, Copilot
   double-run policy, git permissions (Claude branches/commits/pushes; operator
   merges), `journal.md` for problems/roadblocks, `implementor` agent (Opus) with

@@ -12,7 +12,7 @@ This epic executes the LMRR's full four-phase program: Phase 0 (safety gate), Ph
 
 Sequencing law (from the LMRR): **the safety net precedes structural change.** Sprints 1-3 earn the right to refactor; everything after runs behind that net.
 
-Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. The plan assumes no live users or production database (decision D1); if that assumption breaks, Sprints 7-8 acquire the LMRR/secondary report's live-data rigor (identity compatibility proofs on real rows, reconciliation runs, delta cutover).
+Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. The plan assumes -- pending confirmation via open decision D1 -- no live users or production database; if that assumption breaks, Sprints 7-8 acquire the LMRR/secondary report's live-data rigor (identity compatibility proofs on real rows, reconciliation runs, delta cutover).
 
 ## Traceability: LMRR risk register disposition
 
