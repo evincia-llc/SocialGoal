@@ -23,7 +23,9 @@ description: Prepare and push a reviewable PR branch for the SocialGoal epic fol
    - Test evidence (suite, counts, link to CI run)
    - Security scan result
    - Copilot checklist: run 1 findings -> per-comment action (fix or ignore,
-     with reason) -> run 2 result (skip run 2 only if run 1 was clean)
+     with reason) -> re-request and repeat until a run returns no comments or
+     only trivial ones (skip further runs only when a run is clean; run 1
+     clean ends the loop)
 8. Raise the PR with the template and request Copilot review (run 1). Claude
    may raise PRs and drive the Copilot iterations; only the operator merges.
 9. Log any friction hit during the flow in `ai-context/journal.md`.

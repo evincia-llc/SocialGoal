@@ -47,10 +47,11 @@ implementation project; the risk reports in `docs/` are the specification.
 - **Every PR passes code review and a security scan before merge.** The CI
   security lane (SCA/secret scan, a Sprint 1 deliverable) is the scan of record;
   until it exists, the scan is run manually and noted on the PR.
-- **Copilot reviews every PR at least twice** -- a second run after review
-  comments are addressed. A clean first run (no issues) needs no second run.
-  Claude decides per Copilot comment whether to fix or ignore, stating the reason,
-  and has permission to reply in Copilot conversation threads.
+- **Copilot reviews every PR until clean.** A clean first run needs no second.
+  Otherwise: address findings, re-request, and keep iterating until a run comes
+  back with no comments or only trivial ones (operator rule 2026-07-23). Claude
+  decides per comment whether to fix or ignore, stating the reason, and has
+  permission to reply in Copilot conversation threads.
 - **Access:** Claude has full read access to all documents, journals, logs, and
   markdown files in this repo.
 - **Model roles (within one session):** the main session runs Fable 5 as
