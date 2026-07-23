@@ -25,6 +25,88 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-23 · Sprint 1 · Permission layer blocked delegated governance actions
+
+- **Problem:** the epic's "protect master" bullet could not be executed:
+  the branch-protection API call was blocked by the tool-permission
+  classifier (repo-settings changes sit outside the delegated git
+  permissions), and one routine `gh run list` was transiently blocked by the
+  same layer minutes after identical calls succeeded.
+- **Where:** `gh api PUT .../branches/master/protection`; PR-flow automation.
+- **Impact:** minutes; one sprint bullet handed back to the operator (exact
+  command in tasks.md). No scope change.
+- **Resolution:** worked around -- operator action listed; run-status checks
+  switched to `gh api` reads, which pass consistently.
+- **Report note:** tooling/process gap. Delegation boundaries between an AI
+  implementer and repo governance need to be explicit up front: "Claude may
+  push and PR" does not imply "Claude may change repo settings," and the
+  enforcement layer's judgment calls are not always predictable mid-flow.
+
+### 2026-07-23 · Sprint 1 · Secret scan's first run flagged Microsoft's public key token
+
+- **Problem:** the new gitleaks lane failed its first CI run with 5 "leaks" --
+  all the same string, `b77a5c561934e089`, the standard .NET assembly
+  `PublicKeyToken` in Web.config/App.config, matched by the generic-api-key
+  rule across historical commits.
+- **Where:** `.github/workflows/security.yml` secret-scan job; verified
+  locally with the same gitleaks build.
+- **Impact:** ~15 minutes; first security-lane run red on a false positive.
+- **Resolution:** fixed -- `.gitleaks.toml` allowlist scoped to
+  `PublicKeyToken=<16 hex>` on the matched line; local re-scan clean (76
+  commits, 0 leaks).
+- **Report note:** tooling gap. Secret scanners need framework-aware
+  allowlists before they're credible gates on .NET Framework repos; the very
+  first artifact a scanner meets in a legacy .NET tree is a public key token
+  that looks like a key.
+
+### 2026-07-23 · Sprint 1 · "Dead" Forms-auth scaffolding is load-bearing in three places
+
+- **Problem:** the plan said remove the dead Web.Core Forms-auth scaffolding,
+  but only `UserAuthenticationTicketBuilder.cs` is truly dead (fully commented
+  out). `DefaultFormsAuthentication`/`IFormsAuthentication`/`SocialGoalUser`
+  are referenced by ~30 test fixtures (principals built from
+  `FormsAuthenticationTicket`), by `Bootstrapper.cs:38` as the assembly-scan
+  anchor for Web.Core DI registrations, and by
+  `Views/Group/_UpdateView.cshtml:154`, which casts `User.Identity` to
+  `SocialGoalUser` at runtime. Bonus defect: under OWIN the identity is a
+  `ClaimsIdentity`, so that view cast must throw `InvalidCastException`
+  whenever the block renders -- the "am I the author" UI path in group updates
+  is broken in the legacy app as committed.
+- **Where:** Web.Core Authentication/Models; Tests; `_UpdateView.cshtml`.
+- **Impact:** scope trim, no time lost beyond the survey; full removal of the
+  types moves to Phase 2 (Web.Core retirement, Sprints 8/11). Removing them
+  now would shred the 113-test safety net during the containment sprint.
+- **Resolution:** worked around -- deleted only the truly dead file, replaced
+  the Forms `<authentication>` remnant with `mode="None"` (behavior-preserving:
+  `FormsAuthenticationModule` was already removed from the pipeline), left the
+  referenced types in place. View-cast defect left as-is (behavioral
+  reference); the rebuild slices replace it.
+- **Report note:** hidden behavior + legacy defect. "Dead code" verdicts need
+  reference-level verification, not file-level; and remnant auth types can
+  keep compiling precisely because tests fake identity through them.
+
+### 2026-07-23 · Sprint 1 · Legacy build needs two NuGet shims on modern tooling
+
+- **Problem:** the 2014 solution no longer builds on stock modern tooling.
+  VS2022 Build Tools ships no `Microsoft.WebApplication.targets` (MSB4226 from
+  the Web csproj import), and the .NET 4.5 targeting pack is retired -- the
+  machine's `Reference Assemblies\...\v4.5` folder exists but contains only XML
+  doc stubs, so the build fails MSB3644 even though the folder looks installed.
+- **Where:** `source/SocialGoal.sln` via MSBuild 17.14 (VS2022 Build Tools);
+  hit while proving the reproducible build for Sprint 1.
+- **Impact:** ~30 min diagnosis; shapes CI design (the same shims are needed on
+  `windows-latest`); no scope change.
+- **Resolution:** worked around with two pinned NuGet packages, no admin
+  installs: `MSBuild.Microsoft.VisualStudio.Web.targets 14.0.0.3` via
+  `/p:VSToolsPath` and `Microsoft.NETFramework.ReferenceAssemblies.net45 1.0.3`
+  via `/p:TargetFrameworkRootPath`. Tests need the retired NUnit 2.x console
+  (`NUnit.Runners 2.6.4`); modern runners cannot execute NUnit 2.6.3 suites.
+  Full recipe in `docs/BUILD.md`. Result: build clean, 113/113 tests green.
+- **Report note:** tooling gap (vendor retirement). A decade-old project's
+  build now depends on archived shim packages; the "misleading stub folder"
+  (targeting-pack directory present, assemblies absent) is the kind of trap
+  that burns hours in a real engagement.
+
 ### 2026-07-23 · Pre-Sprint 1 · Copilot loop took 4 runs on a docs-only PR
 
 - **Problem:** reaching a clean Copilot review took 4 runs even with no

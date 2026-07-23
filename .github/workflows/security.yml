@@ -1,0 +1,82 @@
+# PR security scan of record (repo CLAUDE.md governance): secret scan +
+# SCA over NuGet packages and vendored browser assets. Baseline semantics
+# documented in docs/security/sca-baseline.md -- new findings fail the run;
+# findings already accepted at the Sprint 1 baseline do not.
+name: security
+
+on:
+  push:
+    branches: [master, "sprint/**", "docs/**"]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: "17 6 * * 1" # weekly drift check: advisory DBs move under us
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run gitleaks over full history
+        run: |
+          curl -sSfL -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          echo "ba6dbb656933921c775ee5a2d1c13a91046e7952e9d919f9bac4cec61d628e7d  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks detect --source . --redact --no-banner
+
+  nuget-audit:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore and diff audit findings against baseline
+        shell: pwsh
+        run: |
+          $out = nuget restore source\SocialGoal.sln -NonInteractive 2>&1 | Out-String
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host $out
+            Write-Host "::error::nuget restore failed (exit $LASTEXITCODE); audit findings would be incomplete"
+            exit 1
+          }
+          $found = [regex]::Matches($out, "(NU190[23]): Package '([^']+)' (\S+)") |
+            ForEach-Object { "$($_.Groups[1].Value) $($_.Groups[2].Value) $($_.Groups[3].Value)" } |
+            Sort-Object -Unique
+          $baseline = (Get-Content docs\security\nuget-audit-baseline.txt) |
+            ForEach-Object { $_.Trim() } | Where-Object { $_ }
+          Write-Host "Found $($found.Count) audited findings; baseline holds $($baseline.Count)."
+          $new = @($found | Where-Object { $baseline -notcontains $_ })
+          $gone = @($baseline | Where-Object { $found -notcontains $_ })
+          if ($gone) { $gone | ForEach-Object { Write-Host "Baseline entry no longer reported (candidate for removal): $_" } }
+          if ($new) {
+            $new | ForEach-Object { Write-Host "::error::New vulnerable package not in baseline: $_" }
+            exit 1
+          }
+
+  retire-js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan vendored browser assets and diff against baseline
+        run: |
+          npx --yes retire@5.4.3 --path source/SocialGoal/Scripts --outputformat jsonsimple --outputpath retire-scripts.json || true
+          npx --yes retire@5.4.3 --path source/SocialGoal/Content --outputformat jsonsimple --outputpath retire-content.json || true
+          jq -r --arg ws "$GITHUB_WORKSPACE/" \
+            '.[] | .file as $f | .results[] | "\($f | sub("^" + $ws; ""))|\(.component)|\(.version)"' \
+            retire-scripts.json retire-content.json | sort -u > found.txt
+          tr -d '\r' < docs/security/retire-baseline.txt | grep -v '^[[:space:]]*$' | sort -u > baseline.txt
+          echo "Found $(wc -l < found.txt) findings; baseline holds $(wc -l < baseline.txt)."
+          comm -13 baseline.txt found.txt > new.txt
+          comm -23 baseline.txt found.txt | sed 's/^/Baseline entry no longer reported (candidate for removal): /'
+          if [ -s new.txt ]; then
+            sed 's/^/::error::New vulnerable vendored asset not in baseline: /' new.txt
+            exit 1
+          fi

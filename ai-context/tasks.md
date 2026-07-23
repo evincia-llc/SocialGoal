@@ -1,22 +1,29 @@
 # Tasks -- current state
 
-**Phase:** pre-Sprint 1 (foundation)
-**Current sprint:** none started
-**Branch state:** PR #1 merged to `master` (3b3b289). Current branch
-`docs/poc-vision-governance` -- PR #2 pending operator merge (update this line
-every session)
+**Phase:** Phase 0 (safety gate), Sprint 1
+**Current sprint:** Sprint 1 (containment + reproducible legacy build) --
+deliverables complete, PR pending
+**Branch state:** current branch `sprint/s1-containment`; PR #3 raised, Copilot
+loop complete (4 runs, run 4 clean), all CI lanes green. Branched from PR #2
+head, so merge order is #2 then #3 (#3's diff collapses once #2 merges). Both
+PRs pending operator merge (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge PR #2 (POC vision, D1/D10 decisions, LMRR
-   feedback register).
-2. Start Sprint 1 (containment + reproducible legacy build) on
-   `sprint/s1-containment` per `ai-context/backlog.md` -- first items: legacy CI
-   workflow, initializer disable, ELMAH lockdown.
+1. Operator: review and merge PR #2, then the Sprint 1 PR (raised from
+   `sprint/s1-containment`; includes #2's commits until #2 merges).
+2. Operator: enable master branch protection (Claude's API call was
+   permission-blocked). Required checks `build-and-test`, `secret-scan`,
+   `nuget-audit`, `retire-js`:
+   `gh api -X PUT repos/evincia-llc/SocialGoal/branches/master/protection --input protection.json`
+   (epic Sprint 1 bullet; any settings route is fine).
+3. Run the `sprint-gate` review for Sprint 1, then start Sprint 2 (data-layer
+   characterization, schema snapshot, trigger question) on `sprint/s2-safety-net-1`.
 
 ## Blocked / waiting
 
-- None. Sprint 5's decision gate cleared (D1, D2 decided 2026-07-23).
+- Master branch protection: needs operator (permission classifier blocks repo
+  settings changes from Claude).
 
 ## Later (scheduled automation)
 
@@ -26,6 +33,32 @@ every session)
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-23 (Sprint 1, later) -- PR #3 + security review + Copilot loop
+- security-reviewer agent on the sprint diff: PASS; 2 LOW supply-chain items
+  fixed (sha256-pinned gitleaks, retire pinned), 1 INFO accepted with reason
+  (gitleaks v8.18 ORs allowlist conditions -- paths would widen suppression).
+- PR #3 raised; Copilot runs 1-3 produced 6 comments, all fixed (config-comment
+  wording, specific disabled-import message, stale BUILD.md note, POSIX
+  whitespace class, restore-failure gate in nuget-audit, SSRF-flag pinning
+  test -- suite now 114/114). Run 4 clean. Effort actuals row added.
+- Next: operator merges #2 then #3 + enables branch protection; then run
+  `sprint-gate` for Sprint 1 and start Sprint 2.
+
+### 2026-07-23 (Sprint 1) -- Containment + reproducible build, all deliverables
+- Proved the legacy build end to end (restore, MSBuild 17 + two NuGet shims for
+  retired tooling, NUnit 2.6.4 console): 113/113 green, recipe in `docs/BUILD.md`;
+  legacy-ci workflow green on first run. Journaled the toolchain friction.
+- Containment: initializer config-switched (DropCreate deleted outright; live
+  proof via fresh DB + seeded lookups), ELMAH locked (verified 401->login),
+  Forms-auth remnant removed (scaffolding found load-bearing in 3 places --
+  journaled, R-006 nuance), URL import feature-flagged off (default).
+- SBOM (CycloneDX, 41 pkgs) + SCA baselines committed (8 vulnerable NuGet pkgs,
+  17 vendored JS files); security.yml = scan of record (gitleaks/nuget/retire,
+  new-vs-baseline gates). Gitleaks false-positived on .NET PublicKeyToken;
+  allowlisted and journaled. 13 golden-path screenshots + behavior notes.
+- Tagged `legacy-baseline` (42cfdb4). Branch protection blocked by permissions
+  -- handed to operator. All CI lanes green at 5908770.
 
 ### 2026-07-23 (later) -- POC vision, D1/D10, feedback register
 - Operator merged PR #1; framed the epic as an Evincia POC: the modernization

@@ -189,6 +189,28 @@ namespace SocialGoal.Web.Controllers.Test
         }
 
         [Test]
+        public void Upload_Image_Post_Url_Import_Is_Disabled_By_Default()
+        {
+            // Pins the Sprint 1 SSRF containment: without Feature.ImageUrlImport=true
+            // in config (the test config has no such key), the URL branch must be
+            // rejected before any outbound fetch.
+            var userManager = new UserManager<ApplicationUser>(new TestUserStore());
+            UploadImageViewModel image = new UploadImageViewModel()
+            {
+                IsUrl = true,
+                Url = "http://example.com/image.png",
+                UserId = "402bd590-fdc7-49ad-9728-40efbfe512ec",
+                LocalPath = "dddd"
+            };
+            AccountController controller = new AccountController(userService, userProfileService, goalService, updateService, commentService, followRequestService, followUserService, securityTokenService, userManager);
+            ViewResult result = controller.UploadImage(image) as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ImageUpload", result.ViewName);
+            Assert.IsFalse(controller.ModelState.IsValid, "URL import should be rejected by default");
+            Assert.IsTrue(controller.ModelState["Url"].Errors.Count > 0, "Expected a ModelState error on Url");
+        }
+
+        [Test]
         public void UserProfile()
         {
             var userManager = new UserManager<ApplicationUser>(new TestUserStore());

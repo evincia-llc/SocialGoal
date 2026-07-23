@@ -1,0 +1,8 @@
+NU1903 AutoMapper 3.1.1-ci1000
+NU1902 bootstrap 3.0.0
+NU1902 jQuery 1.10.2
+NU1903 jQuery.Validation 1.11.1
+NU1903 Microsoft.AspNet.Identity.Owin 1.0.0
+NU1903 Microsoft.Owin 2.0.0
+NU1903 Microsoft.Owin.Security.Cookies 2.0.0
+NU1903 Newtonsoft.Json 5.0.6
