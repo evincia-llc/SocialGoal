@@ -3,9 +3,10 @@
 **Phase:** Phase 0 (safety gate), Sprint 1
 **Current sprint:** Sprint 1 (containment + reproducible legacy build) --
 deliverables complete, PR pending
-**Branch state:** current branch `sprint/s1-containment` (branched from PR #2
-head so ai-context edits don't conflict; its diff collapses when #2 merges).
-PR #2 still pending operator merge (update this line every session)
+**Branch state:** current branch `sprint/s1-containment`; PR #3 raised, Copilot
+loop complete (4 runs, run 4 clean), all CI lanes green. Branched from PR #2
+head, so merge order is #2 then #3 (#3's diff collapses once #2 merges). Both
+PRs pending operator merge (update this line every session)
 
 ## Now (next actions, in order)
 
@@ -32,6 +33,17 @@ PR #2 still pending operator merge (update this line every session)
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-23 (Sprint 1, later) -- PR #3 + security review + Copilot loop
+- security-reviewer agent on the sprint diff: PASS; 2 LOW supply-chain items
+  fixed (sha256-pinned gitleaks, retire pinned), 1 INFO accepted with reason
+  (gitleaks v8.18 ORs allowlist conditions -- paths would widen suppression).
+- PR #3 raised; Copilot runs 1-3 produced 6 comments, all fixed (config-comment
+  wording, specific disabled-import message, stale BUILD.md note, POSIX
+  whitespace class, restore-failure gate in nuget-audit, SSRF-flag pinning
+  test -- suite now 114/114). Run 4 clean. Effort actuals row added.
+- Next: operator merges #2 then #3 + enables branch protection; then run
+  `sprint-gate` for Sprint 1 and start Sprint 2.
 
 ### 2026-07-23 (Sprint 1) -- Containment + reproducible build, all deliverables
 - Proved the legacy build end to end (restore, MSBuild 17 + two NuGet shims for
