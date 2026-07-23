@@ -25,6 +25,28 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-23 · Sprint 1 · Legacy build needs two NuGet shims on modern tooling
+
+- **Problem:** the 2014 solution no longer builds on stock modern tooling.
+  VS2022 Build Tools ships no `Microsoft.WebApplication.targets` (MSB4226 from
+  the Web csproj import), and the .NET 4.5 targeting pack is retired -- the
+  machine's `Reference Assemblies\...\v4.5` folder exists but contains only XML
+  doc stubs, so the build fails MSB3644 even though the folder looks installed.
+- **Where:** `source/SocialGoal.sln` via MSBuild 17.14 (VS2022 Build Tools);
+  hit while proving the reproducible build for Sprint 1.
+- **Impact:** ~30 min diagnosis; shapes CI design (the same shims are needed on
+  `windows-latest`); no scope change.
+- **Resolution:** worked around with two pinned NuGet packages, no admin
+  installs: `MSBuild.Microsoft.VisualStudio.Web.targets 14.0.0.3` via
+  `/p:VSToolsPath` and `Microsoft.NETFramework.ReferenceAssemblies.net45 1.0.3`
+  via `/p:TargetFrameworkRootPath`. Tests need the retired NUnit 2.x console
+  (`NUnit.Runners 2.6.4`); modern runners cannot execute NUnit 2.6.3 suites.
+  Full recipe in `docs/BUILD.md`. Result: build clean, 113/113 tests green.
+- **Report note:** tooling gap (vendor retirement). A decade-old project's
+  build now depends on archived shim packages; the "misleading stub folder"
+  (targeting-pack directory present, assemblies absent) is the kind of trap
+  that burns hours in a real engagement.
+
 ### 2026-07-23 · Pre-Sprint 1 · Copilot loop took 4 runs on a docs-only PR
 
 - **Problem:** reaching a clean Copilot review took 4 runs even with no

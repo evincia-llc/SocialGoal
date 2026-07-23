@@ -32,6 +32,9 @@ methodology input, not scoring errors.
   `[Test]`-family attributes vs the LMRR's 113 passing tests; dark-seam claims
   (data layer, auth/anti-forgery filters at 0%) verified structurally -- the
   filters are in fact never registered at all (see MISSED below).
+  Sprint 1 update: first full test run executed exactly **113 tests, 113
+  passing** (NUnit 2.6.4 console, 2026-07-23) -- the LMRR's count was the
+  precise one; the attribute survey over-counted by ~3.
 - **R-001/R-002/R-004/R-005/R-012/R-013 · CONFIRMED (pending):** all version
   pins, the 6.0.2-beta1 EF pin, AutoMapper `3.1.1-ci1000`, and framework
   targets verified against packages.config/csproj files.

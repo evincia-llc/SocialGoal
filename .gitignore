@@ -150,6 +150,9 @@ $RECYCLE.BIN/
 # Mac crap
 .DS_Store
 
+# Local build/test shim packages (see docs/BUILD.md)
+.buildtools/
+
 # =========================
 # Claude Code local files
 # =========================
