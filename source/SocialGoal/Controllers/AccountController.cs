@@ -409,7 +409,7 @@ namespace SocialGoal.Web.Controllers
                     // disposition is decision D3 (default: removed in Sprint 11).
                     if (!string.Equals(System.Web.Configuration.WebConfigurationManager.AppSettings["Feature.ImageUrlImport"], "true", StringComparison.OrdinalIgnoreCase))
                     {
-                        ModelState.AddModelError(errorField, Resources.UploadError);
+                        ModelState.AddModelError(errorField, "Importing an image from a URL is disabled. Upload a file instead.");
                         return View("ImageUpload", model);
                     }
                     name = GetUrlFileName(model.Url);

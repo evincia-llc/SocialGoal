@@ -63,7 +63,9 @@ nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory .buildtools -NonInte
 - NuGet restore emits an audit report of known-vulnerable packages (NU1902/
   NU1903). Expected at baseline -- that list is the Sprint 1 SBOM/SCA input,
   remediated per the epic (Sprint 4 critical subset, Phase 2 wholesale).
-- Running the *app* (not the build) needs local SQL Server and carries the
-  destructive-initializer warning -- see the repo `CLAUDE.md`. Never point the
-  app at a database you care about.
+- Running the *app* (not the build) needs local SQL Server. As of Sprint 1 the
+  EF initializer is config-switched and create-only: with the committed Debug
+  config it creates and seeds the `SocialGoal` database only if it does not
+  exist (never drops or alters); the Release transform disables initialization
+  entirely.
 - CI mirrors these exact steps: `.github/workflows/legacy-ci.yml`.
