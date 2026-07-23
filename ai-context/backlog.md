@@ -17,7 +17,7 @@ here; see `ai-context/README.md`). Status values: `todo` / `active` / `done` /
 | Sprint | Theme | Status | Exit gate |
 |---|---|---|---|
 | 4 | SDK-style conversion; platform-agnostic libs toward net10.0; EF unified stable; critical vuln subset | todo | SDK-style build in CI; class libs compile for .NET 10; legacy app still runs; suites green |
-| 5 | Modern .NET 10 host + gating spikes (EF Core mapping, Identity hash compat, one read-only slice) | todo | ADR recorded; auth + data approach proven; one production-shaped slice runs. **Blocked on D1, D2** |
+| 5 | Modern .NET 10 host + gating spikes (EF Core mapping, Identity hash compat, one read-only slice) | todo | ADR recorded; auth + data approach proven; one production-shaped slice runs. Decision gate cleared (D1, D2 decided 2026-07-23) |
 
 ## Phase 2 -- The two big rebuilds
 

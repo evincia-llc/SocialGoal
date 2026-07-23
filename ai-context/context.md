@@ -2,6 +2,22 @@
 
 Last verified: 2026-07-23 (full codebase survey + both reports evaluated).
 
+## Goal / vision: this epic is an Evincia POC
+
+The modernization is real, but the purpose is meta: determine whether Evincia
+(evincia.co) gains meaningful, valuable knowledge about modernizing a target
+codebase (public teardown or client engagement) by attempting the modernization
+itself. Three feedback products, all first-class deliverables alongside the code:
+
+1. `journal.md` -- the honest friction record (feeds the end-of-epic report).
+2. `lmrr-feedback.md` -- per-finding validation of the LMRR: confirmations,
+   corrections, false positives, misses, and candidate engine predicates.
+3. Effort actuals vs the LMRR's illustrative estimates (engagement scoping data).
+
+False positives/negatives discovered by doing the work correct the LMRR itself.
+Engine-predicate candidates route to the evincia-ai-workflows backlog; engine
+data never lands in this repo.
+
 ## What this is
 
 Modernization of SocialGoal (public MarlabsInc ASP.NET MVC 5 / EF6 / .NET 4.5
@@ -10,8 +26,10 @@ MVC on .NET 10, EF Core, ASP.NET Core Identity. Single epic, 14 two-week sprints
 in 4 phases -- see `docs/SocialGoal_Modernization_Epic.md`. LMRR readiness score
 at baseline: 44/100 (Red); target after Phase 3: ~88 (Green).
 
-Assumed: no live deployment, users, or production database (decision D1 -- confirm
-before Sprint 5). The epic's rigor escalates if that assumption breaks.
+Confirmed (D1, DECIDED 2026-07-23): no live deployment, users, or production
+database; live-data rigor track dropped. Hosting (D2, DECIDED 2026-07-23):
+Azure App Service (Linux), private access (Easy Auth + IP restrictions).
+Sprint 5's decision gate is cleared.
 
 ## Solution shape (7 projects, all .NET Framework 4.5)
 

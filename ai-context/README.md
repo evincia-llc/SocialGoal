@@ -8,10 +8,11 @@ context is worse than none.
 | File | Role | Update discipline |
 |---|---|---|
 | `context.md` | Project snapshot: what this is, key codebase facts, spec pointers | When facts change (rare); verify before trusting details older than a phase |
-| `decisions.md` | Decision log: closed decisions and open D1-D9 | Append-only entries; flip status when the operator decides; never delete history |
+| `decisions.md` | Decision log: DECIDED entries and the open register (currently D3-D9) | Append-only entries; flip status when the operator decides; never delete history |
 | `tasks.md` | Current sprint state, in-flight work, next action, session log | **Every working session**, at session end |
 | `backlog.md` | Sprint checklist with status and exit gates | When a sprint item or gate changes state |
 | `journal.md` | Problems/roadblocks log -- raw material for the end-of-epic report | The moment a problem is hit, not retrospectively |
+| `lmrr-feedback.md` | Per-finding LMRR validation ledger + effort actuals (the POC instrument) | When implementation confirms/corrects/contradicts a finding; effort at each sprint gate |
 
 Rules:
 

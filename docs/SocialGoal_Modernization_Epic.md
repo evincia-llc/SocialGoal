@@ -12,7 +12,7 @@ This epic executes the LMRR's full four-phase program: Phase 0 (safety gate), Ph
 
 Sequencing law (from the LMRR): **the safety net precedes structural change.** Sprints 1-3 earn the right to refactor; everything after runs behind that net.
 
-Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. The plan assumes -- pending confirmation via open decision D1 -- no live users or production database; if that assumption breaks, Sprints 7-8 acquire the LMRR/secondary report's live-data rigor (identity compatibility proofs on real rows, reconciliation runs, delta cutover).
+Cadence assumption: 14 two-week sprints, 1-2 engineers (~7 months elapsed). Consistent with the LMRR's illustrative 6-9 months. D1 (DECIDED 2026-07-23) confirms no live users or production database, so the live-data rigor track (identity compatibility proofs on real rows, reconciliation runs, delta cutover) is out of scope for Sprints 7-8 and 14.
 
 ## Traceability: LMRR risk register disposition
 
@@ -209,19 +209,22 @@ Standing constraints for every slice: policy-based authorization with resource h
 * **Safe during Sprints 6-11:** sandboxed AI code transformation for the System.Web rewrite, EF6→EF Core migration, and Identity scaffolding -- behind the Phase 0 net, in non-production environments.
 * **Safe after Sprint 13:** AI in the live pipeline (assisted review, observability/anomaly tooling on the new logging stack, dependency maintenance).
 
-## Open decisions
+## Decision register
 
-| # | Decision | Default recommendation |
+Live status is tracked in `ai-context/decisions.md`; decided entries are marked
+here and retained for traceability.
+
+| # | Decision | Status / default recommendation |
 |---|---|---|
-| D1 | Is there any live deployment/database/user population? | Assumed none (public sample). If wrong: Sprints 7-8 and 14 acquire live-data rigor (real-row hash tests, reconciliation, delta cutover). |
-| D2 | Hosting target (App Service, containers, on-prem) | Affects D8, image storage (D9), and Data Protection key persistence. Needed by Sprint 5. |
+| D1 | Is there any live deployment/database/user population? | **DECIDED 2026-07-23: none** (see `ai-context/decisions.md`). Live-data rigor track dropped from Sprints 7-8 and 14. |
+| D2 | Hosting target (App Service, containers, on-prem) | **DECIDED 2026-07-23: Azure App Service (Linux), private access** (Easy Auth + IP restrictions; see `ai-context/decisions.md`). Cascades: D8 App Insights, D9 Azure Blob, Data Protection keys in Blob, GitHub Actions OIDC deploy. |
 | D3 | Image URL import: remove or harden | Remove. The bounded-fetch service is significant scope for a marginal feature. |
 | D4 | `SearchController` anonymous or authorized | Add `[Authorize]`; the rest of the app is authenticated-only. |
 | D5 | External logins | Remove dead Google OpenID wiring; add Google OAuth 2.0 in Sprint 8 only if the feature is wanted (new registration + redirect URLs either way). |
 | D6 | Bootstrap 3.4.1 (parity, minimal change) vs Bootstrap 5 (modern, more view work) | 3.4.1 for parity within this epic; Bootstrap 5 as a follow-on UI project unless stakeholders want it now (adds effort per the secondary report's 30-75% redesign range). |
 | D7 | Must email flows actually send? | Configure MailKit against a real provider only if invites/reset are required; otherwise no-op mailer with logging, flows kept testable. |
-| D8 | Observability backend: Application Insights vs OTel + other APM | Follows D2. |
-| D9 | Profile images: local disk vs object storage | Object storage if D2 is containers/multi-instance; local disk acceptable for single-instance Windows hosting. |
+| D8 | Observability backend: Application Insights vs OTel + other APM | Application Insights (per D2 = Azure); confirm at Sprint 13. |
+| D9 | Profile images: local disk vs object storage | Azure Blob Storage (per D2 = Azure); confirm at Sprint 11. |
 
 ## Out-of-scope register
 
