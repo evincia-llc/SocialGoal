@@ -42,6 +42,11 @@ jobs:
         shell: pwsh
         run: |
           $out = nuget restore source\SocialGoal.sln -NonInteractive 2>&1 | Out-String
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host $out
+            Write-Host "::error::nuget restore failed (exit $LASTEXITCODE); audit findings would be incomplete"
+            exit 1
+          }
           $found = [regex]::Matches($out, "(NU190[23]): Package '([^']+)' (\S+)") |
             ForEach-Object { "$($_.Groups[1].Value) $($_.Groups[2].Value) $($_.Groups[3].Value)" } |
             Sort-Object -Unique
