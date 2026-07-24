@@ -161,6 +161,16 @@ methodology input, not scoring errors.
   System.Web references outside web-named projects; service->web project
   edges. All three are statically detectable and directly price the migration.
 
+- **Broken views compile-proven · MISSED-CANDIDATE (new):** first-ever view
+  compilation (SDK conversion, MvcBuildViews) proved
+  `Views/Goal/Supporters.cshtml` and `Views/Goal/SupportersOfUpdate.cshtml`
+  bind `ApplicationUser.UserId`, which does not exist -- guaranteed runtime
+  crashes whenever rendered, invisible to the legacy build and to all 187
+  tests (journal 2026-07-24). Same class as the `_UpdateView.cshtml` cast
+  defect under R-006. Candidate engine signal: strongly-typed Razor views that
+  reference members absent from the declared model/type graph; a
+  compile-the-views pass over an MVC target is cheap and statically decisive.
+
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 
 - **Destructive initializer · MISSED-CANDIDATE:** `Database.SetInitializer` +

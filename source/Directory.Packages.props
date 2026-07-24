@@ -47,6 +47,14 @@
     <PackageVersion Include="PagedList" Version="1.17.0.0" />
     <PackageVersion Include="PagedList.Mvc" Version="4.5.0.0" />
 
+    <!-- MSBuild.SDK.SystemWeb implicit compiler packages (SDK 4.0.107
+         defaults; referenced versionless by the SDK under CPM) -->
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="3.6.0" />
+    <!-- Web-application targets, the pinned shim proven in Sprint 1; now a
+         restore-time dependency of the Web project instead of a CI install -->
+    <PackageVersion Include="MSBuild.Microsoft.VisualStudio.Web.targets" Version="14.0.0.3" />
+
     <!-- Test stack (Sprint 3 refresh levels) -->
     <PackageVersion Include="NUnit" Version="3.14.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />

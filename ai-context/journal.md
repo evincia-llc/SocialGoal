@@ -25,6 +25,41 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · View compilation (first ever) exposes two broken views
+
+- **Problem:** the SystemWeb SDK enables MvcBuildViews-style view compilation
+  by default; first-ever compile of the Razor views failed on
+  `Views/Goal/Supporters.cshtml` and `Views/Goal/SupportersOfUpdate.cshtml`,
+  both binding `ApplicationUser.UserId` -- a property that does not exist
+  (IdentityUser has `Id`). These views crash at runtime in the legacy app
+  whenever rendered; the legacy build never checked them (`MvcBuildViews=false`).
+- **Where:** SDK conversion of `SocialGoal.Web.csproj`; errors at
+  Supporters.cshtml(16,22), SupportersOfUpdate.cshtml(13,18).
+- **Impact:** ~15 min. Conversion set `MvcBuildViews=false` for legacy parity;
+  views are pinned behavior, rebuilt in Phase 2 (Sprint 9 slice), not fixed.
+- **Resolution:** worked around (parity preserved); defect recorded as LMRR
+  feedback (same class as the `_UpdateView.cshtml` SocialGoalUser cast).
+- **Report note:** legacy defect + tooling gap -- uncompiled Razor views are a
+  reservoir of latent runtime errors that no test or build step in the legacy
+  toolchain ever exercised.
+
+### 2026-07-24 · Sprint 4 · MSBuild.SDK.SystemWeb friction pair (CPM clash, VS-install web targets)
+
+- **Problem:** two integration snags converting the Web project: (1) the SDK's
+  implicit compiler PackageReferences carry versions, which NU1008-fails under
+  central package management -- its own CPM auto-detection did not fire;
+  (2) the SDK imports `Microsoft.WebApplication.targets` from the VS install
+  path, absent on Build Tools/CI (Sprint 1's MSB4226 in new clothing).
+- **Where:** `SocialGoal.Web.csproj` restore/build.
+- **Impact:** ~30 min combined.
+- **Resolution:** fixed -- `ApplySDKDefaultPackageVersions=false` +
+  central pins for the two compiler packages; web targets fed from the pinned
+  `MSBuild.Microsoft.VisualStudio.Web.targets` NuGet package via
+  `WebApplicationsTargetPath`, so the shim is now a restore-time dependency
+  and the CI-side `.buildtools` shim installs disappear.
+- **Report note:** tooling gap -- the System.Web SDK-style ecosystem is
+  community-maintained and needs these two glue decisions documented.
+
 ### 2026-07-24 · Sprint 4 · EF6 minor-version unification alone changes emitted DDL
 
 - **Problem:** unifying EF 6.0.x -> 6.5.2 (no model change, no code change)
