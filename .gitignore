@@ -23,6 +23,10 @@ build/
 TestResult.xml
 [Bb]uild[Ll]og.*
 
+# Coverage output (OpenCover raw + ReportGenerator render) -- CI artifacts, never committed
+coverage.xml
+coverage-report/
+
 *_i.c
 *_p.c
 *.ilk
