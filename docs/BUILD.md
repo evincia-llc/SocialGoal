@@ -109,3 +109,13 @@ uses the `SocialGoal_ModernDev` LocalDB catalog from
 - Smoke-run: `& "C:\Program Files\IIS Express\iisexpress.exe"
   /path:$PWD\source\SocialGoal /port:5002`, then browse
   `http://localhost:5002/`.
+- Release publish (proven 2026-07-24, Sprint 5): XDT transforms DO execute
+  under the SystemWeb SDK -- the published Web.config carries
+  `DatabaseInitializer=None` and no `debug` attribute. Two caveats: a
+  file-system publish requires **both** `/p:DeployOnBuild=true
+  /p:DeployTarget=WebPublish /p:WebPublishMethod=FileSystem "/p:publishUrl=..."`
+  (without `DeployTarget=WebPublish` the publish silently produces a WebDeploy
+  package instead), and the SDK's default Content globs exclude `.cshtml` and
+  `Scripts`/`Content`/`fonts`/`Images`, so the output is code-only and NOT a
+  runnable MVC app (journal 2026-07-24; deliberately unfixed -- no legacy
+  deploy path exists (D1) and the legacy Web project retires in Sprint 11).

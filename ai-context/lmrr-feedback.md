@@ -196,6 +196,17 @@ methodology input, not scoring errors.
   OWIN identity stack" remediation path is achievable with the *built-in*
   compatibility behavior -- no custom hasher, which materially lowers the
   Sprint 8 estimate.
+- **SDK conversion silently breaks System.Web publish · MISSED-CANDIDATE
+  (new risk class):** the Web.Release.config publish proof showed
+  MSBuild.SDK.SystemWeb's default Content globs omit `.cshtml` and static
+  asset folders entirely -- a converted MVC/Razor project passes build,
+  tests, and local smoke while its publish output is code-only and
+  undeployable (journal 2026-07-24). Also: `WebPublishMethod=FileSystem`
+  without `DeployTarget=WebPublish` no-ops with a green exit code. Candidate
+  engine signal for modernization plans that include SDK-style conversion of
+  System.Web projects: Razor/static content present + community SystemWeb SDK
+  = publish-content verification required; statically detectable from the
+  csproj Sdk attribute + content inventory.
 - **D11 follow-up · METHODOLOGY-NOTE:** the slice test is the epic's first
   in-process HTTP test (`WebApplicationFactory` against the Core host, LocalDB
   from the baseline DDL) -- confirming D11's consequence claim that HTTP-level

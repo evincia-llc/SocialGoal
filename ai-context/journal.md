@@ -25,6 +25,36 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 5 · Legacy publish is code-only under MSBuild.SDK.SystemWeb (Sprint 4 regression, found by the transform proof)
+
+- **Problem:** the one-time Web.Release.config publish proof (Sprint 4
+  security-reviewer question) PASSED on both transform criteria
+  (DatabaseInitializer -> None; debug attribute stripped) but exposed two
+  surprises. (1) `/p:WebPublishMethod=FileSystem` alone is silently ignored --
+  `DeployOnBuild=true` defaults to a WebDeploy package and reports success
+  while the requested publish folder is never created; `/p:DeployTarget=
+  WebPublish` is mandatory. (2) MSBuild.SDK.SystemWeb 4.0.107's default
+  Content globs cover Web.configs and WebForms extensions but **no `.cshtml`
+  and no Scripts/Content/fonts/Images**, so the published tree is code-only
+  (bin + Global.asax + Web.config) -- not runnable as an MVC app. The publish
+  path regressed at the Sprint 4 SDK conversion (D13) and nothing noticed
+  because no path publishes the legacy app.
+- **Where:** source\SocialGoal\SocialGoal.Web.csproj publish
+  (delegated proof run, 2026-07-24; output verified in scratch).
+- **Impact:** none operationally (D1: no deployment exists; the legacy app
+  runs from the source folder under IIS Express, which is how every gate
+  smoke-proof runs it). But "we could still publish the legacy app" would be
+  false comfort if anyone relied on it as a rollback path.
+- **Resolution:** documented, deliberately NOT fixed -- the legacy publish
+  path has no consumer for the remainder of the epic (D2 deploys the modern
+  host; legacy Web retires Sprint 11). Advisor call, flagged for operator at
+  the Sprint 5 PR. If a legacy publish is ever actually needed, the fix is
+  explicit Content globs in SocialGoal.Web.csproj plus a re-proof.
+- **Report note:** dependency surprise / hidden behavior -- an SDK-style
+  conversion of a System.Web project can pass build, tests, and app smoke
+  while silently breaking deployability. Publish-output verification belongs
+  in any conversion checklist.
+
 ### 2026-07-24 · Sprint 5 · Minor frictions standing up the modern host (bundled)
 
 - **Problem:** nothing sprint-threatening; three small surprises worth the
