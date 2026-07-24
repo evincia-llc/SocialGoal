@@ -50,7 +50,7 @@ ratification, effort correction re-applied + real timing) = PR from
 - Gate verified independently @ merged 44866f0 (all 3 CI lanes green: legacy,
   modern, security): ADR-001 all three spikes proven with tests in
   src/SocialGoal.Web.Tests (schema parity 35 cols/7 FKs exact; Identity 1.0 hash
-  verified+rehashed by Core PasswordHasher; /Goal/Details slice over
+  verified and rehashed by Core PasswordHasher; /Goal/Details slice over
   WebApplicationFactory = epic's first true HTTP test). Sequencing law: D1/D2
   decided -> Phase 2 unlocked.
 - Ratifications recorded (operator ratifies by merging close-out PR): ADR-001

@@ -273,7 +273,8 @@ Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
 orchestrating; implementation delegated to the `implementor` subagent, pinned to
 the `opus` tier alias -- the exact Opus version that served each past run is not
 recorded in transcripts and two sessions resolved the alias differently when
-probed, so the concrete version is currently unverified; see decisions D16) under
+probed, so the concrete version is currently unverified, to be pinned by a pending
+decision (D16, tracked in `ai-context/tasks.md` until recorded)) under
 solo-operator review; much of the elapsed time is CI runs and Copilot review
 loops the operator is not heads-down for. This is **not the same unit** as the LMRR's engineer-effort
 estimates, which model a human team. The honest read is the order-of-magnitude
