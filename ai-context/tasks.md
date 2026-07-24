@@ -1,18 +1,20 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 starting
-**Current sprint:** Sprint 4 (foundation retarget)
-**Branch state:** S3 close-out merged (PR #8, master @ c030de6). Sprint 4
-branch `sprint/s4-foundation-retarget` created off c030de6; first commit =
-D11 ratification + D12 (golden-paths deferral). Not yet pushed.
+**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 implementation complete
+**Current sprint:** Sprint 4 (foundation retarget) -- deliverables done locally,
+PR loop next
+**Branch state:** `sprint/s4-foundation-retarget` (off master @ c030de6),
+8 commits, not yet pushed: D11/D12 ratifications, D13 + CPM scaffold, 6-project
+SDK conversion, D14 schema re-cut, Web on MSBuild.SDK.SystemWeb, Katana 4.2.3,
+Core net10.0, CI/docs rework. Build 7/7 clean, 187/187 green, app smoke green.
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Sprint 4 implementation (Phase 1: SDK-style conversion of all 7 projects,
-   platform-agnostic libs toward net10.0, EF unified stable, critical vuln
-   subset) on `sprint/s4-foundation-retarget` -- awaiting operator /effort
-   auto confirmation + "go".
+1. security-reviewer agent on the sprint diff, then pr-flow (push, PR to
+   evincia-llc master, Copilot loop until clean). Operator merges.
+2. After merge: sprint-gate S4 against the epic exit gate (SDK-style CI build;
+   Core compiles net10.0; legacy app runs; suites green).
 
 ## Blocked / waiting
 
@@ -26,6 +28,23 @@ D11 ratification + D12 (golden-paths deferral). Not yet pushed.
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 4) -- foundation retarget, all deliverables in one session
+- All 7 projects SDK-style (D13): six on Microsoft.NET.Sdk, Web on
+  MSBuild.SDK.SystemWeb/4.0.107 (web targets = pinned NuGet dep, CI shims
+  gone); whole solution net45->net48; CPM + committed lock files, locked-mode
+  restore in CI. Six-project conversion delegated to implementor; Web + CI by
+  Fable.
+- EF unified 6.5.2: drift test caught UserName NULL->NOT NULL (D14 re-cut;
+  runtime-confirmed vs stale dev DB). Newtonsoft 13.0.4; Katana 4.2.3 (one
+  forced edit: dead Google OpenID call removed, D5 note); content-only
+  packages dropped; audit baseline 8->2 + package-bump-analysis.md for the
+  rest. Core multi-targets net10.0 (opt-in; .NET 10 SDK needs MSBuild 18 --
+  toolchain split journaled). First-ever view compile exposed 2 broken views
+  (LMRR missed-candidate; MvcBuildViews stays false for parity).
+- Proof: build 7/7 shimless, 187/187, register/login + golden-path pages green
+  on IIS Express, ELMAH lock intact. 4 journal entries, 3 LMRR entries, S4
+  effort row. Next: security-reviewer + PR.
 
 ### 2026-07-24 (Sprint 4 start) -- ratifications recorded, awaiting go
 - Operator ratified D11 (matrix test level) and confirmed the multi-user
