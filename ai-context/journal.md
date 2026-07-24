@@ -35,11 +35,26 @@ decision ID.
   body content beginning with `- ` was parsed as flags; `--body-file` is the
   reliable route on Windows.
 - **Where:** PR #14 flow (`pr-flow` skill), PowerShell 7 + gh.
-- **Impact:** ~5 minutes; two failed calls, both with working fallbacks.
+- **Impact:** ~5 minutes at the time; but see the follow-on defect below, which
+  shipped a corrupted PR description the operator had to catch.
 - **Resolution:** worked around (REST for the reviewer request, `--body-file`
   for body edits). Note for the pr-flow skill if it recurs next sprint.
-- **Report note:** tooling gap (CI/CLI ergonomics), the recoverable kind --
-  logged because AI-driven delivery leans on these exact seams every sprint.
+- **Follow-on defect (operator-caught):** the `--body-file` workaround itself
+  corrupted the PR body. PowerShell captures multi-line native output
+  (`gh ... --jq .body`) as an *array of lines*; the multi-line regex intended
+  to update the checklist silently matched nothing across array elements,
+  `$new -ne $body` on two arrays is element-wise and truthy anyway (so the
+  script *reported success*), and `Set-Content -NoNewline` with an array joins
+  elements with **no separator** -- the entire PR description collapsed onto
+  one line and rendered as a single giant heading. Fixed by rebuilding the
+  body from the authored source and re-editing via `--body-file`; the safe
+  pattern is `-join "`n"` immediately after capture, and never trusting an
+  array-vs-array `-ne` as a change check.
+- **Report note:** tooling gap (CI/CLI ergonomics) compounded by a
+  shell-semantics trap; logged in full because the failure was silent-success
+  shaped -- the automation *said* it updated the body correctly and did not --
+  and it took operator review to surface it. AI-driven delivery leans on these
+  seams every sprint; silent-success failures are the expensive kind.
 
 ### 2026-07-24 · Sprint 6 · In-suite migration drift check silently wrong without designTime finalization
 
