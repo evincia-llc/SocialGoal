@@ -108,6 +108,10 @@
     <Compile Include="Data\GoalRepositoryCharacterizationTests.cs" />
     <Compile Include="Data\MappingSmokeTests.cs" />
     <Compile Include="Data\SchemaSnapshotTests.cs" />
+    <Compile Include="Authorization\ControllerSurfaceRow.cs" />
+    <Compile Include="Authorization\ControllerSurfaceReflectionWalker.cs" />
+    <Compile Include="Authorization\ExpectedControllerSurface.cs" />
+    <Compile Include="Authorization\ControllerSurfaceCharacterizationTests.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
