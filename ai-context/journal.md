@@ -25,6 +25,75 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 2 · OpenCover profiler silently produces empty coverage
+
+- **Problem:** on the same commit, the pull_request-event CI run passed the
+  coverage gate while the push-event run failed it with "SocialGoal.Data
+  missing from coverage results" -- OpenCover's `-register:user` profiler
+  failed to attach (its "No results" warning), tests all passed, and the empty
+  coverage.xml flowed into a misleading gate error.
+- **Where:** `.github/workflows/legacy-ci.yml` coverage step, hosted runner.
+- **Impact:** one red CI run on a green commit; ~20 minutes to diagnose from
+  logs.
+- **Resolution:** fixed -- switched to registration-free `-register:path64`,
+  added a module-data verification with one retry, and split the error
+  messages so a profiler failure is no longer reported as a coverage-floor
+  breach. Both event runs green on the following commit.
+- **Report note:** tooling gap. Coverage-as-gate needs the collector's own
+  health checked; "tests passed + no coverage" is a distinct failure mode
+  from "coverage dropped," and conflating them sends investigation the wrong
+  way.
+
+### 2026-07-24 · Sprint 2 · LocalDB instance corrupted by an orphaned engine process
+
+- **Problem:** first EF connect to `(localdb)\MSSQLLocalDB` hung the test
+  process; the instance would not start (engine assertion Error 17066 in
+  hkhost.cpp). `sqllocaldb start/delete/create` all failed -- an orphaned
+  `sqlservr.exe` from the crashed instance still held the instance files
+  (CopyFileW error 32).
+- **Where:** implementor session, first characterization-test run.
+- **Impact:** ~4 recovery iterations, two hung commands; delayed the first
+  green run.
+- **Resolution:** fixed -- killed the orphaned LocalDB `sqlservr.exe` (after
+  distinguishing it from the machine's real MSSQLSERVER service process), then
+  recreate/start succeeded. CI gets a `sqllocaldb` pre-start step for
+  robustness.
+- **Report note:** tooling gap. LocalDB state is machine-global and survives
+  crashed test runs; characterization harnesses need instance-recovery
+  awareness, not just connection strings.
+
+### 2026-07-24 · Sprint 2 · EF 6.0.x hides its mapping API; store-space naming trap
+
+- **Problem:** the mapping smoke tests could not use the C-S mapping types
+  (`EntityContainerMapping` etc.) -- public only from EF 6.1; this solution
+  pins EF 6.0.x. Table resolution had to go through store-space (SSpace)
+  metadata. Second trap: store entity-set names are entity-type names while
+  conceptual set names are DbSet property names (`Support` vs `Supports`),
+  which cost an iteration.
+- **Where:** `SocialGoal.Tests/Data/MappingSmokeTests.cs`.
+- **Impact:** one extra test-debug iteration; no scope change.
+- **Resolution:** worked around via SSpace metadata; naming pinned in tests.
+- **Report note:** dependency surprise. Pre-6.1 EF6 pins limit standard
+  model-introspection tooling; a modernization estimate touching EF 6.0.x
+  should budget for it.
+
+### 2026-07-24 · Sprint 2 · Crashed session left a divergent pushed branch
+
+- **Problem:** a prior Sprint 2 attempt died on an API error after creating
+  and pushing `sprint/s2-safety-net-1` with its own Sprint 1 gate-record
+  commit (a2b6f58, ai-context only) -- parallel to the gate record that
+  landed on master via PR #4. Starting Sprint 2 fresh hit "branch already
+  exists" with a remote tracking a superseded commit.
+- **Where:** git branch state at Sprint 2 kickoff.
+- **Impact:** ~10 minutes to diagnose and reconcile; no content lost (the
+  stray commit was a duplicate of the merged PR #4 record).
+- **Resolution:** fixed -- verified the stray commit was ai-context-only and
+  had no PR, hard-reset the branch onto merged master (c24f86e), force-pushed
+  the replacement.
+- **Report note:** tooling/process gap. AI sessions that crash mid-flow can
+  leave pushed state behind; a session restart must reconcile remote branches
+  against merged history before resuming, not assume a clean start.
+
 ### 2026-07-23 · Sprint 1 · Permission layer blocked delegated governance actions
 
 - **Problem:** the epic's "protect master" bullet could not be executed:

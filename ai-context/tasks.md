@@ -1,20 +1,23 @@
 # Tasks -- current state
 
-**Phase:** Phase 0 (safety gate), Sprint 1 GATE PASSED -- Sprint 2 next
-**Current sprint:** none in flight (S1 closed 2026-07-23; S2 not started)
-**Branch state:** PRs #2 and #3 merged to `master` (cd75621); master branch
-protection live (4 required checks, PR-only, no force push). Current branch
-`docs/s1-gate-close` -- gate record PR pending (update this line every session)
+**Phase:** Phase 0 (safety gate), Sprint 2
+**Current sprint:** Sprint 2 (Safety net I) -- all deliverables implemented,
+PR pending
+**Branch state:** current branch `sprint/s2-safety-net-1` (from merged master
+c24f86e; the crashed-session stray branch was reconciled -- see journal).
+(update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: merge the Sprint 1 gate close-out PR (this branch).
-2. Start Sprint 2 (Safety net I) on `sprint/s2-safety-net-1`: LocalDB
-   characterization harness for the data layer, DbContext mapping smoke tests,
-   schema snapshot committed as baseline of record, trigger question closed in
-   writing, coverage instrumentation in CI.
-3. During Sprint 2, once the LocalDB harness pattern is proven: create the
-   `characterization-tests` skill (deferred item from foundation).
+1. Operator: merge PR #5 (Sprint 2; Copilot loop complete -- 4 runs, run 4
+   clean; security-reviewer PASS; all CI lanes green on head).
+2. Run `sprint-gate` for Sprint 2 post-merge, then start Sprint 3 (Safety net
+   II: authz matrix + CSRF characterization, test-infra refresh to NUnit 3)
+   on `sprint/s3-safety-net-2`.
+3. Deferred from foundation, now unblocked: create the
+   `characterization-tests` skill from the proven LocalDB harness pattern
+   (SetUpFixture lifecycle + FK-safe cleanup + store-metadata table
+   resolution).
 
 ## Blocked / waiting
 
@@ -28,6 +31,31 @@ protection live (4 required checks, PR-only, no force push). Current branch
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 2, later) -- PR #5 + security review + Copilot loop
+- security-reviewer on the sprint diff: PASS, zero findings. PR #5 raised;
+  Copilot runs 1-3 produced 3 comments, all fixed (undisposed NewRepo
+  factories -> TearDown disposal; triggers.md evidence-claim scoping; code
+  span reflow). Run 4 clean.
+- Mid-loop CI flake diagnosed and fixed: OpenCover -register:user attached no
+  profiler on one run (empty coverage, tests green) -- switched to path64 +
+  module-data verify/retry; journaled. All 4 CI runs green on head eb95135.
+- Next: operator merges PR #5; then sprint-gate S2 and start Sprint 3.
+
+### 2026-07-24 (Sprint 2) -- Safety net I: all deliverables in one session
+- Recovered from a crashed prior session's stray pushed branch (journaled),
+  then delegated the characterization suite to the implementor: harness
+  (LocalDB, explicit Delete/Create lifecycle), 28 data-layer tests, mapping
+  smoke tests -- 142/142 green locally AND on windows-latest (LocalDB works in
+  CI with a pre-start step).
+- Proven hazards recorded in the LMRR register: blind full-row Update, silent
+  write loss across separate DatabaseFactory instances, dead configs
+  (ApplicationUserConfiguration w/ HasMaxLength(1) bug intent,
+  GoalUpdateConfiguration fully orphaned).
+- Schema baseline of record committed (30 tables/28 FKs, drift + checksum
+  tests); trigger unknown CLOSED in writing (0 triggers, empirical + D1
+  by-construction). Coverage in CI (OpenCover): 50.7% line / 26.8% branch
+  overall, Data 72% (was 0) -- floor enforced. Next: PR + Copilot loop.
 
 ### 2026-07-23 (Sprint 1 gate) -- PASSED, all five criteria on evidence
 - Gate review post-merge, all evidence at commit cd75621: CI green on master

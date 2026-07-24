@@ -9,7 +9,7 @@ here; see `ai-context/README.md`). Status values: `todo` / `active` / `done` /
 | Sprint | Theme | Status | Exit gate |
 |---|---|---|---|
 | 1 | Containment + reproducible legacy build (CI, initializer off, ELMAH locked, URL import flagged off, SBOM) | done | Clean CI build from fresh clone; initializer unreachable; ELMAH locked; SBOM committed |
-| 2 | Safety net I: data-layer characterization, schema snapshot, trigger question | todo | Data layer >0% coverage; schema baseline committed; trigger question closed in writing |
+| 2 | Safety net I: data-layer characterization, schema snapshot, trigger question | active | Data layer >0% coverage; schema baseline committed; trigger question closed in writing |
 | 3 | Safety net II: authz matrix + CSRF characterization; test-infra refresh | todo | Matrix suite in CI; all three R-007 dark seams lit; sign-off for structural work |
 
 ## Phase 1 -- Foundation retarget
