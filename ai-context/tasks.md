@@ -1,20 +1,19 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 PR loop complete
-**Current sprint:** Sprint 4 -- PR #9 awaiting operator merge
-**Branch state:** `sprint/s4-foundation-retarget` @ 311202a pushed; PR #9 open
-(security review PASS; Copilot runs 1-2 = 3 comments all fixed, run 3 clean;
-all CI checks green incl. first run of the reworked legacy-ci and one
-self-inflicted red round fixed + journaled).
-(update this line every session)
+**Phase:** PHASE 1 (foundation retarget); Sprint 4 gate PASSED, Sprint 5 next
+**Current sprint:** between sprints -- Sprint 5 (modern .NET 10 host + spikes)
+**Branch state:** Sprint 4 merged (PR #9, master @ 40fa23a, both CI lanes
+green); gate tag `s4-gate` pushed. S4 gate close-out (gate record, README
+status) = PR from `docs/s4-gate-close`. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator merges PR #9.
-2. After merge: sprint-gate S4 against the epic exit gate (SDK-style CI build
-   green on master; Core compiles net10.0; legacy app runs; suites green).
-   Then start Sprint 5 (modern host + gating spikes) in a fresh session
-   (sprint-start ritual applies).
+1. Operator: review and merge the S4 gate close-out PR (this branch).
+2. Start Sprint 5 (Phase 1 exit: stand up the modern .NET 10 ASP.NET Core host
+   + the three gating spikes -- EF Core mapping vs the schema baseline, Identity
+   1.0 password-hash compatibility, one read-only vertical slice) on
+   `sprint/s5-modern-host` -- fresh session; sprint-start ritual applies
+   (confirm /effort auto). Decision gate already cleared (D1, D2).
 
 ## Blocked / waiting
 
@@ -33,6 +32,16 @@ self-inflicted red round fixed + journaled).
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 4 gate + close-out) -- PASSED
+- Gate verified independently @ merged 40fa23a (both CI lanes green): 7/7 csproj
+  SDK-style; CPM with EF 6.5.2/Katana 4.2.3/Newtonsoft 13.0.4; CI step "Prove
+  SocialGoal.Core on .NET 10" = success (net10.0 compile, not just declared);
+  187/187 suite green; nuget-audit 8->2. Sequencing law intact (Phase 1, no
+  Phase 2 briefed).
+- Close-out: backlog S4 done; `s4-gate` tag; README status (Phase 1 underway,
+  first .NET 10 assembly); register gains R-005/R-008 confirmed+remediated and
+  R-001 feasibility-proven entries. S4 effort row already present (~half day).
 
 ### 2026-07-24 (Sprint 4) -- foundation retarget, all deliverables in one session
 - All 7 projects SDK-style (D13): six on Microsoft.NET.Sdk, Web on
