@@ -20,7 +20,7 @@ namespace SocialGoal.Tests.Data
     [SetUpFixture]
     public class CharacterizationDatabase
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void CreateSchema()
         {
             // Kill any framework initializer; we own the lifecycle.
@@ -36,7 +36,7 @@ namespace SocialGoal.Tests.Data
             }
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void DropSchema()
         {
             using (var context = new SocialGoalEntities())
