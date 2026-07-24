@@ -73,11 +73,23 @@ jobs:
       - name: Measure coverage (OpenCover)
         run: |
           nuget install OpenCover -Version 4.7.1221 -OutputDirectory .buildtools -NonInteractive
-          .buildtools\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:user `
-            -target:".buildtools\NUnit.Runners.2.6.4\tools\nunit-console.exe" `
-            -targetargs:"source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll /framework:net-4.5 /noshadow" `
-            -filter:"+[SocialGoal*]* -[SocialGoal.Tests]*" `
-            -output:coverage.xml -returntargetcode
+          # -register:user is a known profiler-attach flake on hosted runners
+          # (empty "No results" coverage while tests pass). Use registration-free
+          # path64 and verify the output actually profiled our assemblies,
+          # retrying once before failing loudly.
+          $attempt = 0
+          do {
+            $attempt++
+            .buildtools\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:path64 `
+              -target:".buildtools\NUnit.Runners.2.6.4\tools\nunit-console.exe" `
+              -targetargs:"source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll /framework:net-4.5 /noshadow" `
+              -filter:"+[SocialGoal*]* -[SocialGoal.Tests]*" `
+              -output:coverage.xml -returntargetcode
+            if ($LASTEXITCODE -ne 0) { Write-Host "::error::Test run under OpenCover failed (exit $LASTEXITCODE)"; exit 1 }
+            $profiled = Select-String -Path coverage.xml -Pattern "SocialGoal.Data.dll" -Quiet
+            if (-not $profiled) { Write-Host "OpenCover attempt ${attempt}: profiler produced no module data; retrying" }
+          } until ($profiled -or $attempt -ge 2)
+          if (-not $profiled) { Write-Host "::error::OpenCover produced no coverage for solution assemblies after $attempt attempts"; exit 1 }
 
       - name: Render coverage summary and enforce data-layer floor
         run: |
