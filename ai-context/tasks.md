@@ -2,19 +2,17 @@
 
 **Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3 next
 **Current sprint:** between sprints -- Sprint 3 (Safety net II) is next
-**Branch state:** PR #5 merged (master f618d84, both CI lanes green). Current
-branch `docs/s2-gate-close` -- S2 gate record + README rewrite + skill mint,
-PR pending operator merge. Gate tags `s1-gate`/`s2-gate` pushed.
+**Branch state:** master @ f618d84 (Sprint 2 merged, both CI lanes green);
+gate tags `s1-gate`/`s2-gate` pushed. S2 gate close-out (gate record, README
+rewrite, `characterization-tests` skill) = PR #6 from `docs/s2-gate-close`.
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge the S2 gate close-out PR (this branch): gate
-   record, README rewrite (POC framing + production disclaimer),
-   `characterization-tests` skill, sprint-gate skill README/tag step.
-2. Start Sprint 3 (Safety net II: authz matrix + CSRF characterization,
+1. Start Sprint 3 (Safety net II: authz matrix + CSRF characterization,
    test-infra refresh to NUnit 3, multi-user golden paths deferred from S1)
-   on `sprint/s3-safety-net-2` -- fresh session.
+   on `sprint/s3-safety-net-2`, once PR #6 (the S2 close-out) is merged --
+   operator merges; fresh session recommended for the sprint.
 
 ## Blocked / waiting
 
