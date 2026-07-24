@@ -2,28 +2,21 @@
 
 **Phase:** PHASE 1 COMPLETE (Sprints 1-5 gates PASSED); Phase 2 next
 **Current sprint:** between sprints -- Phase 2 Sprints 6-7 (EF6 -> EF Core) next
-**Branch state:** Sprint 5 merged (PR #11, master @ 44866f0, all 3 CI lanes
-green); gate tag `s5-gate` pushed. S5 gate close-out (gate record, ADR/D15
-ratification, effort correction re-applied + real timing) = PR from
-`docs/s5-gate-close`. (update this line every session)
+**Branch state:** Sprints 1-5 + gate close-outs merged (master @ 839250a, all 3
+CI lanes green); gate tags `s1`-`s5` pushed. D16 pin (implementor ->
+claude-opus-5) = PR from `docs/d16-pin-implementor`. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
-   fresh session; sprint-start ritual applies (confirm /effort auto). First Phase 2
-   sprint; the standing Phase 2 constraints in `.claude/rules/modernization.md`
-   now bind. (Prerequisite: the S5 gate close-out PR is merged -- merging it
-   ratifies ADR-001 ACCEPTED, D15, and the legacy-publish document-only call;
-   advisor concurred, operator overturns any by commenting.)
-2. Decide **D16** (pin the `implementor` model to an explicit Opus ID). Now due:
-   two sessions disagree on what the `opus` alias resolves to (this monitor
-   session probed 4.8; the Sprint 5 session asserts 5). Confirm the current Opus
-   via `/model`, then pin `model: claude-opus-<n>` in
-   `.claude/agents/implementor.md` and record D16 so the model becomes a stable,
-   recorded fact instead of a floating alias.
-3. Housekeeping (non-blocking): the effort-correction commit that missed PR #10
-   (`8f7fa39` on `docs/s4-gate-close`) is superseded -- content re-applied on the
-   S5 close-out branch with real commit-derived timing; the stale branch can be deleted.
+1. Operator: merge the D16 PR (pins implementor to `claude-opus-5`).
+2. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
+   **fresh session** (Opus-5 build + current toolchain); sprint-start ritual
+   applies (confirm /effort auto). First Phase 2 sprint; the standing Phase 2
+   constraints in `.claude/rules/modernization.md` now bind, and the Sprint 2
+   characterization suite is the migration's correctness net (EF Core must
+   reproduce the schema baseline and keep the data-layer tests green).
+3. Housekeeping (non-blocking): the stale `docs/s4-gate-close` branch (orphaned
+   effort commit `8f7fa39`, now superseded on master) can be deleted.
 
 ## Blocked / waiting
 

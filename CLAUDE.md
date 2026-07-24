@@ -71,9 +71,9 @@ with the code. Log friction and LMRR confirmations/corrections as they happen.
   markdown files in this repo.
 - **Model roles (within one session):** the main session runs Fable 5 as
   advisor, orchestrator, and reviewer. Routine, well-scoped implementation is
-  delegated to the `implementor` subagent, pinned to Opus
-  (`.claude/agents/implementor.md`). Difficult or ambiguous implementation is done
-  by Fable directly in the main loop.
+  delegated to the `implementor` subagent, pinned to an explicit `claude-opus-5`
+  (D16; `.claude/agents/implementor.md`). Difficult or ambiguous implementation is
+  done by Fable directly in the main loop.
 - **Journal every problem and roadblock** in `ai-context/journal.md` at the moment
   it is hit, not retrospectively. The journal is the raw material for the
   end-of-epic report on the problems discovered while modernizing legacy
