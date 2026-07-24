@@ -25,6 +25,27 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 3 · net48 retarget breaks the hermetic build (targeting-pack root is single-valued)
+
+- **Problem:** retargeting only SocialGoal.Tests to net48 (forced by the NUnit
+  3/Moq 4.20 floor) failed the build with MSB3644: the proven Sprint 1 recipe
+  passes one global `/p:TargetFrameworkRootPath` pointing at the pinned
+  net45-only reference-assembly shim, and the net48 project inherits it and
+  finds no v4.8 pack there. MSBuild accepts a single root, so a mixed-TFM
+  solution can't point different projects at different pinned packs.
+- **Where:** `docs/BUILD.md` recipe + `.github/workflows/legacy-ci.yml` build
+  step; hit by the implementor during the Sprint 3 test-infra refresh.
+- **Impact:** ~part of one implementor session; touched the shared build
+  recipe (BUILD.md + CI), not just the Tests project.
+- **Resolution:** fixed -- pin `Microsoft.NETFramework.ReferenceAssemblies.net48`
+  alongside net45 and merge both packs into one `.buildtools\refasm` root;
+  advisor approved the merged-root approach (minimal hermetic fix; the
+  alternative -- relying on the runner's system-installed net48 pack -- gives
+  up reproducibility).
+- **Report note:** tooling gap -- mixed-framework transition states (exactly
+  what a staged modernization creates) fight MSBuild's single targeting-pack
+  root; any epic that upgrades test infra ahead of the app hits this.
+
 ### 2026-07-24 · Sprint 3 · No in-process HTTP test host exists for System.Web MVC 5
 
 - **Problem:** the epic's Sprint 3 remediation ("HTTP-level pinning tests over
