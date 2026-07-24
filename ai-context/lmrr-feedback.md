@@ -285,10 +285,10 @@ loose session estimates; the daily wall-clock totals below are the correction.
 | 2026-07-24 | 10:00am - 4:40pm (~6.7h) | Sprints 2, 3, 4, 5 + every gate close-out |
 
 Per-sprint cadence on 2026-07-24, from PR merge timestamps (EDT): S2 11:01,
-S3 13:06, S4 14:48, S5 16:33 -- consecutive sprints landed **~1h45m apart
-end-to-end** (S2 ~1h20m incl. crash recovery, S3 ~2h, S4/S5 ~1h45m each), and
-that span covers implementation + the Copilot review loop + merge + gate
-close-out, not implementation alone.
+S3 13:06, S4 14:48, S5 16:33. Individual end-to-end spans: S2 ~1h23m (incl.
+crash recovery), S3 ~2h05m, S4 ~1h42m, S5 ~1h45m -- **averaging ~1h44m per
+sprint** (range 1h23m-2h05m). That span covers implementation + the Copilot
+review loop + merge + gate close-out, not implementation alone.
 
 Foundation through Sprint 5 -- Phase 0 complete plus all of Phase 1 -- is **~1.5
 working days of elapsed wall-clock** (yesterday evening + a 10:00am-4:40pm block

@@ -161,7 +161,7 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 - **Status:** DECIDED · 2026-07-24 · RATIFIED at Sprint 5 gate (advisor-reviewed;
   operator ratifies by merging the S5 gate close-out PR). Originally a session
-  decision. (Note: an "D15" was floated informally in-conversation for an
+  decision. (Note: a "D15" was floated informally in-conversation for an
   Opus-5 implementor change but never recorded; that decision, if taken, uses
   the next free ID **D16** -- do not reuse D15.)
 - **Context:** Sprint 5 stands up the modern .NET 10 host. The Sprint 4 journal
