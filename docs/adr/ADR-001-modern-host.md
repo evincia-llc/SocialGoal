@@ -73,10 +73,21 @@ the real Sprint 8 store replaces.
 
 Goal detail page rendered by the Core host from a database carrying the real
 schema (created from `schema-baseline.sql`, seeded). Production-shaped:
-controller -> EF Core query -> Razor view, `[Authorize]` by default, no
-System.Web.
+controller -> EF Core `AsNoTracking` projection -> Razor view, async with
+`CancellationToken`, no System.Web. Auth posture: anonymous this sprint --
+no auth stack is wired into the host until Sprint 8, and the Phase 2 standing
+constraints (policy authorization, resource handlers) attach when slices land
+for real in Sprints 9-11.
 
-**Spike evidence (pending).**
+**Spike evidence (PASSED 2026-07-24):**
+`src/SocialGoal.Web.Tests/Slices/GoalDetailSliceTests.cs` -- the host serves
+`/Goal/Details/{id}` over in-process HTTP (`WebApplicationFactory`) from a
+LocalDB database created from the baseline DDL: 200 + rendered goal name,
+description, status, metric, and owner display name (joins across Goals,
+GoalStatus, Metrics, AspNetUsers); 404 for unknown IDs; `/health` Healthy.
+Also the epic's first true HTTP-level test -- the thing D11 documented as
+impossible against System.Web MVC 5 -- confirming the Sprint 9-11 plan to run
+matrix tests in enforcement mode on TestServer.
 
 ## Consequences
 
