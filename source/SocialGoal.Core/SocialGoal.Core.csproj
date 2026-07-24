@@ -1,5 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <!-- Phase 1 (epic Sprint 4): first assembly on .NET 10. net48 consumers
+         keep the net48 asset; the modern host (Sprint 5+) takes net10.0.
+         Model and Service cannot follow yet: Model is welded to Identity
+         1.0/System.Web (ApplicationUser : IdentityUser, ProfilePic), Service
+         to Data (EF6) and Web.Core (see lmrr-feedback R-001 nuance).
+         Toolchain split (journal 2026-07-24): the .NET 10 SDK needs MSBuild 18
+         while the System.Web project needs desktop MSBuild 17, so one
+         toolchain cannot build both. The net10.0 flavor is opt-in via
+         -p:IncludeNet10=true under the dotnet CLI, with -p:NuGetLockFilePath
+         sent to a scratch location so the committed lock file stays stable at
+         net48; BUILD.md and legacy-ci.yml carry the proof step. -->
+    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks Condition="'$(IncludeNet10)' == 'true'">net48;net10.0</TargetFrameworks>
   </PropertyGroup>
 </Project>

@@ -25,6 +25,28 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · No single toolchain can build the mixed net48/net10 solution
+
+- **Problem:** the .NET 10 SDK declares `minimumMSBuildVersion` 18.0.0, so
+  desktop MSBuild 17.14 (required by the System.Web/MVC 5 Web project, which
+  the dotnet CLI cannot build) cannot compile a net10.0 target -- NETSDK1045
+  with the resolver silently falling back to the 9.0 SDK. One solution, two
+  toolchains, neither covers it end to end.
+- **Where:** SocialGoal.Core multi-target (`net48;net10.0`), first Phase 1
+  net10.0 attempt.
+- **Impact:** ~45 min incl. the lock-file interaction below. Multi-targeting
+  had to become opt-in (`-p:IncludeNet10=true`) so the desktop solution build
+  stays net48; the net10.0 flavor builds via a dedicated dotnet-CLI step.
+  Follow-on trap: the opt-in TFM changes the restore graph, which locked-mode
+  restore rejects (and NU1005 blocks disabling the lock file ad hoc) -- solved
+  by pointing the proof restore at a scratch `NuGetLockFilePath`.
+- **Resolution:** fixed (conditional TargetFrameworks + separate proof step in
+  BUILD.md/CI). Revisit when the legacy Web project retires (Sprint 11): the
+  solution then builds wholly on the dotnet CLI.
+- **Report note:** tooling gap -- the transition period of a Framework-to-.NET
+  migration can sit across a hard toolchain boundary; plan for split builds
+  rather than assuming one pipeline.
+
 ### 2026-07-24 · Sprint 4 · Katana 4 removes the dead Google OpenID call (forced source edit)
 
 - **Problem:** the Katana 2.0.0 -> 4.2.3 security bump fails compilation on
