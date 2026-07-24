@@ -21,7 +21,7 @@
          which Build Tools / CI runners lack (the Sprint 1 MSB4226 problem in
          SDK clothing). Feed it the same pinned shim package as a restore-time
          dependency instead; no external .buildtools install needed. -->
-    <WebApplicationsTargetPath>$(PkgMSBuild_Microsoft_VisualStudio_Web_targets)\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets</WebApplicationsTargetPath>
+    <WebApplicationsTargetPath Condition="'$(PkgMSBuild_Microsoft_VisualStudio_Web_targets)' != ''">$(PkgMSBuild_Microsoft_VisualStudio_Web_targets)\tools\VSToolsPath\WebApplications\Microsoft.WebApplication.targets</WebApplicationsTargetPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

@@ -1,6 +1,6 @@
-# Legacy CI: reproducible build of the .NET Framework 4.5 solution from a
-# fresh clone (Sprint 1 exit-gate criterion). Mirrors docs/BUILD.md exactly --
-# if you change one, change both, and prove the steps first.
+# Legacy CI: reproducible build of the (now SDK-style, Sprint 4/D13) solution
+# from a fresh clone. Mirrors docs/BUILD.md exactly -- if you change one,
+# change both, and prove the steps first.
 name: legacy-ci
 
 on:
@@ -35,40 +35,40 @@ jobs:
           sqllocaldb info MSSQLLocalDB
           sqllocaldb start MSSQLLocalDB
 
-      - name: Restore app packages
-        run: nuget restore source\SocialGoal.sln -NonInteractive
-
-      # Two vendor retirements break a stock build of this 2013-era solution
-      # (WebApplication.targets absent; .NET 4.5 targeting pack retired). The
-      # SocialGoal.Tests project targets net48 (NUnit 3 + Moq 4.20 floor, Sprint 3)
-      # while the other six stay net45, so both targeting packs are pinned and
-      # merged under one root (TargetFrameworkRootPath is a single value). Tests
-      # run on the pinned NUnit 3 console. Pinned shims, same as local dev --
-      # rationale in docs/BUILD.md.
-      - name: Restore build/test shims
-        run: |
-          nuget install MSBuild.Microsoft.VisualStudio.Web.targets -Version 14.0.0.3 -OutputDirectory .buildtools -NonInteractive
-          nuget install Microsoft.NETFramework.ReferenceAssemblies.net45 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
-          nuget install Microsoft.NETFramework.ReferenceAssemblies.net48 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
-          nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -NonInteractive
-          # Merge the v4.5 and v4.8 reference-assembly packs into one root.
-          New-Item -ItemType Directory -Force .buildtools\refasm\.NETFramework | Out-Null
-          Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.3\build\.NETFramework\v4.5 .buildtools\refasm\.NETFramework\
-          Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\.NETFramework\v4.8 .buildtools\refasm\.NETFramework\
+      # Sprint 4 (D13): every project is SDK-style PackageReference under
+      # central package management with committed lock files -- restore runs
+      # locked so CI proves the graph is exactly what is committed. The old
+      # shim set (net45/net48 targeting packs, VSToolsPath web targets) is
+      # gone: the web-application targets are a pinned NuGet dependency of the
+      # Web project itself, and the runner's VS provides targeting packs.
+      - name: Restore (locked mode)
+        run: >-
+          msbuild source\SocialGoal.sln /t:Restore /p:Configuration=Release
+          /p:RestoreLockedMode=true /v:minimal
 
       - name: Build (Release)
-        run: >-
-          msbuild source\SocialGoal.sln /p:Configuration=Release /m /v:minimal
-          /p:VSToolsPath="${{ github.workspace }}\.buildtools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath"
-          /p:TargetFrameworkRootPath="${{ github.workspace }}\.buildtools\refasm"
+        run: msbuild source\SocialGoal.sln /p:Configuration=Release /m /v:minimal
 
-      # NUnit 3 console emits nunit3-format result XML by default; here it is
-      # only uploaded as an artifact (no downstream parser), so the format change
-      # from the old nunit2 /xml output has no consumer to update.
+      # Phase 1 exit-gate criterion: the first class library compiles for
+      # .NET 10. The .NET 10 SDK needs MSBuild 18 while the System.Web project
+      # needs desktop MSBuild 17, so this flavor builds via the dotnet CLI as
+      # an opt-in (journal 2026-07-24). The scratch lock path keeps the
+      # committed net48 lock file out of the throwaway net10 restore graph.
+      - name: Prove SocialGoal.Core on .NET 10
+        run: >-
+          dotnet build source\SocialGoal.Core\SocialGoal.Core.csproj
+          -c Release -f net10.0 -p:IncludeNet10=true
+          "-p:NuGetLockFilePath=${{ runner.temp }}\core-net10.lock.json"
+
+      # NUnit 3 console runner stays a pinned tool install; SDK-style output
+      # adds the net48 TFM subfolder to the Tests path (Sprint 4).
+      - name: Install NUnit console runner
+        run: nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -NonInteractive
+
       - name: Run NUnit suite
         run: >-
           .buildtools\NUnit.ConsoleRunner.3.22.0\tools\nunit3-console.exe
-          source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll
+          source\SocialGoal.Tests\bin\Release\net48\SocialGoal.Tests.dll
           --result=TestResult.xml
 
       - name: Upload test results
@@ -93,7 +93,7 @@ jobs:
             $attempt++
             .buildtools\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:path64 `
               -target:".buildtools\NUnit.ConsoleRunner.3.22.0\tools\nunit3-console.exe" `
-              -targetargs:"source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll" `
+              -targetargs:"source\SocialGoal.Tests\bin\Release\net48\SocialGoal.Tests.dll" `
               -filter:"+[SocialGoal*]* -[SocialGoal.Tests]*" `
               -output:coverage.xml -returntargetcode
             if ($LASTEXITCODE -ne 0) { Write-Host "::error::Test run under OpenCover failed (exit $LASTEXITCODE)"; exit 1 }

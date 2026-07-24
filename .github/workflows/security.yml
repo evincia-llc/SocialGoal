@@ -38,13 +38,18 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Locate MSBuild
+        uses: microsoft/setup-msbuild@v2
+      # Sprint 4 (D13): packages.config is gone -- the audit source is the
+      # PackageReference restore (locked mode; NU1902/NU1903 warning format is
+      # unchanged from the nuget.exe output this regex was written for).
       - name: Restore and diff audit findings against baseline
         shell: pwsh
         run: |
-          $out = nuget restore source\SocialGoal.sln -NonInteractive 2>&1 | Out-String
+          $out = msbuild source\SocialGoal.sln /t:Restore /p:Configuration=Release /p:RestoreLockedMode=true /v:minimal 2>&1 | Out-String
           if ($LASTEXITCODE -ne 0) {
             Write-Host $out
-            Write-Host "::error::nuget restore failed (exit $LASTEXITCODE); audit findings would be incomplete"
+            Write-Host "::error::msbuild restore failed (exit $LASTEXITCODE); audit findings would be incomplete"
             exit 1
           }
           $found = [regex]::Matches($out, "(NU190[23]): Package '([^']+)' (\S+)") |

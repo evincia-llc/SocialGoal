@@ -1,43 +1,43 @@
-# Building the legacy solution (pre-Sprint 4)
+# Building the solution (SDK-style, Sprint 4 onward)
 
-Proven 2026-07-23 on Windows 11 with VS2022 Build Tools (MSBuild 17.14).
-These are the only verified steps; if you change them, prove them first and
-update this file (repo rule: no guessed build commands).
+Proven 2026-07-24 on Windows 11 with VS2022 Build Tools (MSBuild 17.14) and the
+.NET 10 SDK (10.0.302). These are the only verified steps; if you change them,
+prove them first and update this file (repo rule: no guessed build commands).
+CI mirrors these exact steps: `.github/workflows/legacy-ci.yml`.
 
 Result to expect: 7/7 projects build clean (warnings only, all pre-existing
-test-code warnings); **187 NUnit tests, 187 passing** (114 controller fixtures +
-30 Data characterization + 16 enforcement-surface + 27 behavioral authz-matrix
-tests). The 144-test figure some Sprint 2 notes cite predates the Sprint 3
-authorization matrix.
+test-code warnings plus the known NU1903 audit set); **187 NUnit tests, 187
+passing**; `SocialGoal.Core` additionally compiles for `net10.0`.
 
-## Why stock tooling fails
+## Shape of the build (Sprint 4, D13)
 
-Two vendor retirements break a stock 2026 build of this 2013-era solution:
+All seven projects are SDK-style. Six use `Microsoft.NET.Sdk`; the Web project
+uses `MSBuild.SDK.SystemWeb/4.0.107` (pinned in the csproj `Sdk` attribute)
+because plain SDK projects cannot host System.Web web applications. Package
+versions live centrally in `source/Directory.Packages.props`; every project
+has a committed `packages.lock.json` and CI restores in locked mode. There is
+no `packages.config` and no `packages/` folder anymore.
 
-1. **`Microsoft.WebApplication.targets` is absent** from VS2022 Build Tools
-   (and from Visual Studio unless the legacy web workload component is
-   installed). `SocialGoal.Web.csproj` imports it → `MSB4226`.
-2. **The .NET Framework 4.5 targeting pack is retired.** A
-   `Reference Assemblies\...\v4.5` folder may exist but contain only XML doc
-   stubs, so the build fails `MSB3644` even though the folder looks installed.
+Two toolchain facts shape the steps (journal 2026-07-24):
 
-Both are solved with pinned NuGet shim packages -- no admin installs, works
-identically on `windows-latest` CI.
-
-A third wrinkle since Sprint 3: `SocialGoal.Tests` retargets to **net48** (the
-NUnit 3 + Moq 4.20 support floor) while the other six projects stay net45.
-`TargetFrameworkRootPath` is a single value passed to the whole solution build,
-so the v4.5 (pinned, retired) and v4.8 targeting packs are merged under one
-`.buildtools\refasm` root. Tests run on the pinned **NUnit 3 console runner**
-(`nunit3-console.exe`); the NUnit 2.x console cannot execute NUnit 3 assemblies.
+1. **Desktop MSBuild only for the solution.** The SystemWeb SDK does not work
+   with `dotnet build`. The web-application targets it needs are fed from the
+   pinned `MSBuild.Microsoft.VisualStudio.Web.targets` NuGet package (a
+   dependency of the Web project), so no VS web workload or manual shim
+   install is required.
+2. **The dotnet CLI only for net10.0.** The .NET 10 SDK requires MSBuild 18,
+   which desktop MSBuild 17 is not. `SocialGoal.Core`'s `net10.0` flavor is
+   therefore opt-in (`-p:IncludeNet10=true`) and built as a separate step; the
+   solution build stays net48 everywhere.
 
 ## Prerequisites
 
 - Windows with VS2022 Build Tools (or full VS) -- MSBuild 17.x. Locate it via
   `vswhere -latest -products * -requires Microsoft.Component.MSBuild`.
-- `nuget.exe` (https://dist.nuget.org/win-x86-commandline/latest/nuget.exe).
-- No SQL Server needed to build or run the unit tests (controller fixtures,
-  fully mocked).
+- .NET 10 SDK (for the `SocialGoal.Core` net10.0 proof step).
+- `nuget.exe` only to install the pinned NUnit console runner (test step).
+- No SQL Server needed to build or run the unit tests other than LocalDB
+  (`MSSQLLocalDB`) for the characterization suites.
 
 ## Steps (PowerShell, repo root)
 
@@ -46,41 +46,38 @@ $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere
   -latest -products * -requires Microsoft.Component.MSBuild `
   -find MSBuild\Current\Bin\MSBuild.exe
 
-# 1. Restore app packages (the MSB4226 complaint during restore is benign --
-#    restore falls back to packages.config mode, which is correct here)
-nuget restore source\SocialGoal.sln -NonInteractive
+# 1. Restore (PackageReference + central versions + committed lock files)
+& $msbuild source\SocialGoal.sln /t:Restore /p:Configuration=Release /p:RestoreLockedMode=true /v:minimal
 
-# 2. Restore the build/test shims (pinned) into .buildtools\ (gitignored),
-#    then merge the two targeting packs under one reference-assembly root.
-nuget install MSBuild.Microsoft.VisualStudio.Web.targets -Version 14.0.0.3 -OutputDirectory .buildtools -NonInteractive
-nuget install Microsoft.NETFramework.ReferenceAssemblies.net45 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
-nuget install Microsoft.NETFramework.ReferenceAssemblies.net48 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
+# 2. Build
+& $msbuild source\SocialGoal.sln /p:Configuration=Release /m /v:minimal
+
+# 3. Prove the first .NET 10 assembly (opt-in flavor; scratch lock path keeps
+#    the committed net48 lock file untouched)
+dotnet build source\SocialGoal.Core\SocialGoal.Core.csproj -c Release -f net10.0 `
+  -p:IncludeNet10=true "-p:NuGetLockFilePath=$env:TEMP\core-net10.lock.json"
+
+# 4. Test (NUnit 3 console runner; note the net48 TFM subfolder in the path)
+sqllocaldb start MSSQLLocalDB
 nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -NonInteractive
-New-Item -ItemType Directory -Force .buildtools\refasm\.NETFramework | Out-Null
-Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.3\build\.NETFramework\v4.5 .buildtools\refasm\.NETFramework\
-Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\.NETFramework\v4.8 .buildtools\refasm\.NETFramework\
-
-# 3. Build (single merged reference-assembly root covers net45 + net48)
-& $msbuild source\SocialGoal.sln /p:Configuration=Release /m /v:minimal `
-  /p:VSToolsPath="$PWD\.buildtools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath" `
-  /p:TargetFrameworkRootPath="$PWD\.buildtools\refasm"
-
-# 4. Test (NUnit 3 console runner; the net48 Tests assembly cannot be run by the
-#    retired NUnit 2.x console or by `dotnet test` on this packages.config project)
 & .buildtools\NUnit.ConsoleRunner.3.22.0\tools\nunit3-console.exe `
-  source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll --result=TestResult.xml
+  source\SocialGoal.Tests\bin\Release\net48\SocialGoal.Tests.dll --result=TestResult.xml
 ```
 
 ## Notes
 
-- Web project output lands in `source\SocialGoal\bin\` (web-app layout), not
-  `bin\Release\`; class libraries use `bin\Release\`.
-- NuGet restore emits an audit report of known-vulnerable packages (NU1902/
-  NU1903). Expected at baseline -- that list is the Sprint 1 SBOM/SCA input,
-  remediated per the epic (Sprint 4 critical subset, Phase 2 wholesale).
-- Running the *app* (not the build) needs local SQL Server. As of Sprint 1 the
-  EF initializer is config-switched and create-only: with the committed Debug
-  config it creates and seeds the `SocialGoal` database only if it does not
-  exist (never drops or alters); the Release transform disables initialization
-  entirely.
-- CI mirrors these exact steps: `.github/workflows/legacy-ci.yml`.
+- Web project output lands in `source\SocialGoal\bin\` (classic web layout,
+  assembly `SocialGoal.dll`); class libraries use `bin\Release\net48\`.
+- Restore emits the accepted NU1903 audit warnings (AutoMapper,
+  Microsoft.AspNet.Identity.Owin) -- the Sprint 4 residue documented in
+  `docs/security/sca-baseline.md` and gated by
+  `docs/security/nuget-audit-baseline.txt`.
+- Running the *app* needs local SQL Server (`Data Source=.\`). The committed
+  Debug config creates and seeds the `SocialGoal` database only if missing
+  (never drops or alters); the Release transform disables initialization.
+  A dev database created before Sprint 4 fails at startup with "the model
+  backing SocialGoalEntities has changed" -- EF 6.5.2 changed the generated
+  model (D14). Drop the old dev database and let the app recreate it.
+- Smoke-run: `& "C:\Program Files\IIS Express\iisexpress.exe"
+  /path:$PWD\source\SocialGoal /port:5002`, then browse
+  `http://localhost:5002/`.
