@@ -112,6 +112,8 @@
     <Compile Include="Authorization\ControllerSurfaceReflectionWalker.cs" />
     <Compile Include="Authorization\ExpectedControllerSurface.cs" />
     <Compile Include="Authorization\ControllerSurfaceCharacterizationTests.cs" />
+    <Compile Include="Authorization\EnforcementDefectPinTests.cs" />
+    <Compile Include="Authorization\InertFilterCharacterizationTests.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
