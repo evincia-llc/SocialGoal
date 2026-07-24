@@ -66,3 +66,35 @@ jobs:
         with:
           name: nunit-results
           path: TestResult.xml
+
+      # Coverage (Sprint 2): rerun the suite under OpenCover scoped to the
+      # solution's own assemblies, render a summary, and enforce the exit-gate
+      # floor -- the data layer must never fall back to 0%.
+      - name: Measure coverage (OpenCover)
+        run: |
+          nuget install OpenCover -Version 4.7.1221 -OutputDirectory .buildtools -NonInteractive
+          .buildtools\OpenCover.4.7.1221\tools\OpenCover.Console.exe -register:user `
+            -target:".buildtools\NUnit.Runners.2.6.4\tools\nunit-console.exe" `
+            -targetargs:"source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll /framework:net-4.5 /noshadow" `
+            -filter:"+[SocialGoal*]* -[SocialGoal.Tests]*" `
+            -output:coverage.xml -returntargetcode
+
+      - name: Render coverage summary and enforce data-layer floor
+        run: |
+          dotnet tool install dotnet-reportgenerator-globaltool --tool-path .buildtools\rg --version 5.4.1
+          .buildtools\rg\reportgenerator -reports:coverage.xml -targetdir:coverage-report "-reporttypes:HtmlInline;MarkdownSummaryGithub;JsonSummary"
+          Get-Content coverage-report\SummaryGithub.md | Add-Content $env:GITHUB_STEP_SUMMARY
+          $summary = Get-Content coverage-report\Summary.json -Raw | ConvertFrom-Json
+          $data = $summary.coverage.assemblies | Where-Object { $_.name -eq "SocialGoal.Data" }
+          if (-not $data) { Write-Host "::error::SocialGoal.Data missing from coverage results"; exit 1 }
+          Write-Host ("SocialGoal.Data line coverage: {0}%" -f $data.coverage)
+          if ([double]$data.coverage -le 0) {
+            Write-Host "::error::Data layer back at 0% line coverage (Sprint 2 exit-gate floor)"
+            exit 1
+          }
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
