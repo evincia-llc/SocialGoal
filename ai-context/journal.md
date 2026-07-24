@@ -25,6 +25,22 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 6 · gh CLI friction in the PR flow (Copilot reviewer login, multiline --body)
+
+- **Problem:** two gh quirks in one PR flow: (1) `gh pr edit --add-reviewer
+  copilot` fails with a GraphQL "Could not resolve user" (the CLI hint says
+  `@copilot`, the GraphQL path wants a resolvable login); the REST endpoint
+  with `reviewers[]=copilot-pull-request-reviewer[bot]` works. (2) `gh pr edit
+  --body $var` with a multiline PowerShell string mangled argument passing --
+  body content beginning with `- ` was parsed as flags; `--body-file` is the
+  reliable route on Windows.
+- **Where:** PR #14 flow (`pr-flow` skill), PowerShell 7 + gh.
+- **Impact:** ~5 minutes; two failed calls, both with working fallbacks.
+- **Resolution:** worked around (REST for the reviewer request, `--body-file`
+  for body edits). Note for the pr-flow skill if it recurs next sprint.
+- **Report note:** tooling gap (CI/CLI ergonomics), the recoverable kind --
+  logged because AI-driven delivery leans on these exact seams every sprint.
+
 ### 2026-07-24 · Sprint 6 · In-suite migration drift check silently wrong without designTime finalization
 
 - **Problem:** the CI-friendly equivalent of `dotnet ef migrations

@@ -23,7 +23,7 @@ here; see `ai-context/README.md`). Status values: `todo` / `active` / `done` /
 
 | Sprint | Theme | Status | Exit gate |
 |---|---|---|---|
-| 6-7 | EF6 -> EF Core (schema-preserving baseline migration, async services, retire repo/UoW ceremony) | todo | Data characterization tests green on EF Core vs SQL Server; no undocumented schema drift |
+| 6-7 | EF6 -> EF Core (schema-preserving baseline migration, async services, retire repo/UoW ceremony) | active | Data characterization tests green on EF Core vs SQL Server; no undocumented schema drift. S6 share done pending merge (PR #14): 30-table model at exact parity via Migrate(), Baseline migration + seed, characterization port (3 documented deltas); S7 = async services, repo/UoW retirement, GetGoalsByPage port, constraint decision |
 | 8 | ASP.NET Core Identity re-platform (string IDs, hash compat, single DbContext, cookie hardening) | todo | Sprint 3 auth suite green on Core host; password-compat test passes; logout POST-only |
 | 9 | Web rebuild slices 1-3: read-only profiles/goals; goal CRUD/updates/comments/support; dashboard | todo | Per-slice: authz matrix enforced, verb/CSRF green, Playwright journey green |
 | 10 | Web rebuild slices 4-5: social graph; groups (admin-gated mutations) | todo | Same per-slice gates |
