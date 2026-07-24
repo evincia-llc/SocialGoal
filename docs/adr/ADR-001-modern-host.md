@@ -31,8 +31,22 @@ Target: EF Core against the Sprint 2/D14 schema baseline
 (`docs/schema/schema-baseline.sql`), table/column names and string user IDs
 preserved, no key-type changes (epic Sprints 6-7 constraints).
 
-**Spike evidence (pending):** map 3-4 representative entities including one
-gnarly relationship; compare EF Core-generated DDL against the baseline.
+**Spike evidence (PASSED 2026-07-24):**
+`src/SocialGoal.Web.Tests/Spikes/SchemaParitySpikeTests.cs` creates one LocalDB
+database from `schema-baseline.sql` and one from the EF Core model
+(`src/SocialGoal.Web/Data/SocialGoalDbContext.cs`: Goal, GoalStatus, Metric,
+ApplicationUser, FollowUser), then compares live catalogs. Columns (35),
+PK column sets, and all 7 FKs match exactly -- including `datetime` (not
+`datetime2`), exact `nvarchar` facets, the Identity-1.0 TPH artifacts on
+AspNetUsers (nullable ApplicationUser columns + `Discriminator nvarchar(128)
+NOT NULL`), EF6's shadow FK columns `ApplicationUser_Id`/`_Id1` on FollowUsers
+with their EF6 constraint names, and cascade parity. Only divergence: EF Core
+adds 7 FK indexes (additive, desirable, pinned by test so the delta cannot
+grow silently) -- carried to Sprints 6-7 as a documented addition. Mapping
+requirements the spike hardened into config: `HasColumnType("datetime")`
+everywhere, explicit `HasMaxLength`, explicit `HasConstraintName` per FK,
+explicit `ToTable` (EF6 pluralization quirks), and deliberate reproduction of
+the TPH-nullable columns a naive mapping would emit NOT NULL (schema drift).
 
 ## Auth approach (Identity spike)
 

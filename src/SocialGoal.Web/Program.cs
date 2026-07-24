@@ -1,6 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using SocialGoal.Web.Data;
 
 namespace SocialGoal.Web;
 
@@ -27,6 +29,16 @@ public class Program
             builder.Services.AddControllersWithViews();
             builder.Services.AddHealthChecks();
             builder.Services.AddSingleton(TimeProvider.System);
+
+            // Absent connection string leaves the host serving DB-free routes
+            // (health, error pages); data-backed controllers then fail loudly
+            // at resolution rather than silently pointing somewhere implicit.
+            var connectionString = builder.Configuration.GetConnectionString("SocialGoal");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                builder.Services.AddDbContext<SocialGoalDbContext>(options =>
+                    options.UseSqlServer(connectionString));
+            }
 
             // Key ring outside the content root so keys survive deploys; the
             // Azure Blob store replaces the file path at D2 deploy time.
