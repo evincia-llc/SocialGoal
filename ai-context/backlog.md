@@ -10,7 +10,7 @@ here; see `ai-context/README.md`). Status values: `todo` / `active` / `done` /
 |---|---|---|---|
 | 1 | Containment + reproducible legacy build (CI, initializer off, ELMAH locked, URL import flagged off, SBOM) | done | Clean CI build from fresh clone; initializer unreachable; ELMAH locked; SBOM committed |
 | 2 | Safety net I: data-layer characterization, schema snapshot, trigger question | done | **Gate PASSED 2026-07-24**: Data 72% line (was 0), CI-enforced floor (`docs/coverage-baseline.md`); schema baseline of record committed with checksum + drift tests (`docs/schema/`); trigger unknown CLOSED in writing, empirical + by-construction (`docs/schema/triggers.md`); post-merge CI green @ f618d84; tag `s2-gate` |
-| 3 | Safety net II: authz matrix + CSRF characterization; test-infra refresh | todo | Matrix suite in CI; all three R-007 dark seams lit; sign-off for structural work |
+| 3 | Safety net II: authz matrix + CSRF characterization; test-infra refresh | active | Matrix suite in CI; all three R-007 dark seams lit; sign-off for structural work |
 
 ## Phase 1 -- Foundation retarget
 

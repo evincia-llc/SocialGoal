@@ -25,6 +25,28 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 3 · No in-process HTTP test host exists for System.Web MVC 5
+
+- **Problem:** the epic's Sprint 3 remediation ("HTTP-level pinning tests over
+  every mutating action") assumes a test host that the legacy platform does
+  not have. MVC 5 routes through System.Web; `Microsoft.Owin.Testing` cannot
+  host it, ASP.NET Core `TestServer` does not apply, so the only true-HTTP
+  option is out-of-process IIS Express automation with cookie + antiforgery
+  scraping per actor -- unacceptably flaky for a ~30-action x 6-actor matrix
+  in CI.
+- **Where:** Sprint 3 planning; `docs/SocialGoal_Modernization_Epic.md` Sprint
+  3 bullet 3.
+- **Impact:** design detour before any Sprint 3 code; matrix approach had to
+  be re-derived (reflection surface + controller-invocation behavioral layer).
+  No schedule loss beyond the planning hour, but the remediation as written
+  was not implementable.
+- **Resolution:** worked around via D11 (two-layer matrix; optional IIS
+  Express probe layer only if stable).
+- **Report note:** spec gap / platform limitation -- remediation guidance
+  written against modern-host assumptions; legacy System.Web hosts need a
+  different (and cheaper) pinning strategy. LMRR feedback candidate for
+  R-007-class recommendations.
+
 ### 2026-07-24 · Sprint 2 · OpenCover profiler silently produces empty coverage
 
 - **Problem:** on the same commit, the pull_request-event CI run passed the
