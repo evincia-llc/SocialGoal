@@ -5,7 +5,10 @@ These are the only verified steps; if you change them, prove them first and
 update this file (repo rule: no guessed build commands).
 
 Result to expect: 7/7 projects build clean (warnings only, all pre-existing
-test-code warnings); **113 NUnit tests, 113 passing**.
+test-code warnings); **187 NUnit tests, 187 passing** (114 controller fixtures +
+30 Data characterization + 16 enforcement-surface + 27 behavioral authz-matrix
+tests). The 144-test figure some Sprint 2 notes cite predates the Sprint 3
+authorization matrix.
 
 ## Why stock tooling fails
 
@@ -20,6 +23,13 @@ Two vendor retirements break a stock 2026 build of this 2013-era solution:
 
 Both are solved with pinned NuGet shim packages -- no admin installs, works
 identically on `windows-latest` CI.
+
+A third wrinkle since Sprint 3: `SocialGoal.Tests` retargets to **net48** (the
+NUnit 3 + Moq 4.20 support floor) while the other six projects stay net45.
+`TargetFrameworkRootPath` is a single value passed to the whole solution build,
+so the v4.5 (pinned, retired) and v4.8 targeting packs are merged under one
+`.buildtools\refasm` root. Tests run on the pinned **NUnit 3 console runner**
+(`nunit3-console.exe`); the NUnit 2.x console cannot execute NUnit 3 assemblies.
 
 ## Prerequisites
 
@@ -40,20 +50,25 @@ $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere
 #    restore falls back to packages.config mode, which is correct here)
 nuget restore source\SocialGoal.sln -NonInteractive
 
-# 2. Restore the three build/test shims (pinned) into .buildtools\ (gitignored)
+# 2. Restore the build/test shims (pinned) into .buildtools\ (gitignored),
+#    then merge the two targeting packs under one reference-assembly root.
 nuget install MSBuild.Microsoft.VisualStudio.Web.targets -Version 14.0.0.3 -OutputDirectory .buildtools -NonInteractive
 nuget install Microsoft.NETFramework.ReferenceAssemblies.net45 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
-nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory .buildtools -NonInteractive
+nuget install Microsoft.NETFramework.ReferenceAssemblies.net48 -Version 1.0.3 -OutputDirectory .buildtools -NonInteractive
+nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -NonInteractive
+New-Item -ItemType Directory -Force .buildtools\refasm\.NETFramework | Out-Null
+Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.3\build\.NETFramework\v4.5 .buildtools\refasm\.NETFramework\
+Copy-Item -Recurse -Force .buildtools\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3\build\.NETFramework\v4.8 .buildtools\refasm\.NETFramework\
 
-# 3. Build
+# 3. Build (single merged reference-assembly root covers net45 + net48)
 & $msbuild source\SocialGoal.sln /p:Configuration=Release /m /v:minimal `
   /p:VSToolsPath="$PWD\.buildtools\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0.3\tools\VSToolsPath" `
-  /p:TargetFrameworkRootPath="$PWD\.buildtools\Microsoft.NETFramework.ReferenceAssemblies.net45.1.0.3\build"
+  /p:TargetFrameworkRootPath="$PWD\.buildtools\refasm"
 
-# 4. Test (NUnit 2.6.3 suites need the retired 2.x console runner --
-#    modern runners and `dotnet test` cannot execute them)
-& .buildtools\NUnit.Runners.2.6.4\tools\nunit-console.exe `
-  source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll /framework:net-4.5 /noshadow
+# 4. Test (NUnit 3 console runner; the net48 Tests assembly cannot be run by the
+#    retired NUnit 2.x console or by `dotnet test` on this packages.config project)
+& .buildtools\NUnit.ConsoleRunner.3.22.0\tools\nunit3-console.exe `
+  source\SocialGoal.Tests\bin\Release\SocialGoal.Tests.dll --result=TestResult.xml
 ```
 
 ## Notes

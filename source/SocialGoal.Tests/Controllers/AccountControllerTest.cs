@@ -166,7 +166,7 @@ namespace SocialGoal.Web.Controllers.Test
             userRepository.Setup(x => x.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>())).Returns(applicationUser);
             PartialViewResult result = controller.ImageUpload() as PartialViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(UploadImageViewModel), result.ViewData.Model, "Wrong model");
+            Assert.IsInstanceOf(typeof(UploadImageViewModel), result.ViewData.Model, "Wrong model");
             var data = result.ViewData.Model as UploadImageViewModel;
             Assert.AreEqual(null, data.LocalPath, "not matching");
         }
@@ -184,7 +184,7 @@ namespace SocialGoal.Web.Controllers.Test
             AccountController controller = new AccountController(userService, userProfileService, goalService, updateService, commentService, followRequestService, followUserService, securityTokenService,userManager);
             ViewResult result = controller.UploadImage(image) as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(UploadImageViewModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(UploadImageViewModel), result.ViewData.Model, "WrongType");
             Assert.AreEqual("ImageUpload", result.ViewName);
         }
 
@@ -274,7 +274,7 @@ namespace SocialGoal.Web.Controllers.Test
             followUserRepository.Setup(x => x.GetMany(It.IsAny<Expression<Func<FollowUser, bool>>>())).Returns(fakeuser);
             ViewResult result = controller.UserProfile("402bd590-fdc7-49ad-9728-40efbfe512ec") as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(UserProfileViewModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(UserProfileViewModel), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as UserProfileViewModel;
             Assert.AreEqual("adarsh", data.UserName);
         }
@@ -326,7 +326,7 @@ namespace SocialGoal.Web.Controllers.Test
             Mapper.CreateMap<UserProfile, UserProfileFormModel>();
             PartialViewResult result = controller.EditBasicInfo() as PartialViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(UserProfileFormModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(UserProfileFormModel), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as UserProfileFormModel;
             Assert.AreEqual("adarsh@foo.com", data.Email);
         }
@@ -379,7 +379,7 @@ namespace SocialGoal.Web.Controllers.Test
 
             PartialViewResult result = controller.EditPersonalInfo() as PartialViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(UserProfileFormModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(UserProfileFormModel), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as UserProfileFormModel;
             Assert.AreEqual("t", data.Address);
         }
@@ -607,7 +607,7 @@ namespace SocialGoal.Web.Controllers.Test
 
             ViewResult result = controller.Followers() as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(IEnumerable<FollowersViewModel>), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(IEnumerable<FollowersViewModel>), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as IEnumerable<FollowersViewModel>;
             Assert.AreEqual(2, data.Count());
         }
@@ -672,7 +672,7 @@ namespace SocialGoal.Web.Controllers.Test
 
             ViewResult result = controller.Followings() as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(IEnumerable<FollowingViewModel>), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(IEnumerable<FollowingViewModel>), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as IEnumerable<FollowingViewModel>;
             Assert.AreEqual(2, data.Count());
         }

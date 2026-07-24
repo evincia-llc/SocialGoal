@@ -58,6 +58,36 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   Copilot depth thins; the security-reviewer agent carries more weight in
   Phase 2.
 
+### D11 -- Authz/CSRF matrix test level: controller-invocation + reflection, not out-of-proc HTTP
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 3 PR review)
+- **Context:** The epic's Sprint 3 text calls for "HTTP-level pinning tests"
+  over every mutating action. MVC 5 on System.Web has no in-process HTTP test
+  host: `Microsoft.Owin.Testing.TestServer` cannot host System.Web-routed MVC,
+  and ASP.NET Core's `TestServer` does not exist for Framework MVC. The only
+  true-HTTP option is out-of-process IIS Express automation (launch, poll,
+  cookie/antiforgery scraping per actor), which is slow and flake-prone in CI
+  for a matrix of ~30 mutating actions x 6 actor classes.
+- **Decision:** Pin the matrix in two layers instead:
+  1. **Declarative surface** -- reflection tests over every controller action:
+     `[Authorize]`/`[AllowAnonymous]`, HTTP verb attributes,
+     `[ValidateAntiForgeryToken]`, plus proof the two custom Web.Core filters
+     are never registered. Stock attribute semantics are trusted, so attribute
+     presence pins the HTTP-facing enforcement exactly.
+  2. **Behavioral matrix** -- controller-invocation tests against the real
+     service/repository/LocalDB stack (Sprint 2 harness), actor x action x
+     object, pinning today's outcomes including the BOLA defects.
+  A thin IIS Express HTTP probe layer (a handful of sample requests validating
+  that the reflected surface matches real HTTP behavior) is attempted only if
+  it proves stable; dropped without replacement if flaky.
+- **Consequence:** Same seams lit, same Phase 2 enforcement spec, CI stays
+  reliable. The Sprint 9-11 rebuild gets true HTTP-level tests naturally
+  (ASP.NET Core TestServer), where the matrix flips from pinning to
+  enforcement. Friction journaled 2026-07-24; LMRR feedback candidate (the
+  "HTTP-level pinning" remediation guidance is not directly implementable on
+  System.Web hosts).
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |

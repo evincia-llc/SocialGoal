@@ -4,12 +4,27 @@ Captured 2026-07-23 against the legacy app running locally (IIS Express,
 `http://localhost:8090`, fresh `SocialGoal` database created by the new
 config-switched `CreateDatabaseIfNotExists` initializer -- itself live proof
 that the Sprint 1 initializer replacement seeds metrics and goal statuses
-correctly). Single user `goldenpath1`; multi-user journeys (follow requests,
-group invitations, support) are Sprint 3 matrix territory and will be captured
-when the second actor exists.
+correctly). Single user `goldenpath1`.
 
 These screenshots are the UI parity reference for the Phase 2 rebuild slices
 (epic Sprints 9-11) and the Sprint 12 front-end consolidation gate.
+
+## Multi-user journeys (updated Sprint 3)
+
+The multi-user *behavior* deferred from Sprint 1 -- follow requests, group
+invitations/joins, support, and the actor-vs-object authorization outcomes -- is
+now pinned by the Sprint 3 authorization matrix
+(`docs/security/authorization-matrix.md`; tests in
+`source/SocialGoal.Tests/Authorization/`), which stands up multiple seeded actors
+and asserts what each can do to another's objects. That is the load-bearing
+Sprint 3 deliverable and a stronger record than screenshots would be.
+
+Multi-user *visual* captures (two browsers, the invite/accept UI) are **not**
+captured here. They are deferred to the Phase 2 slice that rebuilds the social
+graph and groups UI (epic Sprint 10), where the parity reference is actually
+consumed and the second actor's screens exist in the new app. Capturing them now
+against the legacy UI would date them before the rebuild uses them. Flagged for
+operator confirmation at the Sprint 3 gate.
 
 ## Captures
 

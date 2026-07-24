@@ -1,18 +1,26 @@
 # Tasks -- current state
 
-**Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3 next
-**Current sprint:** between sprints -- Sprint 3 (Safety net II) is next
-**Branch state:** master @ f618d84 (Sprint 2 merged, both CI lanes green);
-gate tags `s1-gate`/`s2-gate` pushed. S2 gate close-out (gate record, README
-rewrite, `characterization-tests` skill) = PR #6 from `docs/s2-gate-close`.
-(update this line every session)
+**Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3
+implementation complete on branch, gate not yet run
+**Current sprint:** Sprint 3 (Safety net II) -- all deliverables built,
+187/187 green locally and on CI; security review clean; **PR #7 open, Copilot
+loop CLEAN (run 2), awaiting operator merge**, then sprint-gate
+**Branch state:** master @ 333f8f8 (PR #6 merged). Working branch
+`sprint/s3-safety-net-2` pushed as **PR #7** (all 4 CI checks green): NUnit
+3/Moq 4.20/net48 test infra, 16 enforcement-surface + 27 behavioral
+authz-matrix tests, matrix
+summary doc, coverage baseline S3, D11 recorded. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Start Sprint 3 (Safety net II: authz matrix + CSRF characterization,
-   test-infra refresh to NUnit 3, multi-user golden paths deferred from S1)
-   on `sprint/s3-safety-net-2`, once PR #6 (the S2 close-out) is merged --
-   operator merges; fresh session recommended for the sprint.
+1. **Operator: merge PR #7.** CI green (4/4), security-reviewer clean, Copilot
+   loop clean (run 1: 3 comments -- 2 fixed, 1 rejected with reason; run 2: no
+   new comments).
+2. After merge: run `sprint-gate` for Sprint 3 (gate = matrix suite in CI +
+   three R-007 seams lit + sign-off for structural work).
+3. Operator decisions to surface at gate: ratify **D11** (matrix test level);
+   confirm the multi-user *screenshot* golden-paths deferral to the Sprint 10
+   slice (behavior is pinned by the matrix now).
 
 ## Blocked / waiting
 
@@ -26,6 +34,29 @@ rewrite, `characterization-tests` skill) = PR #6 from `docs/s2-gate-close`.
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 3) -- Safety net II: authz/CSRF matrix + test-infra refresh
+- Test infra: NUnit 2.6.3->3.14, Moq 4.1->4.20.72, Tests retargeted net48
+  (CI targeting-pack merge under one refasm root; net48 friction journaled).
+  Enforcement-surface tests: full 149-action reflection census (verified vs
+  source), 7/25 CSRF split, 23 mutating GETs (corrects report's "~17"), inert
+  filters proven dead. Behavioral matrix: 27 controller-invocation tests over
+  LocalDB proving BOLA persists real mutations + Admin-flag-never-gates. Suite
+  144->187, all green locally (build + OpenCover verified).
+- D11 recorded (matrix test level: reflection surface + controller-invocation,
+  no in-proc HTTP host for System.Web MVC 5 -- flagged for operator ratify).
+  New findings to LMRR: 23-GET correction, EditProfile cross-user write, two
+  accidental gates (crashes not authz), JoinGroup open-join, token bearer-secret.
+  Matrix summary doc (Phase 2 enforcement spec) + coverage S3 (~55% overall,
+  auth seam characterized) committed.
+- security-reviewer on the diff: PASS, zero findings (no production code
+  touched). PR #7 raised (had to target evincia-llc explicitly -- gh defaulted
+  to the MarlabsInc upstream). All 4 CI checks green on windows-latest incl. the
+  first CI run of the net48/NUnit3 targeting-pack merge. Copilot run 1: 3
+  comments -- BUILD.md count 144->187 fixed, tasks.md "unpushed" fixed, the
+  FilterConfig "won't compile" comment rejected (it's an ancestor namespace;
+  compiles+green in CI) with a thread reply. Run 2 clean. Also gitignored the
+  coverage output. Awaiting operator merge, then sprint-gate.
 
 ### 2026-07-24 (Sprint 2 gate + close-out) -- PASSED, all criteria on evidence
 - Gate evidence @ merged f618d84 (both CI lanes green post-merge): Data 72%

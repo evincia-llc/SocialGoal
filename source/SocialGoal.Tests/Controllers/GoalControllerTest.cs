@@ -211,7 +211,7 @@ namespace SocialGoal.Tests.Controllers
 
             ViewResult result = controller.Index(1) as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(GoalViewModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(GoalViewModel), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as GoalViewModel;
             Assert.AreEqual("t", data.GoalName);
         }
@@ -271,7 +271,7 @@ namespace SocialGoal.Tests.Controllers
             Mapper.CreateMap<Goal, GoalViewModel>();
             ViewResult result = controller.MyGoal() as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(IEnumerable<GoalViewModel>), result.ViewData.Model, "Wrong model");
+            Assert.IsInstanceOf(typeof(IEnumerable<GoalViewModel>), result.ViewData.Model, "Wrong model");
             var data = result.ViewData.Model as IEnumerable<GoalViewModel>;
             Assert.AreEqual(4, data.Count(), "not matching");
         }

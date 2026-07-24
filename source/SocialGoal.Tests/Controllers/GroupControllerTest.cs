@@ -237,7 +237,7 @@ namespace SocialGoal.Tests.Controllers
             ViewResult result = controller.Index(1) as ViewResult;
             Assert.IsNotNull(result);
             Assert.AreEqual("Index", result.ViewName);
-            Assert.IsInstanceOfType(typeof(GroupViewModel),
+            Assert.IsInstanceOf(typeof(GroupViewModel),
                 result.ViewData.Model, "WrongType");
         }
 
@@ -282,7 +282,7 @@ namespace SocialGoal.Tests.Controllers
 
             //Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(GroupGoalViewModel), result.ViewData.Model, "WrongType");
+            Assert.IsInstanceOf(typeof(GroupGoalViewModel), result.ViewData.Model, "WrongType");
             var data = result.ViewData.Model as GroupGoalViewModel;
             Assert.AreEqual("t", data.GoalName);
         }
@@ -1649,7 +1649,7 @@ namespace SocialGoal.Tests.Controllers
 
             ViewResult result = controller.UsersList(2) as ViewResult;
             Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(typeof(List<GroupUser>), result.ViewData.Model, "Wrong Model");
+            Assert.IsInstanceOf(typeof(List<GroupUser>), result.ViewData.Model, "Wrong Model");
             var grpusr = result.ViewData.Model as List<GroupUser>;
             Assert.AreEqual(6, grpusr.Count(), "Got wrong number of GroupUser");
 
