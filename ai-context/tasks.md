@@ -1,22 +1,21 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 COMPLETE (Sprints 1-5 gates PASSED); Phase 2 next
-**Current sprint:** between sprints -- Phase 2 Sprints 6-7 (EF6 -> EF Core) next
-**Branch state:** Sprints 1-5 + gate close-outs merged (master @ 839250a, all 3
-CI lanes green); gate tags `s1`-`s5` pushed. D16 pin (implementor ->
-claude-opus-5) = PR from `docs/d16-pin-implementor`. (update this line every session)
+**Phase:** PHASE 2 -- Sprint 6 ACTIVE (EF6 -> EF Core, first of the 6-7 pair)
+**Current sprint:** Sprint 6 on `sprint/s6-efcore` (cut from master @ 88e10c9,
+D16 merged). D17 recorded (single-project layout, IEntityTypeConfiguration,
+baseline migration + HasData seed). (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: merge the D16 PR (pins implementor to `claude-opus-5`).
-2. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
-   **fresh session** (Opus-5 build + current toolchain); sprint-start ritual
-   applies (confirm /effort auto). First Phase 2 sprint; the standing Phase 2
-   constraints in `.claude/rules/modernization.md` now bind, and the Sprint 2
-   characterization suite is the migration's correctness net (EF Core must
-   reproduce the schema baseline and keep the data-layer tests green).
-3. Housekeeping (non-blocking): the stale `docs/s4-gate-close` branch (orphaned
-   effort commit `8f7fa39`, now superseded on master) can be deleted.
+1. Sprint 6 work units, in order: (1) full 30-table entity/config port +
+   full-schema parity tests [delegated to implementor]; (2) baseline EF Core
+   migration + idempotent seed (Metrics 1-8, GoalStatus 1-3 with explicit ids;
+   Goal ctor hardcodes GoalStatusId=1); (3) port the Sprint 2 data-layer
+   characterization suite to EF Core, deltas documented. Then journal/LMRR/
+   effort, security-reviewer, PR + Copilot loop.
+2. Housekeeping (non-blocking, operator): delete stale `docs/s4-gate-close`
+   branch (orphaned effort commit `8f7fa39`, superseded on master) -- Claude's
+   attempt was blocked by the permission classifier.
 
 ## Blocked / waiting
 
