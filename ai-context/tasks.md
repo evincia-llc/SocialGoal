@@ -1,19 +1,24 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 (foundation retarget); Sprint 4 gate PASSED, Sprint 5 next
-**Current sprint:** between sprints -- Sprint 5 (modern .NET 10 host + spikes)
-**Branch state:** Sprint 4 merged (PR #9, master @ 40fa23a, both CI lanes
-green); gate tag `s4-gate` pushed. S4 gate close-out (gate record, README
-status) = PR from `docs/s4-gate-close`. (update this line every session)
+**Phase:** PHASE 1 (foundation retarget); Sprint 5 work COMPLETE, PR loop next
+**Current sprint:** Sprint 5 (modern .NET 10 host + spikes) -- all
+deliverables done, all three gating spikes PASSED
+**Branch state:** `sprint/s5-modern-host` pushed; all three CI lanes green on
+first push (legacy-ci, modern-ci NEW, security). Security-reviewer pass +
+PR/Copilot loop in flight this session. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge the S4 gate close-out PR (this branch).
-2. Start Sprint 5 (Phase 1 exit: stand up the modern .NET 10 ASP.NET Core host
-   + the three gating spikes -- EF Core mapping vs the schema baseline, Identity
-   1.0 password-hash compatibility, one read-only vertical slice) on
-   `sprint/s5-modern-host` -- fresh session; sprint-start ritual applies
-   (confirm /effort auto). Decision gate already cleared (D1, D2).
+1. Finish the Sprint 5 PR loop: security-reviewer findings (if any), raise PR
+   via pr-flow, Copilot iterate-until-clean.
+2. Operator: review/merge the Sprint 5 PR. Flagged for explicit operator
+   attention at review: D15 (src/ layout, .slnx, NUnit 4), ADR-001 PROPOSED
+   status, and the deliberately-unfixed legacy publish-content regression
+   (journal 2026-07-24 -- legacy publish is code-only under the SystemWeb SDK;
+   no consumer exists, legacy retires S11; overturn = add Content globs).
+3. Then sprint-gate for Sprint 5 / Phase 1 exit (LMRR Phase 2 entry:
+   ADR + proven auth/data approach + slice running -- all evidence in
+   docs/adr/ADR-001-modern-host.md and src/SocialGoal.Web.Tests).
 
 ## Blocked / waiting
 
@@ -21,17 +26,29 @@ status) = PR from `docs/s4-gate-close`. (update this line every session)
 
 ## Later (scheduled automation)
 
-- Sprint 5 host spike (or first D2 deploy prep at latest): one-time publish
-  proof that Web.Release.config transforms still execute under the SDK-style
-  pipeline (DatabaseInitializer -> None, debug attribute stripped) --
-  security-reviewer question, Sprint 4 review.
-
 - Sprint 9: create `slice-migration` skill after the first vertical slice lands;
   reuse for the remaining six slices.
 - (done 2026-07-24) `characterization-tests` skill minted at S2 gate close from
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 5) -- modern host + all three gating spikes PASSED
+- New src/ solution (D15: .slnx, dotnet-CLI-only, own CPM/locks, NUnit 4):
+  ASP.NET Core .NET 10 MVC host (Serilog, health, Data Protection, analyzers
+  as errors) + modern-ci lane (locked restore, format, tests, zero-tolerance
+  SCA) -- green on first hosted run. ADR-001 PROPOSED with spike evidence.
+- Spikes: (1) EF Core schema parity proven by live catalog diff vs baseline
+  (35 cols/7 FKs exact incl. TPH artifacts + shadow FK columns; index delta
+  pinned); (2) Identity 1.0 hash (real legacy assembly) verifies under Core
+  Identity + v3 rehash persisted via UserManager over legacy-shaped table;
+  (3) goal-detail slice over WebApplicationFactory from baseline schema --
+  epic's first true HTTP test (D11 follow-up). Suite 10/10.
+- Web.Release.config publish proof (delegated): transforms PASS; found the
+  SystemWeb SDK publishes code-only (no .cshtml/static globs) -- documented
+  (journal/LMRR/BUILD.md), deliberately unfixed, operator may overturn.
+- 3 LMRR entries (R-004 mapping-fidelity classes, R-005 confirmed, publish
+  risk class) + 2 journal entries. Next: security review, PR, Copilot loop.
 
 ### 2026-07-24 (Sprint 4 gate + close-out) -- PASSED
 - Gate verified independently @ merged 40fa23a (both CI lanes green): 7/7 csproj
