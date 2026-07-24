@@ -19,6 +19,15 @@ namespace SocialGoal.Tests.Data
     {
         private int _metricIdValue;   // shared FK prerequisites
         private int _statusId;
+        private readonly List<DatabaseFactory> _factories = new List<DatabaseFactory>();
+
+        [TearDown]
+        public void DisposeFactories()
+        {
+            foreach (var factory in _factories)
+                factory.Dispose();
+            _factories.Clear();
+        }
 
         [SetUp]
         public void CleanSlateAndSeedPrerequisites()
@@ -76,9 +85,11 @@ namespace SocialGoal.Tests.Data
             context.SaveChanges();
         }
 
-        private static GoalRepository NewRepo()
+        private GoalRepository NewRepo()
         {
-            return new GoalRepository(new DatabaseFactory());
+            var factory = new DatabaseFactory();
+            _factories.Add(factory);
+            return new GoalRepository(factory);
         }
 
         // ---- tests ----------------------------------------------------------
