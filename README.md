@@ -48,10 +48,10 @@ Updated at each sprint gate. Gate tags: `s1-gate`, `s2-gate`, ...
 | | |
 |---|---|
 | Plan | 14 sprints, 4 phases: [`docs/SocialGoal_Modernization_Epic.md`](docs/SocialGoal_Modernization_Epic.md) |
-| Phase | **Phase 1 underway** -- all 7 projects converted to SDK-style; the first assembly compiles on .NET 10 in CI. Phase 0 safety net complete. |
-| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed), Sprint 3 (authorization/CSRF matrix, test-infra refresh to NUnit 3), Sprint 4 (SDK-style conversion, EF unified at 6.5.2, first .NET 10 assembly, vuln audit 8&rarr;2) |
-| Suite | 187 tests green in CI; ~55% line coverage (data layer 87.6%); enforcement surface of all 149 controller actions pinned (`docs/security/authorization-matrix.md`) |
-| Next | Sprint 5: modern .NET 10 host + gating spikes (EF Core mapping, Identity hash compatibility, one read-only slice) |
+| Phase | **Phase 1 complete** -- modern ASP.NET Core host stood up on .NET 10 in `src/`; EF Core schema-parity, Identity password-compat, and a real HTTP vertical slice all proven ([`docs/adr/ADR-001-modern-host.md`](docs/adr/ADR-001-modern-host.md)). Phase 2 (the rebuilds) is next. |
+| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed), Sprint 3 (authorization/CSRF matrix, NUnit 3), Sprint 4 (SDK-style conversion, EF unified at 6.5.2, vuln audit 8&rarr;2), Sprint 5 (modern .NET 10 host + three gating spikes) |
+| Suite | Legacy: 187 tests green (data layer 87.6%; all 149 controller actions' enforcement surface pinned, `docs/security/authorization-matrix.md`). Modern: spike + slice tests green in the new `modern-ci` lane. |
+| Next | Phase 2 -- Sprints 6-7: EF6 &rarr; EF Core (schema-preserving migration, async services) |
 | LMRR readiness trajectory | 44/100 (Red) at baseline, target ~88 (Green) after Phase 3 |
 
 ## How the work is organized
