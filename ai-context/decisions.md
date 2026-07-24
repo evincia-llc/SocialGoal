@@ -221,6 +221,46 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   model than freshly-launched ones -- a reproducibility gotcha for auditable AI
   delivery, and the concrete argument for pinning models over aliases.
 
+### D17 -- Sprint 6-7 EF Core model layout and migration mechanics
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 6 PR review)
+- **Context:** The epic mandates the EF Core model (all ~25 entity sets mapped
+  to the Sprint 2/D14 baseline) but not its physical layout. D15.5 forbids
+  reusing legacy project names while both solutions coexist -- and the natural
+  names (`SocialGoal.Data`, `SocialGoal.Model`, `SocialGoal.Service`) are all
+  legacy projects. The Sprint 5 spike context already lives in
+  `src/SocialGoal.Web/Data` with a comment anticipating growth.
+- **Decision:**
+  1. **The modern app stays single-project through Phase 2**: entities, the
+     `SocialGoalDbContext`, configurations, and EF Core migrations live under
+     `src/SocialGoal.Web/Data/`. No new project, so no forced awkward name; the
+     LMRR migration seam is the service *interface*, which folders + the
+     Sprint 13 architecture test preserve. A split into properly-named projects
+     becomes possible at Sprint 11+ when the legacy projects retire, decided
+     then if wanted.
+  2. **Per-entity `IEntityTypeConfiguration<T>` classes** in
+     `Data/Configurations/`, applied via `ApplyConfigurationsFromAssembly`;
+     the spike's inline `OnModelCreating` blocks migrate into them. The mapping
+     target remains the *generated* EF6 model (unregistered legacy configs do
+     not apply; `RegistrationToken` mapped without a DbSet; `Focus -> Foci`
+     pluralization reproduced by explicit `ToTable`).
+  3. **Schema governance = one baseline migration** (`Baseline`) whose applied
+     DDL reproduces `docs/schema/schema-baseline.sql`. Parity is proven by the
+     extended catalog-diff tests running `Database.Migrate()` (not
+     `EnsureCreated`) against a fresh LocalDB. Known, pinned deltas only:
+     EF Core's per-FK indexes (additive, the spike's documented addition,
+     extended to all tables) and `__EFMigrationsHistory` (the EF Core analogue
+     of EF6's `__MigrationHistory`, likewise outside the model DDL).
+  4. **Seed data via `HasData`** in the Metric/GoalStatus configurations with
+     stable explicit keys, values taken from legacy `GoalsSampleData` --
+     idempotent migration data per the epic.
+- **Consequence:** Sprint 7's service port lands in the same project
+  (`Services/` folder, interfaces preserved). Sprint 8's Identity work reshapes
+  `AspNetUsers` by reviewed migration on this same context. The unique
+  constraints the epic schedules for Sprints 6-7 are *deferred to Sprint 7*
+  and will need their own decision entry (they are intentional schema drift).
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |
