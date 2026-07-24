@@ -114,6 +114,11 @@
     <Compile Include="Authorization\ControllerSurfaceCharacterizationTests.cs" />
     <Compile Include="Authorization\EnforcementDefectPinTests.cs" />
     <Compile Include="Authorization\InertFilterCharacterizationTests.cs" />
+    <Compile Include="Authorization\ServiceAssembler.cs" />
+    <Compile Include="Authorization\AuthenticatedActor.cs" />
+    <Compile Include="Authorization\AuthorizationDatabase.cs" />
+    <Compile Include="Authorization\MatrixCast.cs" />
+    <Compile Include="Authorization\GoalAuthorizationMatrixTests.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
