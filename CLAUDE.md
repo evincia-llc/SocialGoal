@@ -49,6 +49,11 @@ with the code. Log friction and LMRR confirmations/corrections as they happen.
 - **Git permissions:** Claude may create feature branches, commit, push, raise
   PRs, and run the Copilot review iterations (delegated by the operator
   2026-07-23). **Claude never merges -- only the operator merges.**
+- **Sprint-start ritual:** when the operator asks to start a sprint, do not
+  begin implementation immediately. First ask the operator to confirm
+  `/effort auto` is set for the session (effort cannot be persisted; new
+  sessions default to `high`). Begin sprint work only after the operator
+  confirms ("yes"/"go").
 - **Branching strategy (D10):** no PR-per-work-item ceremony. PR granularity is
   pragmatic -- a sprint, a workstream, or a slice, sized by what reviews
   sensibly (`sprint/s<n>-<slug>` naming). Large PRs fine when coherent; small
