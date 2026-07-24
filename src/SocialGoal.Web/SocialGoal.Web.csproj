@@ -2,8 +2,9 @@
 
   <ItemGroup>
     <!-- Design-time only (dotnet-ef, pinned in .config/dotnet-tools.json).
-         PrivateAssets="all" keeps it out of the published output and out of
-         every referencing project, including the test project. -->
+         PrivateAssets="all" stops its assets flowing to referencing projects
+         (e.g. the test project); staying out of the app's runtime/publish
+         graph is the package's own development-dependency asset defaults. -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Serilog.AspNetCore" />

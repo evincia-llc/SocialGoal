@@ -18,7 +18,7 @@ baseline migration + HasData seed). (update this line every session)
    query/service layer incl. zero-based paging quirk; Goal/GroupGoal
    GoalStatusId=1 default moves to services; constraint-addition decision
    (14 unconstrained columns).
-2. Housekeeping (non-blocking, operator): delete stale `docs/s4-gate-close`
+3. Housekeeping (non-blocking, operator): delete stale `docs/s4-gate-close`
    branch (orphaned effort commit `8f7fa39`, superseded on master) -- Claude's
    attempt was blocked by the permission classifier.
 
