@@ -269,10 +269,13 @@ LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1 "1-2 months, 1-2 eng";
 Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
 
 **What is measured:** operator-observed **wall-clock elapsed** per working day
-(ground truth from the operator), not engineer-hours. Work is AI-executed
-(Fable orchestrating, Opus 4.8 implementing) under solo-operator review; much of
-the elapsed time is CI runs and Copilot review loops the operator is not
-heads-down for. This is **not the same unit** as the LMRR's engineer-effort
+(ground truth from the operator), not engineer-hours. Work is AI-executed (Fable
+orchestrating; implementation delegated to the `implementor` subagent, pinned to
+the `opus` tier alias -- the exact Opus version that served each past run is not
+recorded in transcripts and two sessions resolved the alias differently when
+probed, so the concrete version is currently unverified; see decisions D16) under
+solo-operator review; much of the elapsed time is CI runs and Copilot review
+loops the operator is not heads-down for. This is **not the same unit** as the LMRR's engineer-effort
 estimates, which model a human team. The honest read is the order-of-magnitude
 gap, not a per-sprint multiplier. Earlier per-sprint "~working day" figures were
 loose session estimates; the daily wall-clock totals below are the correction.

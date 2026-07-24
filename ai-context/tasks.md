@@ -9,17 +9,21 @@ ratification, effort correction re-applied + real timing) = PR from
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge the S5 gate close-out PR. Merging = ratification of
-   the three gate decisions recorded there: **ADR-001 ACCEPTED**, **D15 ratified**,
-   **legacy-publish regression accepted document-only** (advisor concurred with all
-   three; overturn any by not merging / commenting).
-2. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
-   fresh session; sprint-start ritual applies (confirm /effort auto). This is the
-   first Phase 2 sprint; the standing Phase 2 constraints in
-   `.claude/rules/modernization.md` now bind.
+1. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
+   fresh session; sprint-start ritual applies (confirm /effort auto). First Phase 2
+   sprint; the standing Phase 2 constraints in `.claude/rules/modernization.md`
+   now bind. (Prerequisite: the S5 gate close-out PR is merged -- merging it
+   ratifies ADR-001 ACCEPTED, D15, and the legacy-publish document-only call;
+   advisor concurred, operator overturns any by commenting.)
+2. Decide **D16** (pin the `implementor` model to an explicit Opus ID). Now due:
+   two sessions disagree on what the `opus` alias resolves to (this monitor
+   session probed 4.8; the Sprint 5 session asserts 5). Confirm the current Opus
+   via `/model`, then pin `model: claude-opus-<n>` in
+   `.claude/agents/implementor.md` and record D16 so the model becomes a stable,
+   recorded fact instead of a floating alias.
 3. Housekeeping (non-blocking): the effort-correction commit that missed PR #10
-   (`8f7fa39` on `docs/s4-gate-close`) is now superseded -- its content is
-   re-applied here with real commit-derived timing; the stale branch can be deleted.
+   (`8f7fa39` on `docs/s4-gate-close`) is superseded -- content re-applied on the
+   S5 close-out branch with real commit-derived timing; the stale branch can be deleted.
 
 ## Blocked / waiting
 
