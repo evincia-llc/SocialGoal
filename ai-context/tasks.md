@@ -30,10 +30,12 @@ protection live (4 required checks, PR-only, no force push). Current branch
 ## Session log (newest first; 2-4 lines each)
 
 ### 2026-07-23 (Sprint 1 gate) -- PASSED, all five criteria on evidence
-- Gate review post-merge: CI green on master merge commit cd75621 (legacy-ci
-  run 30052286151, security 30052286169); zero DropCreateDatabase references
-  in source; ELMAH auth'd+role-gated in Web.config:32; URL import flag false
-  (Web.config:31) + pinning test; SBOM at docs/security/sbom-nuget.cdx.json.
+- Gate review post-merge, all evidence at commit cd75621: CI green on master
+  (legacy-ci run 30052286151, security 30052286169); zero DropCreateDatabase
+  references in source; source/SocialGoal/Web.config has
+  elmah.mvc.requiresAuthentication=true + allowedRoles=Admin and
+  Feature.ImageUrlImport=false (+ pinning test); SBOM at
+  docs/security/sbom-nuget.cdx.json.
 - Operator merged #2/#3 and branch protection went live (applied via gh api at
   operator request; 4 required checks, PR-only, no force push/deletion).
 - Sequencing law: no Phase 2 work briefed; Sprint 2 (Phase 0) may start.
