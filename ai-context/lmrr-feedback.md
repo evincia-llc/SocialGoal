@@ -222,13 +222,35 @@ methodology input, not scoring errors.
 
 ## Effort actuals vs LMRR illustrative estimates
 
-Fill at each sprint-gate. LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1
-"1-2 months, 1-2 eng"; Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
+LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1 "1-2 months, 1-2 eng";
+Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
 
-| Sprint | Planned (epic) | Actual | Notes |
+**What is measured:** operator-observed **wall-clock elapsed** per working day
+(ground truth from the operator, 2026-07-24), not engineer-hours. Work is
+AI-executed (Fable orchestrating, Opus implementing) under solo-operator review;
+much of the elapsed time is CI runs and Copilot review loops the operator is not
+heads-down for. This is **not the same unit** as the LMRR's engineer-effort
+estimates, which model a human team. The honest read is the order-of-magnitude
+gap, not a per-sprint multiplier. Earlier per-sprint "~working day" figures were
+loose session estimates; the daily wall-clock totals below are the correction.
+
+**Ground-truth wall-clock so far:**
+
+| Working day | Wall-clock | Covered |
+|---|---|---|
+| 2026-07-23 | 3-4 hours | Foundation (evaluation, epic, governance, tooling) + Sprint 1 |
+| 2026-07-24 | ~5 hours | Sprint 1 gate close + Sprints 2, 3, 4 (three implementations) + their gate closes |
+
+So foundation through Sprint 4 -- Phase 0 complete plus the Phase 1 mechanical
+retarget -- is **~8-9 hours of elapsed wall-clock across two part-days**, against
+LMRR illustrative estimates of "a few weeks" (Phase 0) plus "1-2 months" (Phase 1,
+still in progress). Per-sprint content below; timing is attributed to its day's
+block above rather than split to false precision.
+
+| Sprint | Planned (epic) | Day block | Notes |
 |---|---|---|---|
-| Foundation (pre-S1) | -- | 1 day (2026-07-23) | Evaluation, epic, governance, tooling |
-| Sprint 1 | 2 weeks | ~half a working day (2026-07-23) | All deliverables: proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. AI-driven pace; multi-user golden paths deferred to S3 |
-| Sprint 2 | 2 weeks | ~1 working day (2026-07-24) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix), PR loop. Includes crashed-session recovery |
-| Sprint 3 | 2 weeks | ~1 working day (2026-07-24) | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11. Phase 0 total: ~2.5 days vs LMRR "a few weeks" |
-| Sprint 4 | 2 weeks | ~half a working day (2026-07-24) | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0, CI/BUILD.md rework, app smoke green. Pre-PR-loop figure |
+| Foundation (pre-S1) | -- | 2026-07-23 (3-4h) | Evaluation, epic, governance, tooling |
+| Sprint 1 | 2 weeks | 2026-07-23 (3-4h) | Proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. Multi-user golden paths deferred to S3 |
+| Sprint 2 | 2 weeks | 2026-07-24 (~5h) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix). Includes crashed-session recovery |
+| Sprint 3 | 2 weeks | 2026-07-24 (~5h) | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11 |
+| Sprint 4 | 2 weeks | 2026-07-24 (~5h) | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0, CI/BUILD.md rework, app smoke green |
