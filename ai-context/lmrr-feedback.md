@@ -293,6 +293,27 @@ methodology input, not scoring errors.
   Identity id -- works only because GUID-based ids are 36 chars. Truncation
   risk class: length constraint narrower than the domain of the value stored.
   Reproduced faithfully (commented as defect in the modern config).
+- **R-004 · CONFIRMED with a measured semantic gap -- three narrow deltas:**
+  the ported characterization suite (`EfCoreDataBehaviorTests`, 12 tests,
+  commits `b9affd6`/`72c0e4e`) found the EF6 -> EF Core behavioral gap for
+  this codebase is exactly three nameable differences: (1) `ExecuteDelete`
+  executes immediately and bypasses the change tracker (legacy bulk delete
+  materialized rows and deleted through the tracker at commit) -- now a
+  standing rule in `.claude/rules/modernization.md`; (2) disposed-context
+  exception type changed (`InvalidOperationException` ->
+  `ObjectDisposedException`) -- catch-clauses keyed to the old type go
+  silently dead; (3) with entity-constructor `DateTime.Now` defaults removed
+  (per modernization rules), an unset date now *hard-fails* insert
+  (`SqlDateTime overflow`, 0001 below datetime's 1753 floor) instead of
+  silently storing a wrong date -- every Sprint 7 service creating dated
+  entities must set dates via the injected clock. Everything else -- silent
+  cross-context write loss, identity-map-per-context, snapshot lists,
+  detached-`Update` null-overwrite -- carried over with identical semantics,
+  confirmed by test rather than assumed. Feedback for the LMRR's R-004
+  narrative: with a schema baseline and a characterization net in place, the
+  EF6->EF Core "regression risk in translated queries" concentrated in
+  *change-tracking and type-default semantics*, not query translation (that
+  half gets its test in Sprint 7 when the service queries port).
 
 ### Methodology notes
 

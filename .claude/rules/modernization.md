@@ -33,6 +33,16 @@ paths:
   `ai-context/decisions.md`. Async end to end with `CancellationToken`;
   projections and `AsNoTracking` for reads; paginate before materializing;
   no generic repository over EF Core.
+- Bulk operations: `ExecuteDelete`/`ExecuteUpdate` run immediately and bypass
+  the change tracker -- never mix them with tracked entities in the same unit
+  of work (a tracked entity can go stale and a later `SaveChanges` throw).
+  Updates to a loaded entity mutate properties on the tracked instance; never
+  `context.Update(detachedCopy)` (marks every column modified -- unset fields
+  overwrite the row; pinned by `EfCoreDataBehaviorTests`).
+- Every `datetime` column must be set explicitly via the injected clock before
+  insert: entities carry no constructor date defaults, and `default(DateTime)`
+  fails the insert with SqlDateTime overflow (below the 1753 floor). Loud, but
+  only if a test exercises the path -- set dates at creation, always.
 - Time and types: UTC via an injectable clock (no `DateTime.Now`); `decimal` for
   business measures; `string` for phone/postal values.
 - Images: ImageSharp/SkiaSharp, never `System.Drawing`. Uploads validated by

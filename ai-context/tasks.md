@@ -7,12 +7,17 @@ baseline migration + HasData seed). (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Sprint 6 work units, in order: (1) full 30-table entity/config port +
-   full-schema parity tests [delegated to implementor]; (2) baseline EF Core
-   migration + idempotent seed (Metrics 1-8, GoalStatus 1-3 with explicit ids;
-   Goal ctor hardcodes GoalStatusId=1); (3) port the Sprint 2 data-layer
-   characterization suite to EF Core, deltas documented. Then journal/LMRR/
-   effort, security-reviewer, PR + Copilot loop.
+1. Sprint 6 implementation COMPLETE (all 3 work units green, 30/30 tests,
+   reviewed): 30-table model + full parity, Baseline migration + seed + drift
+   test, characterization port with 3 documented deltas. Remaining:
+   security-reviewer pass, PR + Copilot loop, operator merge, sprint-gate.
+2. Sprint 7 checklist (from S6 findings): every dated entity creation sets
+   dates via injected clock (no ctor defaults; default(DateTime) hard-fails
+   insert); bulk Execute* never mixed with tracked entities (rules file);
+   port GoalRepositoryCharacterizationTests (9 tests) against the new
+   query/service layer incl. zero-based paging quirk; Goal/GroupGoal
+   GoalStatusId=1 default moves to services; constraint-addition decision
+   (14 unconstrained columns).
 2. Housekeeping (non-blocking, operator): delete stale `docs/s4-gate-close`
    branch (orphaned effort commit `8f7fa39`, superseded on master) -- Claude's
    attempt was blocked by the permission classifier.
