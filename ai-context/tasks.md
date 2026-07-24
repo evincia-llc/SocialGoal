@@ -1,18 +1,19 @@
 # Tasks -- current state
 
-**Phase:** PHASE 2 -- Sprint 6 done pending merge (EF6 -> EF Core, first of 6-7)
-**Current sprint:** Sprint 6 -- PR #14 open on `sprint/s6-efcore` @ 9958340
-(15 commits), all CI lanes green, security-reviewer PASS, Copilot run 2 CLEAN.
-Awaiting operator merge. (update this line every session)
+**Phase:** PHASE 2 -- Sprint 6 gate PASSED (EF6 -> EF Core, first of 6-7 block); Sprint 7 next
+**Current sprint:** between sprints -- Sprint 7 (async services + repo/UoW
+retirement + remaining characterization port) completes the 6-7 block gate
+**Branch state:** Sprint 6 merged (PR #14, master @ 97d3953, all 3 CI lanes
+green, modern-ci 30/30); gate tag `s6-gate` pushed. S6 gate close-out (gate
+record, D17 ratified, README/effort) = PR from `docs/s6-gate-close`.
+(update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: merge PR #14 (Sprint 6: EF Core model + Baseline migration +
-   characterization port; 30/30 tests).
-2. Post-merge: run `sprint-gate` for Sprint 6 (gate wording spans Sprints 6-7;
-   assess the S6 share: parity + migration + ported suite green in CI at the
-   merged commit; effort row + `s6-gate` tag land there). Then start Sprint 7
-   on `sprint/s7-<slug>` -- sprint-start ritual applies (confirm /effort auto).
+1. Operator: merge the S6 gate close-out PR (ratifies D17).
+2. Start Sprint 7 on `sprint/s7-services` -- fresh session; sprint-start ritual
+   applies (confirm /effort auto). Completes the 6-7 block gate (data
+   characterization green on EF Core; no undocumented drift).
 3. Sprint 7 checklist (from S6 findings): every dated entity creation sets
    dates via injected clock (no ctor defaults; default(DateTime) hard-fails
    insert); bulk Execute* never mixed with tracked entities (rules file);
@@ -55,6 +56,17 @@ Awaiting operator merge. (update this line every session)
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 6 gate + close-out) -- S6 share PASSED (Phase 2 begins)
+- Gate verified independently @ merged 97d3953 (all 3 CI lanes green; modern-ci
+  "Passed! Failed: 0, Passed: 30, Total: 30"): full 30-table EF Core model at exact
+  parity via Database.Migrate() (verified in `src/SocialGoal.Web/Data/` +
+  SchemaParityTests), Baseline migration, mutation-tested drift check. D17
+  ratified. 6-7 block gate stays open until S7 (service/query port).
+- Close-out: backlog 6-7 = "active (S6 gate PASSED)"; `s6-gate` tag; README ->
+  Phase 2 underway; S6 effort row (~1h commit span, 17:24-18:28 EDT). Noted the
+  sprint's operator-caught silent-success PR-body defect as a standout POC
+  journal artifact (the expensive AI-delivery failure class).
 
 ### 2026-07-24 (Sprint 6) -- EF6 -> EF Core: model, migration, characterization; PR #14
 - D17 recorded; full 30-table model + configs ported (implementor/claude-opus-5,
