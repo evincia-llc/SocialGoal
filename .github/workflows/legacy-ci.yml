@@ -26,6 +26,15 @@ jobs:
       - name: Locate MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      # The characterization tests hit (localdb)\MSSQLLocalDB. Start it up
+      # front so a wedged/absent instance fails loudly here, not as a hang
+      # inside the NUnit run (see journal 2026-07-24: orphaned-instance
+      # corruption).
+      - name: Ensure LocalDB is up
+        run: |
+          sqllocaldb info MSSQLLocalDB
+          sqllocaldb start MSSQLLocalDB
+
       - name: Restore app packages
         run: nuget restore source\SocialGoal.sln -NonInteractive
 

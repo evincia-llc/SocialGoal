@@ -25,6 +25,39 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 2 · LocalDB instance corrupted by an orphaned engine process
+
+- **Problem:** first EF connect to `(localdb)\MSSQLLocalDB` hung the test
+  process; the instance would not start (engine assertion Error 17066 in
+  hkhost.cpp). `sqllocaldb start/delete/create` all failed -- an orphaned
+  `sqlservr.exe` from the crashed instance still held the instance files
+  (CopyFileW error 32).
+- **Where:** implementor session, first characterization-test run.
+- **Impact:** ~4 recovery iterations, two hung commands; delayed the first
+  green run.
+- **Resolution:** fixed -- killed the orphaned LocalDB `sqlservr.exe` (after
+  distinguishing it from the machine's real MSSQLSERVER service process), then
+  recreate/start succeeded. CI gets a `sqllocaldb` pre-start step for
+  robustness.
+- **Report note:** tooling gap. LocalDB state is machine-global and survives
+  crashed test runs; characterization harnesses need instance-recovery
+  awareness, not just connection strings.
+
+### 2026-07-24 · Sprint 2 · EF 6.0.x hides its mapping API; store-space naming trap
+
+- **Problem:** the mapping smoke tests could not use the C-S mapping types
+  (`EntityContainerMapping` etc.) -- public only from EF 6.1; this solution
+  pins EF 6.0.x. Table resolution had to go through store-space (SSpace)
+  metadata. Second trap: store entity-set names are entity-type names while
+  conceptual set names are DbSet property names (`Support` vs `Supports`),
+  which cost an iteration.
+- **Where:** `SocialGoal.Tests/Data/MappingSmokeTests.cs`.
+- **Impact:** one extra test-debug iteration; no scope change.
+- **Resolution:** worked around via SSpace metadata; naming pinned in tests.
+- **Report note:** dependency surprise. Pre-6.1 EF6 pins limit standard
+  model-introspection tooling; a modernization estimate touching EF 6.0.x
+  should budget for it.
+
 ### 2026-07-24 · Sprint 2 · Crashed session left a divergent pushed branch
 
 - **Problem:** a prior Sprint 2 attempt died on an API error after creating

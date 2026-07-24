@@ -56,6 +56,26 @@ methodology input, not scoring errors.
   Candidate engine signal: casts of `IPrincipal.Identity`/`User.Identity` to a
   concrete type not produced by the configured auth stack.
 
+### Sprint 2 characterization findings (data layer, 2026-07-24)
+
+- **R-007 · dark seam lit:** data layer now has 28 executing characterization
+  tests (LocalDB), pinning repository/UoW/mapping behavior; 0% coverage claim
+  ends here. Two hazards the LMRR's structural read implied are now *proven by
+  failing-write test*: (a) `RepositoryBase.Update` attaches + marks the whole
+  entity Modified -- a stale detached copy silently nulls unset columns;
+  (b) repositories and UnitOfWork on *different* `DatabaseFactory` instances
+  lose writes silently (only DI's single shared factory makes the app work).
+- **Dead-config candidates (extends the "defined but never registered"
+  missed-candidate below):** `ApplicationUserConfiguration` unregistered (its
+  intent even carries a `FirstName.HasMaxLength(1)` bug); `GoalUpdateConfiguration`
+  orphaned twice over (unregistered AND no DbSet -- entity absent from the
+  model). Engine predicate: EntityTypeConfiguration subclasses vs
+  OnModelCreating registrations vs DbSet presence -- three-way diff, all
+  statically detectable.
+- **Model facts for the migration:** 30 entity sets, all dbo; EF pluralization
+  quirks pinned (`Focus->Foci`, `GoalStatus->GoalStatus`); `RegistrationToken`
+  enters the model via registration despite having no DbSet.
+
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 
 - **Destructive initializer · MISSED-CANDIDATE:** `Database.SetInitializer` +
