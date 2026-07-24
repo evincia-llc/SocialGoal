@@ -3,8 +3,8 @@
 **Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3
 implementation complete on branch, gate not yet run
 **Current sprint:** Sprint 3 (Safety net II) -- all deliverables built,
-187/187 green locally and on CI; security review clean; **PR #7 open**, in the
-Copilot loop, then sprint-gate
+187/187 green locally and on CI; security review clean; **PR #7 open, Copilot
+loop CLEAN (run 2), awaiting operator merge**, then sprint-gate
 **Branch state:** master @ 333f8f8 (PR #6 merged). Working branch
 `sprint/s3-safety-net-2` pushed as **PR #7** (all 4 CI checks green): NUnit
 3/Moq 4.20/net48 test infra, 16 enforcement-surface + 27 behavioral
@@ -13,11 +13,12 @@ summary doc, coverage baseline S3, D11 recorded. (update this line every session
 
 ## Now (next actions, in order)
 
-1. Await security-reviewer result on the S3 diff (running); address if needed.
-2. `pr-flow`: raise the Sprint 3 PR, run the Copilot loop until clean.
-3. After merge: run `sprint-gate` for Sprint 3 (gate = matrix suite in CI +
+1. **Operator: merge PR #7.** CI green (4/4), security-reviewer clean, Copilot
+   loop clean (run 1: 3 comments -- 2 fixed, 1 rejected with reason; run 2: no
+   new comments).
+2. After merge: run `sprint-gate` for Sprint 3 (gate = matrix suite in CI +
    three R-007 seams lit + sign-off for structural work).
-4. Operator decisions to surface at PR/gate: ratify **D11** (matrix test level);
+3. Operator decisions to surface at gate: ratify **D11** (matrix test level);
    confirm the multi-user *screenshot* golden-paths deferral to the Sprint 10
    slice (behavior is pinned by the matrix now).
 
@@ -47,7 +48,15 @@ summary doc, coverage baseline S3, D11 recorded. (update this line every session
   New findings to LMRR: 23-GET correction, EditProfile cross-user write, two
   accidental gates (crashes not authz), JoinGroup open-join, token bearer-secret.
   Matrix summary doc (Phase 2 enforcement spec) + coverage S3 (~55% overall,
-  auth seam characterized) committed. Next: security review -> PR -> gate.
+  auth seam characterized) committed.
+- security-reviewer on the diff: PASS, zero findings (no production code
+  touched). PR #7 raised (had to target evincia-llc explicitly -- gh defaulted
+  to the MarlabsInc upstream). All 4 CI checks green on windows-latest incl. the
+  first CI run of the net48/NUnit3 targeting-pack merge. Copilot run 1: 3
+  comments -- BUILD.md count 144->187 fixed, tasks.md "unpushed" fixed, the
+  FilterConfig "won't compile" comment rejected (it's an ancestor namespace;
+  compiles+green in CI) with a thread reply. Run 2 clean. Also gitignored the
+  coverage output. Awaiting operator merge, then sprint-gate.
 
 ### 2026-07-24 (Sprint 2 gate + close-out) -- PASSED, all criteria on evidence
 - Gate evidence @ merged f618d84 (both CI lanes green post-merge): Data 72%
