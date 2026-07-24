@@ -197,6 +197,22 @@ methodology input, not scoring errors.
   mutations without ownership checks. Likely stays senior-architect work;
   register the pattern in the Category 11 checklist rather than the engine.
 
+### Sprint 4 retarget findings (foundation, 2026-07-24)
+
+- **R-005 / R-008 · CONFIRMED, partially remediated:** the deprecated/vulnerable
+  package layer was real. Sprint 4 unified EF at 6.5.2 (retired the 6.0.2-beta1
+  pin, R-004/R-012 dependency leg), moved the Katana/OWIN family to 4.2.3 and
+  Newtonsoft to 13.0.4, and cut the nuget-audit baseline from 8 firings to 2.
+  The residual 2 (AutoMapper `3.1.1-ci1000`, `Microsoft.AspNet.Identity.Owin`
+  1.0.0) are the ones with no Framework-safe bump -- they exit only with the
+  Phase 2 rebuilds (AutoMapper upgrade / Core Identity), confirming the LMRR's
+  read that the OWIN identity stack has no carry-forward.
+- **R-001 · in progress, feasibility proven:** SDK-style conversion of all 7
+  projects succeeded and `SocialGoal.Core` compiles on net10.0 in CI -- the
+  platform-agnostic leg of the retarget is demonstrated, not just planned. The
+  System.Web/EF6-bound projects stay net48 until Phase 2, exactly as the LMRR's
+  recommended action sequenced it.
+
 ### Methodology notes
 
 - **Trigger unknown closable by construction:** with no live DB and Code First
