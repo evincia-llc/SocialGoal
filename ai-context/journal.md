@@ -25,6 +25,50 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 6 · In-suite migration drift check silently wrong without designTime finalization
+
+- **Problem:** the CI-friendly equivalent of `dotnet ef migrations
+  has-pending-model-changes` (comparing the migration snapshot model to the
+  current model via `IMigrationsModelDiffer`) reported ~20 spurious
+  `AlterColumn` operations -- one per identity PK -- when the snapshot model was
+  initialized as a *runtime* model. Before/after were textually identical; the
+  disagreement was invisible provider annotations. Only a cross-check against
+  the real ef tool (which said "no changes") exposed the false positive; the
+  naive test would have driven a "fix" for non-existent drift.
+- **Where:** `src/SocialGoal.Web.Tests/Data/MigrationModelDriftTests.cs`
+  (work unit 2); resolution is `IModelRuntimeInitializer.Initialize(...,
+  designTime: true)` to match the diff's right-hand side, commented in place.
+  Uses EF-internal APIs (EF1001) because no public equivalent exists.
+- **Impact:** roughly an hour of implementor diagnosis; caught pre-commit.
+- **Resolution:** fixed; the check was then mutation-tested in both directions
+  (model change -> named-column failure + tool agreement).
+- **Report note:** tooling gap -- EF Core exposes drift checking only as a CLI
+  command, so putting the same guarantee in a test suite requires internal
+  APIs and a non-obvious finalization step. Anyone modernizing with
+  "migrations reviewed, drift gated in CI" discipline will hit this.
+
+### 2026-07-24 · Sprint 6 · Migrations toolchain friction (analyzer gate, manifest location, script --no-build)
+
+- **Problem:** three small snags standing up the EF migrations toolchain:
+  (1) scaffolder-generated migration code fails the solution's analyzer gate
+  (`CA1861` under `TreatWarningsAsErrors` + latest-recommended) -- and
+  hand-editing generated code is a trap because the next scaffold reverts it;
+  (2) `dotnet new tool-manifest` wrote `dotnet-tools.json` to the repo root
+  rather than the conventional `.config/`; (3) `dotnet ef migrations script
+  --no-build` right after `migrations add` silently emitted only the history
+  table (add builds *before* writing the new files -- rebuild first).
+- **Where:** `src/SocialGoal.Web/Data/Migrations/` + `.config/dotnet-tools.json`
+  (dotnet-ef 10.0.10 pinned as a local tool).
+- **Impact:** ~15 minutes combined; (1) recurs every sprint that scaffolds a
+  migration.
+- **Resolution:** (1) Migrations-folder-scoped `.editorconfig` suppressing
+  exactly CA1861, with a rule that additions must name the migration that
+  forced them (reviewed and accepted as build policy); (2) manifest moved to
+  `.config/`, tool restore verified; (3) rebuild-then-script noted here.
+- **Report note:** tooling gap (framework scaffolder output vs strict analyzer
+  gates) -- a friction class every analyzer-as-errors modernization will meet
+  the day it adopts EF migrations.
+
 ### 2026-07-24 · Sprint 6 · EF Core FK-index convention emits 26 indexes, not one per FK
 
 - **Problem:** the expected "one EF Core index per FK column" delta over the
