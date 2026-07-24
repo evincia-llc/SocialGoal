@@ -38,6 +38,8 @@ public static class SqlCatalog
             {
                 "nvarchar" => maxLength == -1 ? "nvarchar(max)" : $"nvarchar({maxLength / 2})",
                 "varchar" => maxLength == -1 ? "varchar(max)" : $"varchar({maxLength})",
+                "decimal" or "numeric" =>
+                    $"{type}({reader.GetByte(4)},{reader.GetByte(5)})",
                 _ => type,
             };
             var descriptor = string.Create(
