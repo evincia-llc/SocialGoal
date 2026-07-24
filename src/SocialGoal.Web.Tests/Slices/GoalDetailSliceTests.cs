@@ -91,9 +91,21 @@ public class GoalDetailSliceTests
     [OneTimeTearDown]
     public async Task DropDatabaseAndHost()
     {
-        client.Dispose();
-        await factory.DisposeAsync();
-        LocalDb.DropDatabase(SliceDb);
+        // OneTimeTearDown runs even when OneTimeSetUp failed: guard the
+        // disposables and drop the database unconditionally so a setup
+        // failure is not masked and the catalog is not leaked.
+        try
+        {
+            client?.Dispose();
+            if (factory is not null)
+            {
+                await factory.DisposeAsync();
+            }
+        }
+        finally
+        {
+            LocalDb.DropDatabase(SliceDb);
+        }
     }
 
     [Test]
