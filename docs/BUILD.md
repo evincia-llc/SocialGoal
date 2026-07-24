@@ -5,8 +5,10 @@ These are the only verified steps; if you change them, prove them first and
 update this file (repo rule: no guessed build commands).
 
 Result to expect: 7/7 projects build clean (warnings only, all pre-existing
-test-code warnings); **144 NUnit tests, 144 passing** (114 controller fixtures +
-30 Data characterization tests).
+test-code warnings); **187 NUnit tests, 187 passing** (114 controller fixtures +
+30 Data characterization + 16 enforcement-surface + 27 behavioral authz-matrix
+tests). The 144-test figure some Sprint 2 notes cite predates the Sprint 3
+authorization matrix.
 
 ## Why stock tooling fails
 

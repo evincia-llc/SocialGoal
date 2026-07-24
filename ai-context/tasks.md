@@ -2,12 +2,13 @@
 
 **Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3
 implementation complete on branch, gate not yet run
-**Current sprint:** Sprint 3 (Safety net II) -- all deliverables built on
-`sprint/s3-safety-net-2`, 187/187 green locally; pending security review +
-PR + Copilot loop, then sprint-gate
+**Current sprint:** Sprint 3 (Safety net II) -- all deliverables built,
+187/187 green locally and on CI; security review clean; **PR #7 open**, in the
+Copilot loop, then sprint-gate
 **Branch state:** master @ 333f8f8 (PR #6 merged). Working branch
-`sprint/s3-safety-net-2` @ bf21669 (unpushed): NUnit 3/Moq 4.20/net48 test
-infra, 16 enforcement-surface + 27 behavioral authz-matrix tests, matrix
+`sprint/s3-safety-net-2` pushed as **PR #7** (all 4 CI checks green): NUnit
+3/Moq 4.20/net48 test infra, 16 enforcement-surface + 27 behavioral
+authz-matrix tests, matrix
 summary doc, coverage baseline S3, D11 recorded. (update this line every session)
 
 ## Now (next actions, in order)
