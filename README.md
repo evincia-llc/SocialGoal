@@ -1,66 +1,76 @@
-SocialGoal v1.0.0
-================
-[![alt text](http://www.marlabs.com/sites/default/files/logo.png "Marlabs")](http://www.marlabs.com)
+# SocialGoal Modernization POC
 
-SocialGoal is a social networking web app for socializing your goals and strategies with people. The primary objective of the SocialGoal app is to provide a learning app for building real-world web apps with ASP.NET MVC 5 and EF 6 Code First. The application architecture is inspired from [EFMVC](http://efmvc.codeplex.com/). SocialGoal is developed by [Marlabs](http://www.marlabs.com).
+An [Evincia](https://www.evincia.co) proof of concept: take a real, abandoned
+.NET Framework 4.5 / ASP.NET MVC 5 application, modernize it to .NET 10 under
+the guidance of an Evincia Legacy Modernization Risk Report (LMRR), and record
+everything the work proves, disproves, or teaches about that report.
 
+The modernization is real. The purpose is the evidence.
 
-Technologies
-------------
-* ASP.NET MVC 5
-* EF 6 Code First 
-* AutoMapper
-* Autofac
-* Twitter Bootstrap
-* NUnit
-* Moq
+## Not for production
 
-Patterns & Practices
----------------------
-* Domain Driven Design (DDD)
-* Test-Driven Development (TDD)
-* Repository Pattern & Generic Repository
-* Unit of Work 
-* Dependency Injection
+**Do not deploy this application -- baseline or modernized -- to production.**
 
-Running the Application
------------------------
+* The legacy baseline contains known security defects (broken object-level
+  authorization, CSRF gaps, an SSRF path), documented deliberately and in
+  detail in [`docs/`](docs/) as part of the methodology. Several remain in the
+  code until the sprints that rebuild them.
+* There is no QA program, no client acceptance testing, and no hardening
+  certification. That will remain true at the end: the finished .NET 10
+  application demonstrates a methodology, not a shippable product.
+* Every database this project touches is disposable sample data.
 
-1. Open the solution in Visual Studio 2013. Build the solution to install Nuget packages.(This will automatically restore Nuget packages. Please ensure you have Nuget version 2.7 or higher)
-2. Open the web.config and change the connecting string "SocialGoalEntities" for working with your system.
-3. Run the application and  register a new User. (Please note that currently the applictaion does not provided any pre-defined user. Earlier there was a pre-defined user named "Admin")
+## Why this exists
 
-Please note that we have tested the app in Chrome browser. We have observed that a JavaScript Chart compoment is having browser compatibility issues with some versions of IE. 
+Evincia's Modernization Shield produces LMRRs: evidence-based risk reports on
+legacy codebases, built from static analysis plus senior-architect review. This
+repo asks the follow-up question: **if you actually perform the modernization
+the report scoped, what does the experience prove?**
 
-Goals and Roadmap
------------------
+Three instruments capture the answer, all versioned in this repo:
 
-### Overall Project Goals
+| Instrument | File | What it records |
+|---|---|---|
+| Journal | `ai-context/journal.md` | Every problem and roadblock, logged when it happens |
+| LMRR feedback register | `ai-context/lmrr-feedback.md` | Per-finding validation: confirmed, corrected, missed; candidate detection signals |
+| Effort actuals | `ai-context/lmrr-feedback.md` | Measured effort per sprint vs the report's illustrative estimates |
 
-* Web app for Social Networking for soclialize your goals and strategies.
-* A reference web app for ASP.NET MVC 5 and EF 6 Code First.
-* Improve developer productivity for building web apps on the Microsoft Web stack.
-* Reference app for building Test-Driven Development (TDD) and Domain-Driven Design (DDD).
-* Mobilize an existing app for solving the mobility challenges.
+The subject report is the sample LMRR for this codebase:
+[`docs/Evincia-Sample-LMRR-SocialGoal.pdf`](docs/Evincia-Sample-LMRR-SocialGoal.pdf).
 
-### Roadmap Targets
+## Status
 
-* Build a full-fledged social networking app with enhanced UI and new features.
-* Mobilize the existing app
- * Provide an API for Mobility, by using ASP.NET Web API 2.  
- * Build cross platform, minimalist mobile apps by using HTML5/JavaScript platform.
- * Build Mobile Backend as a Service (MBaaS) solution on the Windows Azure for the mobile apps. 
- 
-## Team
+Updated at each sprint gate. Gate tags: `s1-gate`, `s2-gate`, ...
 
-* [Shiju Varghese](http://weblogs.asp.net/shijuvarghese/) - Architect, Core Committer
-* [Sharon Sudhan](https://github.com/Sharonsudhan) - Lead Developer 
-* [Adarsh V.S.](https://github.com/adarsh-vs) - Lead Developer
-* [Peter Kneale](https://github.com/PeterKneale) - Contributor
-* [offi] (https://github.com/offi) - Contributor
- 
+| | |
+|---|---|
+| Plan | 14 sprints, 4 phases: [`docs/SocialGoal_Modernization_Epic.md`](docs/SocialGoal_Modernization_Epic.md) |
+| Phase | Phase 0 (safety gate) -- building the test coverage the migration rides on |
+| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed) |
+| Suite | 144 tests green in CI; coverage 50.7% line (data layer 72%, was 0%) |
+| Next | Sprint 3: authorization/CSRF characterization matrix |
+| LMRR readiness trajectory | 44/100 (Red) at baseline, target ~88 (Green) after Phase 3 |
 
+## How the work is organized
 
+* `docs/SocialGoal_Modernization_Epic.md` -- the governing plan; every LMRR
+  risk has an explicit disposition.
+* `ai-context/` -- cross-session working memory: state, decisions, backlog,
+  journal, feedback register.
+* One PR per coherent chunk of work; every PR carries an AI code-review loop
+  iterated until clean, and CI gates (build + tests, secret scan, dependency
+  audits) are required on `master`.
+* `docs/BUILD.md` -- the proven legacy build recipe (Windows, MSBuild 17,
+  NUnit console). Mind the database warning there before running anything.
 
- 
+## Provenance and license
 
+The baseline is the public
+[MarlabsInc/SocialGoal](https://github.com/MarlabsInc/SocialGoal) reference
+application (last upstream commit June 2014), preserved unmodified at the
+`legacy-baseline` tag, original README included. MIT licensed
+([LICENSE.md](LICENSE.md)); attribution to Marlabs and the original team.
+
+Evincia is not affiliated with Marlabs. This is independent analysis and
+modernization of publicly available code, undertaken as a methodology
+demonstration.

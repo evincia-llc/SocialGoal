@@ -17,5 +17,10 @@ description: Run a sprint exit-gate review for the SocialGoal epic -- verify eac
    failing criterion; session-log entry in `tasks.md`; a `journal.md` entry for
    every gate failure (gate failures are exactly the friction the end-of-epic
    report needs).
-5. **Report to operator:** table of criterion / evidence / verdict, overall
+5. **On PASS, update the public face:** refresh the Status section in
+   `README.md` (gates passed, suite/coverage numbers, next sprint) and push an
+   annotated gate tag (`s<n>-gate`) on the sprint's merged content commit.
+   Add the sprint's row to the effort-actuals table in
+   `ai-context/lmrr-feedback.md`.
+6. **Report to operator:** table of criterion / evidence / verdict, overall
    pass or fail, and the next sprint's first three actions if passing.

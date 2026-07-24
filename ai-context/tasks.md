@@ -1,23 +1,18 @@
 # Tasks -- current state
 
-**Phase:** Phase 0 (safety gate), Sprint 2
-**Current sprint:** Sprint 2 (Safety net I) -- all deliverables implemented,
-PR pending
-**Branch state:** current branch `sprint/s2-safety-net-1` (from merged master
-c24f86e; the crashed-session stray branch was reconciled -- see journal).
+**Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3 next
+**Current sprint:** between sprints -- Sprint 3 (Safety net II) is next
+**Branch state:** master @ f618d84 (Sprint 2 merged, both CI lanes green);
+gate tags `s1-gate`/`s2-gate` pushed. S2 gate close-out (gate record, README
+rewrite, `characterization-tests` skill) = PR #6 from `docs/s2-gate-close`.
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: merge PR #5 (Sprint 2; Copilot loop complete -- 4 runs, run 4
-   clean; security-reviewer PASS; all CI lanes green on head).
-2. Run `sprint-gate` for Sprint 2 post-merge, then start Sprint 3 (Safety net
-   II: authz matrix + CSRF characterization, test-infra refresh to NUnit 3)
-   on `sprint/s3-safety-net-2`.
-3. Deferred from foundation, now unblocked: create the
-   `characterization-tests` skill from the proven LocalDB harness pattern
-   (SetUpFixture lifecycle + FK-safe cleanup + store-metadata table
-   resolution).
+1. Start Sprint 3 (Safety net II: authz matrix + CSRF characterization,
+   test-infra refresh to NUnit 3, multi-user golden paths deferred from S1)
+   on `sprint/s3-safety-net-2`, once PR #6 (the S2 close-out) is merged --
+   operator merges; fresh session recommended for the sprint.
 
 ## Blocked / waiting
 
@@ -25,12 +20,23 @@ c24f86e; the crashed-session stray branch was reconciled -- see journal).
 
 ## Later (scheduled automation)
 
-- Sprint 2: create `characterization-tests` skill once the LocalDB harness
-  pattern is proven -- not before.
 - Sprint 9: create `slice-migration` skill after the first vertical slice lands;
   reuse for the remaining six slices.
+- (done 2026-07-24) `characterization-tests` skill minted at S2 gate close from
+  the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 2 gate + close-out) -- PASSED, all criteria on evidence
+- Gate evidence @ merged f618d84 (both CI lanes green post-merge): Data 72%
+  line w/ enforced floor (`docs/coverage-baseline.md`); schema baseline +
+  checksum/drift tests (`docs/schema/`); triggers CLOSED in writing (0
+  empirical + D1 by-construction); OpenCover instrumented in legacy-ci.
+- Close-out (this branch): backlog S2 done; tags `s1-gate`/`s2-gate` pushed;
+  README rewritten (POC framing, production disclaimer, provenance, status);
+  `characterization-tests` skill minted from the proven harness; sprint-gate
+  skill gains README-status/tag/effort step; S2 effort row added (~1 day vs
+  2-week plan).
 
 ### 2026-07-24 (Sprint 2, later) -- PR #5 + security review + Copilot loop
 - security-reviewer on the sprint diff: PASS, zero findings. PR #5 raised;
