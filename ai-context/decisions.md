@@ -223,8 +223,9 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 ### D17 -- Sprint 6-7 EF Core model layout and migration mechanics
 
-- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
-  may overturn at Sprint 6 PR review)
+- **Status:** DECIDED · 2026-07-24 · RATIFIED at Sprint 6 gate (advisor-reviewed;
+  operator ratifies by merging the S6 gate close-out PR). Originally a session
+  decision.
 - **Context:** The epic mandates the EF Core model (all ~25 entity sets mapped
   to the Sprint 2/D14 baseline) but not its physical layout. D15.5 forbids
   reusing legacy project names while both solutions coexist -- and the natural

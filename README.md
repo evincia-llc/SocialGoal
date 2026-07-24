@@ -48,10 +48,10 @@ Updated at each sprint gate. Gate tags: `s1-gate`, `s2-gate`, ...
 | | |
 |---|---|
 | Plan | 14 sprints, 4 phases: [`docs/SocialGoal_Modernization_Epic.md`](docs/SocialGoal_Modernization_Epic.md) |
-| Phase | **Phase 1 complete** -- modern ASP.NET Core host stood up on .NET 10 in `src/`; EF Core schema-parity, Identity password-compat, and a real HTTP vertical slice all proven ([`docs/adr/ADR-001-modern-host.md`](docs/adr/ADR-001-modern-host.md)). Phase 2 (the rebuilds) is next. |
-| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed), Sprint 3 (authorization/CSRF matrix, NUnit 3), Sprint 4 (SDK-style conversion, EF unified at 6.5.2, vuln audit 8&rarr;2), Sprint 5 (modern .NET 10 host + three gating spikes) |
-| Suite | Legacy: 187 tests green (data layer 87.6%; all 149 controller actions' enforcement surface pinned, `docs/security/authorization-matrix.md`). Modern: spike + slice tests green in the new `modern-ci` lane. |
-| Next | Phase 2 -- Sprints 6-7: EF6 &rarr; EF Core (schema-preserving migration, async services) |
+| Phase | **Phase 2 underway** -- EF6 &rarr; EF Core: the full 30-table model is mapped at exact schema parity to the baseline, governed by one Baseline migration with a CI-gated drift check (Sprint 6). Auth re-platform + the web rebuild follow. |
+| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed), Sprint 3 (authorization/CSRF matrix, NUnit 3), Sprint 4 (SDK-style conversion, EF unified at 6.5.2, vuln audit 8&rarr;2), Sprint 5 (modern .NET 10 host + three gating spikes), Sprint 6 (EF Core model + Baseline migration, schema parity through `Migrate()`) |
+| Suite | Legacy: 187 tests green (data layer 87.6%; all 149 controller actions' enforcement surface pinned, `docs/security/authorization-matrix.md`). Modern: 30 tests green in `modern-ci` (schema parity, migration drift, EF Core data behavior). |
+| Next | Sprint 7: async query/service layer over EF Core, retire the repository/UnitOfWork ceremony, port the remaining characterization tests |
 | LMRR readiness trajectory | 44/100 (Red) at baseline, target ~88 (Green) after Phase 3 |
 
 ## How the work is organized
