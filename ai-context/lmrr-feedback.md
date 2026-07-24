@@ -265,13 +265,41 @@ methodology input, not scoring errors.
 
 ## Effort actuals vs LMRR illustrative estimates
 
-Fill at each sprint-gate. LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1
-"1-2 months, 1-2 eng"; Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
+LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1 "1-2 months, 1-2 eng";
+Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
 
-| Sprint | Planned (epic) | Actual | Notes |
+**What is measured:** operator-observed **wall-clock elapsed** per working day
+(ground truth from the operator), not engineer-hours. Work is AI-executed
+(Fable orchestrating, Opus 4.8 implementing) under solo-operator review; much of
+the elapsed time is CI runs and Copilot review loops the operator is not
+heads-down for. This is **not the same unit** as the LMRR's engineer-effort
+estimates, which model a human team. The honest read is the order-of-magnitude
+gap, not a per-sprint multiplier. Earlier per-sprint "~working day" figures were
+loose session estimates; the daily wall-clock totals below are the correction.
+
+**Ground-truth wall-clock (operator-observed + commit-timestamp-derived):**
+
+| Working day | Window | Covered |
+|---|---|---|
+| 2026-07-23 | evening (Sprint 1 loop complete 19:01 EDT) | Foundation (evaluation, epic, governance, tooling) + Sprint 1 |
+| 2026-07-24 | 10:00am - 4:40pm (~6.7h) | Sprints 2, 3, 4, 5 + every gate close-out |
+
+Per-sprint cadence on 2026-07-24, from PR merge timestamps (EDT): S2 11:01,
+S3 13:06, S4 14:48, S5 16:33 -- consecutive sprints landed **~1h45m apart
+end-to-end** (S2 ~1h20m incl. crash recovery, S3 ~2h, S4/S5 ~1h45m each), and
+that span covers implementation + the Copilot review loop + merge + gate
+close-out, not implementation alone.
+
+Foundation through Sprint 5 -- Phase 0 complete plus all of Phase 1 -- is **~1.5
+working days of elapsed wall-clock** (yesterday evening + a 10:00am-4:40pm block
+today) covering 5 sprints, against LMRR illustrative estimates of "a few weeks"
+(Phase 0) plus "1-2 months" (Phase 1). Per-sprint content below.
+
+| Sprint | Planned (epic) | End-to-end span | Notes |
 |---|---|---|---|
-| Foundation (pre-S1) | -- | 1 day (2026-07-23) | Evaluation, epic, governance, tooling |
-| Sprint 1 | 2 weeks | ~half a working day (2026-07-23) | All deliverables: proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. AI-driven pace; multi-user golden paths deferred to S3 |
-| Sprint 2 | 2 weeks | ~1 working day (2026-07-24) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix), PR loop. Includes crashed-session recovery |
-| Sprint 3 | 2 weeks | ~1 working day (2026-07-24) | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11. Phase 0 total: ~2.5 days vs LMRR "a few weeks" |
-| Sprint 4 | 2 weeks | ~half a working day (2026-07-24) | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0, CI/BUILD.md rework, app smoke green. Pre-PR-loop figure |
+| Foundation (pre-S1) | -- | 2026-07-23 eve | Evaluation, epic, governance, tooling |
+| Sprint 1 | 2 weeks | 2026-07-23 eve | Proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. Multi-user golden paths deferred to S3 |
+| Sprint 2 | 2 weeks | ~1h20m (2026-07-24 AM) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix). Includes crashed-session recovery |
+| Sprint 3 | 2 weeks | ~2h | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11 |
+| Sprint 4 | 2 weeks | ~1h45m | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0 |
+| Sprint 5 | 2-4 weeks | ~1h45m | Modern host in `src/` (ASP.NET Core MVC net10.0, `.slnx`, NUnit 4); three gating spikes PASSED (EF Core schema parity, Identity hash compat, in-process HTTP slice); ADR-001; modern-ci lane. Phase 1 exit |

@@ -1,7 +1,8 @@
 # ADR-001 -- Modern host architecture (Sprint 5)
 
-Status: PROPOSED -- all three spike gates PASSED; operator ratifies at the
-Sprint 5 PR/gate review · 2026-07-24 · Sprint 5
+Status: ACCEPTED -- all three spike gates PASSED; ratified at the Sprint 5 gate
+review (advisor-reviewed; operator ratifies by merging the S5 gate close-out
+PR) · 2026-07-24 · Sprint 5
 Decisions referenced: D0 (single epic to .NET 10), D1 (no live data),
 D2 (Azure App Service Linux, private), D15 (modern solution layout).
 

@@ -1,23 +1,25 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 (foundation retarget); Sprint 5 work COMPLETE, PR loop next
-**Current sprint:** Sprint 5 (modern .NET 10 host + spikes) -- all
-deliverables done, all three gating spikes PASSED
-**Branch state:** `sprint/s5-modern-host` = PR #11, READY FOR OPERATOR MERGE:
-all three CI lanes green on head f44c51a; security-reviewer PASS (fixes in);
-Copilot loop complete -- runs 1-4 produced 8 comments (7 fixed, 1 rejected
-with reason), run 5 clean. (update this line every session)
+**Phase:** PHASE 1 COMPLETE (Sprints 1-5 gates PASSED); Phase 2 next
+**Current sprint:** between sprints -- Phase 2 Sprints 6-7 (EF6 -> EF Core) next
+**Branch state:** Sprint 5 merged (PR #11, master @ 44866f0, all 3 CI lanes
+green); gate tag `s5-gate` pushed. S5 gate close-out (gate record, ADR/D15
+ratification, effort correction re-applied + real timing) = PR from
+`docs/s5-gate-close`. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review/merge PR #11. Flagged for explicit operator
-   attention at review: D15 (src/ layout, .slnx, NUnit 4), ADR-001 PROPOSED
-   status, and the deliberately-unfixed legacy publish-content regression
-   (journal 2026-07-24 -- legacy publish is code-only under the SystemWeb SDK;
-   no consumer exists, legacy retires S11; overturn = add Content globs).
-2. Then sprint-gate for Sprint 5 / Phase 1 exit (LMRR Phase 2 entry:
-   ADR + proven auth/data approach + slice running -- all evidence in
-   docs/adr/ADR-001-modern-host.md and src/SocialGoal.Web.Tests).
+1. Operator: review and merge the S5 gate close-out PR. Merging = ratification of
+   the three gate decisions recorded there: **ADR-001 ACCEPTED**, **D15 ratified**,
+   **legacy-publish regression accepted document-only** (advisor concurred with all
+   three; overturn any by not merging / commenting).
+2. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
+   fresh session; sprint-start ritual applies (confirm /effort auto). This is the
+   first Phase 2 sprint; the standing Phase 2 constraints in
+   `.claude/rules/modernization.md` now bind.
+3. Housekeeping (non-blocking): the effort-correction commit that missed PR #10
+   (`8f7fa39` on `docs/s4-gate-close`) is now superseded -- its content is
+   re-applied here with real commit-derived timing; the stale branch can be deleted.
 
 ## Blocked / waiting
 
@@ -39,6 +41,20 @@ with reason), run 5 clean. (update this line every session)
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 5 gate + close-out) -- PASSED; PHASE 1 COMPLETE
+- Gate verified independently @ merged 44866f0 (all 3 CI lanes green: legacy,
+  modern, security): ADR-001 all three spikes proven with tests in
+  src/SocialGoal.Web.Tests (schema parity 35 cols/7 FKs exact; Identity 1.0 hash
+  verified+rehashed by Core PasswordHasher; /Goal/Details slice over
+  WebApplicationFactory = epic's first true HTTP test). Sequencing law: D1/D2
+  decided -> Phase 2 unlocked.
+- Ratifications recorded (operator ratifies by merging close-out PR): ADR-001
+  PROPOSED->ACCEPTED; D15 ratified (noted the D15/Opus-5 ID-collision -> Opus-5
+  uses D16); legacy-publish regression accepted document-only (advisor concurred).
+- Effort table: re-applied the orphaned correction (8f7fa39 missed PR #10) AND
+  replaced estimates with commit-derived real timing -- 5 sprints in ~1.5 working
+  days, ~1h45m end-to-end per sprint (S2-S5 today 10:00-16:40). s5-gate tagged.
 
 ### 2026-07-24 (Sprint 5) -- modern host + all three gating spikes PASSED
 - New src/ solution (D15: .slnx, dotnet-CLI-only, own CPM/locks, NUnit 4):
