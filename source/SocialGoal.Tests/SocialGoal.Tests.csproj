@@ -68,6 +68,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -90,6 +93,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CharacterizationDatabase.cs" />
+    <Compile Include="Data\TestDataHelper.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
