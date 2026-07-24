@@ -1,22 +1,18 @@
 # Tasks -- current state
 
-**Phase:** PHASE 0 COMPLETE (Sprints 1-3 gates PASSED); Phase 1 next
-**Current sprint:** between sprints -- Sprint 4 (foundation retarget) is next
-**Branch state:** Sprint 3 merged (PR #7, master @ 1359be1, CI green); gate
-tag `s3-gate` pushed. S3 gate close-out (gate record, README status +
-evincia.co links, sprint-start ritual) = PR from `docs/s3-gate-close`.
+**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 starting
+**Current sprint:** Sprint 4 (foundation retarget)
+**Branch state:** S3 close-out merged (PR #8, master @ c030de6). Sprint 4
+branch `sprint/s4-foundation-retarget` created off c030de6; first commit =
+D11 ratification + D12 (golden-paths deferral). Not yet pushed.
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator at this gate: ratify **D11** (matrix test level:
-   reflection surface + controller-invocation instead of out-of-proc HTTP;
-   flips to true HTTP tests on the Core host in Phase 2) and confirm the
-   multi-user *screenshot* golden-paths deferral to the Sprint 10 slice.
-2. Start Sprint 4 (Phase 1: SDK-style conversion of all 7 projects,
+1. Sprint 4 implementation (Phase 1: SDK-style conversion of all 7 projects,
    platform-agnostic libs toward net10.0, EF unified stable, critical vuln
-   subset) on `sprint/s4-foundation-retarget` -- fresh session; sprint-start
-   ritual applies (confirm /effort auto).
+   subset) on `sprint/s4-foundation-retarget` -- awaiting operator /effort
+   auto confirmation + "go".
 
 ## Blocked / waiting
 
@@ -30,6 +26,12 @@ evincia.co links, sprint-start ritual) = PR from `docs/s3-gate-close`.
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 4 start) -- ratifications recorded, awaiting go
+- Operator ratified D11 (matrix test level) and confirmed the multi-user
+  screenshot golden-paths deferral -- recorded as D11 status update + new D12.
+- Branch `sprint/s4-foundation-retarget` cut from master @ c030de6 (PR #8
+  merged). Sprint work gated on /effort auto confirmation per ritual.
 
 ### 2026-07-24 (Sprint 3 gate + close-out) -- PASSED; PHASE 0 COMPLETE
 - Gate evidence @ merged 1359be1 (CI green post-merge): 187/187 matrix suite in

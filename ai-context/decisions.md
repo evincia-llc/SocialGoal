@@ -60,8 +60,8 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 ### D11 -- Authz/CSRF matrix test level: controller-invocation + reflection, not out-of-proc HTTP
 
-- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
-  may overturn at Sprint 3 PR review)
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude · **Ratified by operator
+  2026-07-24** (Sprint 4 start)
 - **Context:** The epic's Sprint 3 text calls for "HTTP-level pinning tests"
   over every mutating action. MVC 5 on System.Web has no in-process HTTP test
   host: `Microsoft.Owin.Testing.TestServer` cannot host System.Web-routed MVC,
@@ -87,6 +87,20 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   enforcement. Friction journaled 2026-07-24; LMRR feedback candidate (the
   "HTTP-level pinning" remediation guidance is not directly implementable on
   System.Web hosts).
+
+### D12 -- Multi-user screenshot golden-paths deferred to the Sprint 10 slice
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Jerry (confirmed at Sprint 4 start)
+- **Context:** Sprint 1 captured 13 single-user golden-path screenshots. The
+  multi-user flows (group membership, feed interactions across actors) were not
+  screenshot-captured in Phase 0; their behavior is pinned instead by the
+  Sprint 3 behavioral matrix (27 controller-invocation tests over LocalDB).
+- **Decision:** Defer multi-user *screenshot* golden-path capture to the
+  Sprint 10 vertical slice that migrates those flows, where before/after
+  screenshots are taken as part of slice parity evidence.
+- **Consequence:** Phase 0 exit stands on the test matrix, not screenshots, for
+  multi-user behavior. The Sprint 10 slice checklist gains a
+  capture-before-migrating step.
 
 ## Open (blocking noted per epic)
 
