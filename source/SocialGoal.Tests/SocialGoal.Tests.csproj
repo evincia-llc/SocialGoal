@@ -95,6 +95,8 @@
   <ItemGroup>
     <Compile Include="Data\CharacterizationDatabase.cs" />
     <Compile Include="Data\TestDataHelper.cs" />
+    <Compile Include="Data\RepositoryBaseCharacterizationTests.cs" />
+    <Compile Include="Data\GoalRepositoryCharacterizationTests.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
