@@ -83,6 +83,14 @@ and a correctness hazard (prefetch, crawlers, history). The full set:
   `FollowRequest`, `AcceptRequest`, `RejectRequest`, `Unfollow`.
 - **EmailRequest (2):** `AddGroupUser`, `AddSupportToGoal` (token-mediated).
 
+The two `EmailRequest` actions are worth a note the behavioral pins made
+concrete: the invitation token is a **bearer secret not bound to the invited
+principal** -- any authenticated user who holds (or guesses) the token joins the
+group / supports the goal *as themselves*. Both actions commit the join/support
+and consume the token, then throw at an unrelated session-facade line
+(`HttpContext.Current` is null out-of-request); the mutation has already
+persisted. Pinned in `EmailRequestAuthorizationMatrixTests`.
+
 `LogOff`-by-GET is the canonical example: any page that embeds
 `<img src="/Account/LogOff">` logs the victim out.
 
@@ -109,10 +117,32 @@ the mutation and asserting it persists.
 | `Account.EditProfile` (POST) | `editedProfile.UserId` | **Edit any user's profile, name, and email** |
 | `Account.AcceptRequest` / `RejectRequest` (GET) | both party ids | Forge/destroy follow relationships between arbitrary users |
 
-Correctly-scoped counter-examples (bind actor and scope to
-`User.Identity.GetUserId()`, so an unrelated user's call is a no-op) are pinned
-too, as the boundary cases: `Goal.UnSupportGoal`, `Goal.UnSupportUpdate`,
-`Account.Unfollow`, `Account.Manage`, `Account.Disassociate`.
+Correctly-scoped counter-examples -- actions that bind both actor and scope to
+`User.Identity.GetUserId()`, so an unrelated user's call touches nothing of the
+owner's -- are pinned too, as the boundary cases: `Goal.UnSupportGoal`,
+`Goal.SupportGoal` (records the caller as supporter, not a forged one),
+`Account.FollowRequest`, `Account.Unfollow`. These are the shapes the Phase 2
+authorization must preserve, not the ones it must fix.
+
+### Two "accidental gates" -- crashes that are not access control
+
+The behavioral matrix found two actions where an unauthorized call fails only
+because the code happens to crash, not because it checks anything. These must not
+be mistaken for authorization in the rebuild:
+
+- `Account.Unfollow` by an unrelated user throws `ArgumentNullException`: the
+  follow-row lookup returns null and `DbSet.Remove(null)` throws. The owner's
+  follow survives -- but by accident of the caller-bound scope, not a check.
+- `Group.CreateGoal` by a non-member throws `NullReferenceException`: the
+  `GroupUser` lookup returns null and is dereferenced. Absent authorization
+  masquerading as a runtime error.
+
+### `Group.JoinGroup` -- an open-join hole, distinct from BOLA
+
+`JoinGroup` is self-scoped (the joiner is the principal, so no id is forged) but
+**ungated**: any authenticated user self-joins any group with no invitation or
+approval. Different defect shape from caller-supplied-id BOLA; same root cause
+(no authorization). Pinned in `GroupAuthorizationMatrixTests`.
 
 ## The `GroupUser.Admin` flag gates nothing
 

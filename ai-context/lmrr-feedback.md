@@ -106,6 +106,33 @@ methodology input, not scoring errors.
   target from `editedProfile.UserId` (posted model), so any authenticated user
   edits any other user's profile/name/email. Not in the original gap
   enumeration's named examples; found by the action census.
+- **BOLA now proven behaviorally, not just inferred:** 27 controller-invocation
+  tests over LocalDB (`source/SocialGoal.Tests/Authorization/*MatrixTests.cs`)
+  demonstrate real persisted mutations by an unrelated authenticated user across
+  Goal/Group/Account, and the Admin-flag-never-gates collapse (non-admin member
+  AND unrelated both mutate a group identically to the admin). This upgrades the
+  BOLA missed-candidate from static-inferred to executable evidence. Gap #1 is
+  no longer a checklist assertion -- it is a red test the Phase 2 rebuild turns
+  green as a 403.
+- **Two "accidental gates" · METHODOLOGY-NOTE:** `Account.Unfollow` (unrelated
+  caller -> `ArgumentNullException` on `DbSet.Remove(null)`) and
+  `Group.CreateGoal` (non-member -> NRE on null `GroupUser`) reject an
+  unauthorized call only because the code crashes, not because it checks. A
+  static "is there an authorization check" scan would see no check (correct); a
+  dynamic "does the unauthorized call fail" scan would see it fail (misleading).
+  Engine/reviewer signal: absent-authz masked by a null-deref is still absent
+  authz -- do not credit the crash as a control.
+- **`Group.JoinGroup` open-join · MISSED-CANDIDATE (new):** self-scoped (joiner
+  is the principal, no forged id) but ungated -- any authenticated user
+  self-joins any group with no invitation/approval. A distinct shape from
+  caller-supplied-id BOLA; an authorization-absence detector keyed only on
+  "caller-supplied entity id" would miss it. Signal: a create of a
+  membership/relationship row with no approval/invitation precondition.
+- **Invitation token is a bearer secret · MISSED-CANDIDATE (new):** the
+  `SecurityToken` guarding `EmailRequest.AddGroupUser`/`AddSupportToGoal` is not
+  bound to the invited principal -- any authenticated token-holder joins/supports
+  as themselves. Signal: a capability token consumed without checking it was
+  issued to the current principal.
 
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 

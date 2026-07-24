@@ -25,6 +25,40 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 3 · Absent authorization masked by runtime crashes (accidental gates)
+
+- **Problem:** two mutating actions "reject" an unauthorized caller only because
+  they crash, not because they check anything: `Account.Unfollow` throws
+  `ArgumentNullException` (`DbSet.Remove(null)` when the caller-scoped follow row
+  is absent) and `Group.CreateGoal` throws `NullReferenceException` for a
+  non-member (null `GroupUser` dereferenced). A naive dynamic probe ("did the
+  unauthorized call fail?") would read these as protected; they are not.
+- **Where:** surfaced while writing the behavioral authz matrix
+  (`source/SocialGoal.Tests/Authorization/`), invoking the real controllers.
+- **Impact:** none to schedule -- turned into two precise `Assert.Throws` pins
+  and an lmrr-feedback methodology note; matters for the Phase 2 rebuild (must
+  not mistake the crash for a control).
+- **Resolution:** pinned as-is (exceptions are outcomes; PIN, NEVER FIX).
+- **Report note:** hidden behavior -- a class of finding only dynamic execution
+  reveals, and one that can fool a dynamic check as easily as a static one.
+
+### 2026-07-24 · Sprint 3 · EmailRequest actions persist, then throw at the session facade
+
+- **Problem:** `EmailRequest.AddGroupUser`/`AddSupportToGoal` commit the
+  join/support and delete the token, then throw `NullReferenceException` at
+  `SocialGoalSessionFacade.Remove(...)` because `HttpContext.Current` is null
+  out-of-request. The design doc anticipated deferring these to a service-level
+  pin if the session facade proved unmockable; in practice the controller
+  actions were reachable in-process and the persist-before-throw sequence is a
+  cleaner characterization than a service-level proxy.
+- **Where:** `EmailRequestAuthorizationMatrixTests`.
+- **Impact:** none -- pinned both facts (mutation persists; action throws).
+- **Resolution:** fixed/worked-as-hoped -- no session fabrication needed.
+- **Report note:** hidden behavior -- an ambient-context dependency
+  (`HttpContext.Current`) that fails a controller action *after* its side
+  effects have committed; a partial-failure shape the rebuild's explicit
+  DI removes.
+
 ### 2026-07-24 · Sprint 3 · net48 retarget breaks the hermetic build (targeting-pack root is single-valued)
 
 - **Problem:** retargeting only SocialGoal.Tests to net48 (forced by the NUnit
