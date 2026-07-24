@@ -134,6 +134,43 @@ methodology input, not scoring errors.
   as themselves. Signal: a capability token consumed without checking it was
   issued to the current principal.
 
+### Sprint 4 findings (foundation retarget, 2026-07-24)
+
+- **R-004/R-012 · CONFIRMED, plus an uncalled-out consequence:** the version
+  skew was real and unification was clean mechanically -- but unifying
+  EF 6.0.x -> 6.5.2 with zero model/code change flipped `AspNetUsers.UserName`
+  from `NULL` to `NOT NULL` in generated DDL (caught by the Sprint 2 drift
+  test; accepted under D14, journal 2026-07-24). The LMRR treats version skew
+  as a dependency-hygiene risk; the evidence shows ORM version drift is also a
+  *schema-change vector*. Candidate engine signal: EF6 version spread across
+  projects scores higher when a Code First model exists (generated DDL is
+  version-dependent), independent of the packages' own advisories.
+- **R-001 · CORRECTION-CANDIDATE (layering nuance):** the retarget confirmed
+  the framework pins, but the LMRR's "platform-agnostic libraries" framing
+  overstates the seam: `SocialGoal.Model` is not platform-agnostic (its
+  `ApplicationUser : IdentityUser` welds the domain model to ASP.NET Identity
+  1.0/EF6, and `ProfilePic.cs` pulls `System.Web` into the entity layer), and
+  `SocialGoal.Service` carries a service->web-layer reference to
+  `SocialGoal.Web.Core` -- vestigial on inspection (a single dead
+  `using SocialGoal.Web.Core.Models;` in `GroupUpdateServices.cs:6`, no type
+  usage), but it prices as a real edge until proven dead, which is itself the
+  point: the dependency graph overstates coupling and only inspection shows it.
+  Of the three nominally portable libraries only
+  `SocialGoal.Core` (one file) reaches net10.0 in Phase 1. Candidate engine
+  signals: auth-framework base classes in the entity/model assembly;
+  System.Web references outside web-named projects; service->web project
+  edges. All three are statically detectable and directly price the migration.
+
+- **Broken views compile-proven · MISSED-CANDIDATE (new):** first-ever view
+  compilation (SDK conversion, MvcBuildViews) proved
+  `Views/Goal/Supporters.cshtml` and `Views/Goal/SupportersOfUpdate.cshtml`
+  bind `ApplicationUser.UserId`, which does not exist -- guaranteed runtime
+  crashes whenever rendered, invisible to the legacy build and to all 187
+  tests (journal 2026-07-24). Same class as the `_UpdateView.cshtml` cast
+  defect under R-006. Candidate engine signal: strongly-typed Razor views that
+  reference members absent from the declared model/type graph; a
+  compile-the-views pass over an MVC target is cheap and statically decisive.
+
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 
 - **Destructive initializer · MISSED-CANDIDATE:** `Database.SetInitializer` +
@@ -178,3 +215,4 @@ Fill at each sprint-gate. LMRR baselines: Phase 0 "a few weeks, 1 eng"; Phase 1
 | Sprint 1 | 2 weeks | ~half a working day (2026-07-23) | All deliverables: proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. AI-driven pace; multi-user golden paths deferred to S3 |
 | Sprint 2 | 2 weeks | ~1 working day (2026-07-24) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix), PR loop. Includes crashed-session recovery |
 | Sprint 3 | 2 weeks | ~1 working day (2026-07-24) | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11. Phase 0 total: ~2.5 days vs LMRR "a few weeks" |
+| Sprint 4 | 2 weeks | ~half a working day (2026-07-24) | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0, CI/BUILD.md rework, app smoke green. Pre-PR-loop figure |

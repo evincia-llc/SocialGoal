@@ -1,22 +1,20 @@
 # Tasks -- current state
 
-**Phase:** PHASE 0 COMPLETE (Sprints 1-3 gates PASSED); Phase 1 next
-**Current sprint:** between sprints -- Sprint 4 (foundation retarget) is next
-**Branch state:** Sprint 3 merged (PR #7, master @ 1359be1, CI green); gate
-tag `s3-gate` pushed. S3 gate close-out (gate record, README status +
-evincia.co links, sprint-start ritual) = PR from `docs/s3-gate-close`.
+**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 PR loop complete
+**Current sprint:** Sprint 4 -- PR #9 awaiting operator merge
+**Branch state:** `sprint/s4-foundation-retarget` @ 311202a pushed; PR #9 open
+(security review PASS; Copilot runs 1-2 = 3 comments all fixed, run 3 clean;
+all CI checks green incl. first run of the reworked legacy-ci and one
+self-inflicted red round fixed + journaled).
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator at this gate: ratify **D11** (matrix test level:
-   reflection surface + controller-invocation instead of out-of-proc HTTP;
-   flips to true HTTP tests on the Core host in Phase 2) and confirm the
-   multi-user *screenshot* golden-paths deferral to the Sprint 10 slice.
-2. Start Sprint 4 (Phase 1: SDK-style conversion of all 7 projects,
-   platform-agnostic libs toward net10.0, EF unified stable, critical vuln
-   subset) on `sprint/s4-foundation-retarget` -- fresh session; sprint-start
-   ritual applies (confirm /effort auto).
+1. Operator merges PR #9.
+2. After merge: sprint-gate S4 against the epic exit gate (SDK-style CI build
+   green on master; Core compiles net10.0; legacy app runs; suites green).
+   Then start Sprint 5 (modern host + gating spikes) in a fresh session
+   (sprint-start ritual applies).
 
 ## Blocked / waiting
 
@@ -24,12 +22,40 @@ evincia.co links, sprint-start ritual) = PR from `docs/s3-gate-close`.
 
 ## Later (scheduled automation)
 
+- Sprint 5 host spike (or first D2 deploy prep at latest): one-time publish
+  proof that Web.Release.config transforms still execute under the SDK-style
+  pipeline (DatabaseInitializer -> None, debug attribute stripped) --
+  security-reviewer question, Sprint 4 review.
+
 - Sprint 9: create `slice-migration` skill after the first vertical slice lands;
   reuse for the remaining six slices.
 - (done 2026-07-24) `characterization-tests` skill minted at S2 gate close from
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 4) -- foundation retarget, all deliverables in one session
+- All 7 projects SDK-style (D13): six on Microsoft.NET.Sdk, Web on
+  MSBuild.SDK.SystemWeb/4.0.107 (web targets = pinned NuGet dep, CI shims
+  gone); whole solution net45->net48; CPM + committed lock files, locked-mode
+  restore in CI. Six-project conversion delegated to implementor; Web + CI by
+  Fable.
+- EF unified 6.5.2: drift test caught UserName NULL->NOT NULL (D14 re-cut;
+  runtime-confirmed vs stale dev DB). Newtonsoft 13.0.4; Katana 4.2.3 (one
+  forced edit: dead Google OpenID call removed, D5 note); content-only
+  packages dropped; audit baseline 8->2 + package-bump-analysis.md for the
+  rest. Core multi-targets net10.0 (opt-in; .NET 10 SDK needs MSBuild 18 --
+  toolchain split journaled). First-ever view compile exposed 2 broken views
+  (LMRR missed-candidate; MvcBuildViews stays false for parity).
+- Proof: build 7/7 shimless, 187/187, register/login + golden-path pages green
+  on IIS Express, ELMAH lock intact. 4 journal entries, 3 LMRR entries, S4
+  effort row. Next: security-reviewer + PR.
+
+### 2026-07-24 (Sprint 4 start) -- ratifications recorded, awaiting go
+- Operator ratified D11 (matrix test level) and confirmed the multi-user
+  screenshot golden-paths deferral -- recorded as D11 status update + new D12.
+- Branch `sprint/s4-foundation-retarget` cut from master @ c030de6 (PR #8
+  merged). Sprint work gated on /effort auto confirmation per ritual.
 
 ### 2026-07-24 (Sprint 3 gate + close-out) -- PASSED; PHASE 0 COMPLETE
 - Gate evidence @ merged 1359be1 (CI green post-merge): 187/187 matrix suite in

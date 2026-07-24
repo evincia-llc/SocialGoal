@@ -25,6 +25,137 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · "--" in an XML comment broke CPM on CI (red PR run)
+
+- **Problem:** a Copilot-run-1 comment reword reintroduced `--` inside an XML
+  comment in `Directory.Packages.props` (invalid XML). NuGet then behaved as
+  if the CPM file were absent: every project failed NU1015 ("no version
+  specified") + NU1004 lock-file inconsistency on CI. Third occurrence of the
+  same typo pattern this sprint (the writing convention "spaced double
+  hyphen" leaking into XML), and the first to reach CI -- because the fix
+  commit changed "only a comment" and was pushed without re-running restore.
+- **Where:** commit 710ecfd; PR #9 checks red (build-and-test, nuget-audit).
+- **Impact:** one red CI round, ~15 min.
+- **Resolution:** fixed (comment reworded; repo-wide scan for `--` inside
+  csproj/props comments now clean; locked restore re-proven locally before
+  push). Lesson recorded: there is no such thing as a comment-only change to
+  an MSBuild file; restore is the cheapest possible gate and runs before any
+  push.
+- **Report note:** tooling gap / process -- XML comment syntax rejects `--`,
+  and MSBuild surfaces the parse failure as bewildering downstream NuGet
+  errors rather than an XML error at the file.
+
+### 2026-07-24 · Sprint 4 · No single toolchain can build the mixed net48/net10 solution
+
+- **Problem:** the .NET 10 SDK declares `minimumMSBuildVersion` 18.0.0, so
+  desktop MSBuild 17.14 (required by the System.Web/MVC 5 Web project, which
+  the dotnet CLI cannot build) cannot compile a net10.0 target -- NETSDK1045
+  with the resolver silently falling back to the 9.0 SDK. One solution, two
+  toolchains, neither covers it end to end.
+- **Where:** SocialGoal.Core multi-target (`net48;net10.0`), first Phase 1
+  net10.0 attempt.
+- **Impact:** ~45 min incl. the lock-file interaction below. Multi-targeting
+  had to become opt-in (`-p:IncludeNet10=true`) so the desktop solution build
+  stays net48; the net10.0 flavor builds via a dedicated dotnet-CLI step.
+  Follow-on trap: the opt-in TFM changes the restore graph, which locked-mode
+  restore rejects (and NU1005 blocks disabling the lock file ad hoc) -- solved
+  by pointing the proof restore at a scratch `NuGetLockFilePath`.
+- **Resolution:** fixed (conditional TargetFrameworks + separate proof step in
+  BUILD.md/CI). Revisit when the legacy Web project retires (Sprint 11): the
+  solution then builds wholly on the dotnet CLI.
+- **Report note:** tooling gap -- the transition period of a Framework-to-.NET
+  migration can sit across a hard toolchain boundary; plan for split builds
+  rather than assuming one pipeline.
+
+### 2026-07-24 · Sprint 4 · Katana 4 removes the dead Google OpenID call (forced source edit)
+
+- **Problem:** the Katana 2.0.0 -> 4.2.3 security bump fails compilation on
+  `app.UseGoogleAuthentication()` (Startup.Auth.cs:35): the parameterless
+  OpenID 2.0 overload no longer exists (Google retired the protocol in 2014;
+  the login was dead at baseline per the LMRR evaluation).
+- **Where:** `App_Start/Startup.Auth.cs`, Web project build under Katana 4.2.3.
+- **Impact:** ~10 min; one behavior-visible change -- the (nonfunctional)
+  Google button disappears from the login page. Only source edit forced by the
+  entire Sprint 4 package move.
+- **Resolution:** fixed -- call commented out alongside the other provider
+  stubs with a D5 pointer (Sprint 8 still decides whether a configured Google
+  OAuth 2.0 login is wanted). Register + fresh login smoke green on 4.2.3
+  (.AspNet.ApplicationCookie issued, authenticated redirect).
+- **Report note:** dependency surprise -- a security bump deleting the API a
+  dead feature sat on; the compiler, not the risk report, is what finally
+  removed it.
+
+### 2026-07-24 · Sprint 4 · View compilation (first ever) exposes two broken views
+
+- **Problem:** the SystemWeb SDK enables MvcBuildViews-style view compilation
+  by default; first-ever compile of the Razor views failed on
+  `Views/Goal/Supporters.cshtml` and `Views/Goal/SupportersOfUpdate.cshtml`,
+  both binding `ApplicationUser.UserId` -- a property that does not exist
+  (IdentityUser has `Id`). These views crash at runtime in the legacy app
+  whenever rendered; the legacy build never checked them (`MvcBuildViews=false`).
+- **Where:** SDK conversion of `SocialGoal.Web.csproj`; errors at
+  Supporters.cshtml(16,22), SupportersOfUpdate.cshtml(13,18).
+- **Impact:** ~15 min. Conversion set `MvcBuildViews=false` for legacy parity;
+  views are pinned behavior, rebuilt in Phase 2 (Sprint 9 slice), not fixed.
+- **Resolution:** worked around (parity preserved); defect recorded as LMRR
+  feedback (same class as the `_UpdateView.cshtml` SocialGoalUser cast).
+- **Report note:** legacy defect + tooling gap -- uncompiled Razor views are a
+  reservoir of latent runtime errors that no test or build step in the legacy
+  toolchain ever exercised.
+
+### 2026-07-24 · Sprint 4 · MSBuild.SDK.SystemWeb friction pair (CPM clash, VS-install web targets)
+
+- **Problem:** two integration snags converting the Web project: (1) the SDK's
+  implicit compiler PackageReferences carry versions, which NU1008-fails under
+  central package management -- its own CPM auto-detection did not fire;
+  (2) the SDK imports `Microsoft.WebApplication.targets` from the VS install
+  path, absent on Build Tools/CI (Sprint 1's MSB4226 in new clothing).
+- **Where:** `SocialGoal.Web.csproj` restore/build.
+- **Impact:** ~30 min combined.
+- **Resolution:** fixed -- `ApplySDKDefaultPackageVersions=false` +
+  central pins for the two compiler packages; web targets fed from the pinned
+  `MSBuild.Microsoft.VisualStudio.Web.targets` NuGet package via
+  `WebApplicationsTargetPath`, so the shim is now a restore-time dependency
+  and the CI-side `.buildtools` shim installs disappear.
+- **Report note:** tooling gap -- the System.Web SDK-style ecosystem is
+  community-maintained and needs these two glue decisions documented.
+
+### 2026-07-24 · Sprint 4 · EF6 minor-version unification alone changes emitted DDL
+
+- **Problem:** unifying EF 6.0.x -> 6.5.2 (no model change, no code change)
+  flips `AspNetUsers.UserName` from `NULL` to `NOT NULL` in generated DDL. The
+  Sprint 2 schema drift test caught it as a 1-line divergence from the baseline.
+- **Where:** `SchemaSnapshotTests.SchemaBaseline_MatchesGeneratedModelDdl`,
+  first full test run after the SDK-style/EF-6.5.2 conversion.
+- **Impact:** ~30 min to diagnose and decide; baseline re-cut under D14. Would
+  have been invisible without the Phase 0 schema referee -- on a live database
+  this class of change surfaces as a surprise migration step at cutover.
+- **Resolution:** fixed (D14: baseline re-cut; EF Core target schema inherits
+  NOT NULL). LMRR feedback candidate recorded against R-004/R-012.
+  Runtime confirmation same day: the app 500s against the pre-existing local
+  dev DB ("model backing SocialGoalEntities has changed") because even the
+  benign CreateDatabaseIfNotExists initializer runs a model-compatibility
+  check -- on any long-lived environment this bump is a hard outage, not a
+  silent drift. Local dev DB dropped and recreated under 6.5.2.
+- **Report note:** dependency surprise / hidden behavior -- ORM version drift as
+  a schema-change vector, distinct from the "version skew" risk as written.
+
+### 2026-07-24 · Sprint 4 · Test repo-path logic broke on the SDK TFM output subfolder
+
+- **Problem:** `SchemaSnapshotTests` located the repo root by counting `..`
+  segments from the test assembly's directory, asserting it runs from
+  `bin\Release`. SDK-style output adds a `net48` subfolder, so the tests
+  silently resolved `docs/schema` to a nonexistent `source\docs\schema` and
+  reported the committed baseline as "missing" (and self-primed a stray file
+  there).
+- **Where:** `source/SocialGoal.Tests/Data/SchemaSnapshotTests.cs` RepoPath.
+- **Impact:** 2 spurious test failures entangled with a real schema finding
+  (above); cost was mostly the care needed to separate the two.
+- **Resolution:** fixed -- path now walks upward to a repo marker instead of
+  assuming output depth.
+- **Report note:** tooling gap -- output-layout assumptions embedded in test
+  infra are a hidden cost of project-format modernization.
+
 ### 2026-07-24 · Sprint 3 · Absent authorization masked by runtime crashes (accidental gates)
 
 - **Problem:** two mutating actions "reject" an unauthorized caller only because

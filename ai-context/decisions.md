@@ -60,8 +60,8 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 
 ### D11 -- Authz/CSRF matrix test level: controller-invocation + reflection, not out-of-proc HTTP
 
-- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
-  may overturn at Sprint 3 PR review)
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude · **Ratified by operator
+  2026-07-24** (Sprint 4 start)
 - **Context:** The epic's Sprint 3 text calls for "HTTP-level pinning tests"
   over every mutating action. MVC 5 on System.Web has no in-process HTTP test
   host: `Microsoft.Owin.Testing.TestServer` cannot host System.Web-routed MVC,
@@ -88,13 +88,82 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   "HTTP-level pinning" remediation guidance is not directly implementable on
   System.Web hosts).
 
+### D12 -- Multi-user screenshot golden-paths deferred to the Sprint 10 slice
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Jerry (confirmed at Sprint 4 start)
+- **Context:** Sprint 1 captured 13 single-user golden-path screenshots. The
+  multi-user flows (group membership, feed interactions across actors) were not
+  screenshot-captured in Phase 0; their behavior is pinned instead by the
+  Sprint 3 behavioral matrix (27 controller-invocation tests over LocalDB).
+- **Decision:** Defer multi-user *screenshot* golden-path capture to the
+  Sprint 10 vertical slice that migrates those flows, where before/after
+  screenshots are taken as part of slice parity evidence.
+- **Consequence:** Phase 0 exit stands on the test matrix, not screenshots, for
+  multi-user behavior. The Sprint 10 slice checklist gains a
+  capture-before-migrating step.
+
+### D13 -- Sprint 4 SDK-conversion mechanics
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 4 PR review)
+- **Context:** The epic mandates SDK-style conversion of all 7 projects but not
+  the mechanics. Constraints discovered in inventory: `Microsoft.NET.Sdk` has no
+  System.Web web-application support; EF6 latest stable (6.5.2) requires
+  >= net462 while six projects target net45; the Web project depends on
+  `Microsoft.WebApplication.targets` (currently shimmed in CI); packages.config
+  HintPaths are inconsistent (Model references Identity assemblies with no
+  packages.config at all).
+- **Decision:**
+  1. **Whole solution retargets net45 -> net48** (Tests already there). 4.5 is
+     compile-time only -- the app already runs on the 4.8 in-place CLR -- and
+     net48 unlocks EF 6.5.2 and retires the pinned net45 reference-assembly shim.
+  2. **Web project converts via `MSBuild.SDK.SystemWeb` (pinned 4.0.107 in the
+     csproj `Sdk` attribute)** -- the community SDK for SDK-style System.Web
+     apps (desktop MSBuild only, which CI already uses). The other six use
+     `Microsoft.NET.Sdk`.
+  3. **PackageReference everywhere + central package management**
+     (`Directory.Packages.props`, transitive pinning on so EF unifies at 6.5.2
+     even where transitive) **+ committed lock files**, restored in locked mode
+     in CI.
+  4. **Content-only NuGet packages are dropped** (bootstrap, jQuery,
+     jQuery.Validation, Microsoft.jQuery.Unobtrusive.Validation, Modernizr,
+     Respond, T4Scaffolding.Core): under PackageReference they deliver nothing
+     (the app serves the vendored copies in `Scripts/`/`Content/`, tracked by
+     the retire.js baseline until Sprint 12). This shrinks the NuGet audit
+     baseline -- allowed without decision, noted here for transparency.
+  5. **Hand-written `AssemblyInfo.cs` files are deleted** in favor of
+     SDK-generated attributes.
+- **Consequence:** BUILD.md and legacy-ci.yml lose the net45 targeting-pack and
+  VSToolsPath shims; test/coverage paths move to `bin\Release\net48\`. The
+  legacy app must be re-proven running (exit-gate criterion). MVC stays 5.0.0
+  and Identity stays 1.0.0 (schema-coupled; Phase 2), recorded in the Sprint 4
+  breaking-bump analysis.
+
+### D14 -- Schema baseline re-cut under EF 6.5.2 (UserName NOT NULL)
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 4 PR review)
+- **Context:** The Sprint 4 EF unification (6.0.x -> 6.5.2, D13/R-004/R-012)
+  changes exactly one line of generated DDL: `AspNetUsers.UserName` becomes
+  `nvarchar(max) NOT NULL` (was `NULL`). The column comes from Identity 1.0's
+  `IdentityUser` base; the schema drift test caught the divergence as designed.
+- **Decision:** Re-cut the schema baseline of record (`docs/schema/`) under
+  EF 6.5.2. The shipped runtime is now 6.5.2, so the baseline must describe the
+  schema the app actually creates. No live database exists (D1) and Identity
+  always populates UserName, so the tightened constraint has no migration risk
+  and is semantically correct.
+- **Consequence:** The EF Core target schema (Sprints 6-7) inherits
+  `UserName NOT NULL`. LMRR feedback: EF6 minor-version unification alone can
+  change emitted DDL -- a hidden-risk class the LMRR's R-004 wording does not
+  call out explicitly (candidate engine predicate).
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |
 |---|---|---|---|
 | D3 | Image URL import: remove or harden | Remove | Sprint 11 |
 | D4 | `SearchController`: authorize or documented-public | Add `[Authorize]` | Sprint 11 |
-| D5 | External logins | Remove dead Google OpenID; add Google OAuth 2.0 only if wanted | Sprint 8 |
+| D5 | External logins | Remove dead Google OpenID; add Google OAuth 2.0 only if wanted. (Dead OpenID call already removed Sprint 4 -- Katana 4.2.3 deleted the API; journal 2026-07-24. Open question is OAuth 2.0 yes/no.) | Sprint 8 |
 | D6 | Bootstrap 3.4.1 parity vs Bootstrap 5 rebuild | 3.4.1 parity this epic; BS5 as follow-on | Sprint 12 |
 | D7 | Must email flows actually send? | No-op mailer with logging unless invites/reset required | Sprint 13 |
 | D8 | Observability backend (App Insights vs OTel+APM) | Application Insights (per D2 = Azure); confirm at Sprint 13 | Sprint 13 |

@@ -1,0 +1,102 @@
+{
+  "version": 2,
+  "dependencies": {
+    ".NETFramework,Version=v4.8": {
+      "PagedList": {
+        "type": "Direct",
+        "requested": "[1.17.0, )",
+        "resolved": "1.17.0",
+        "contentHash": "Ou6F3WKXh49hOo0TxWM+SkIGuKllYPuPPvnSYOlQ1sTrtuEyuDUhYbSJd5Sdb06i/sWUJZTjiUecEs3Ht/Hx3g=="
+      },
+      "socialgoal.core": {
+        "type": "Project"
+      },
+      "socialgoal.data": {
+        "type": "Project",
+        "dependencies": {
+          "EntityFramework": "[6.5.2, )",
+          "Microsoft.AspNet.Identity.EntityFramework": "[1.0.0, )",
+          "PagedList": "[1.17.0, )",
+          "SocialGoal.Model": "[1.0.0, )"
+        }
+      },
+      "socialgoal.model": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.AspNet.Identity.EntityFramework": "[1.0.0, )",
+          "SocialGoal.Core": "[1.0.0, )"
+        }
+      },
+      "socialgoal.web.core": {
+        "type": "Project",
+        "dependencies": {
+          "AutoMapper": "[3.1.1-ci1000, )",
+          "Microsoft.AspNet.Mvc": "[5.0.0, )",
+          "PagedList": "[1.17.0, )",
+          "SocialGoal.Core": "[1.0.0, )",
+          "SocialGoal.Model": "[1.0.0, )"
+        }
+      },
+      "AutoMapper": {
+        "type": "CentralTransitive",
+        "requested": "[3.1.1-ci1000, )",
+        "resolved": "3.1.1-ci1000",
+        "contentHash": "mI8NEDPBRPRa62tF9fD6p+xYVQ5F721lnqX5u89tvVK95VDseeGFXs1np04PXM/SKKzLEQ/OWDxfVaXzCzB2VQ=="
+      },
+      "EntityFramework": {
+        "type": "CentralTransitive",
+        "requested": "[6.5.2, )",
+        "resolved": "6.5.2",
+        "contentHash": "8iOcnaKcgkWh35s8EhknnENNwwqvrBJ7jeNbQITbGo1mIeIOhGPfVdNOXZ3Y496T6e6wfXvz0WeXlgMdcgVYSA=="
+      },
+      "Microsoft.AspNet.Identity.Core": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "W5S4Og5z68sWd75kQ09V4QKcWFjxIHB9oKaqkWPBE5rQ/iJ1/8A2vJRiH4laqn73oNCzVpN6PXMtQQXMfghWAw=="
+      },
+      "Microsoft.AspNet.Identity.EntityFramework": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "2JkUDH+tsLZtofzuFZExVczqH6LaI+ocC6WaTzjQ4yoiQs+kl73fbJAMJIQTEeIsSss5Sl1ZbAPwiMiVvy2nAA==",
+        "dependencies": {
+          "EntityFramework": "6.0.0",
+          "Microsoft.AspNet.Identity.Core": "1.0.0"
+        }
+      },
+      "Microsoft.AspNet.Mvc": {
+        "type": "CentralTransitive",
+        "requested": "[5.0.0, )",
+        "resolved": "5.0.0",
+        "contentHash": "Dj4C1Nwa1PyxhGtjQx9p6WNTBdvN46gJZMcjQAjxB+2Lmcr+ixior9FGHf9PjH6UUxR9vCZVz16zMlofFdwbPQ==",
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.0.0",
+          "Microsoft.AspNet.WebPages": "3.0.0"
+        }
+      },
+      "Microsoft.AspNet.Razor": {
+        "type": "CentralTransitive",
+        "requested": "[3.0.0, )",
+        "resolved": "3.0.0",
+        "contentHash": "mU1W0PRd1uQAb+triRGp51YYkw26RQ9q1tWPX57eHqxDqjx1smRHhejQhhnoAGr3bZDkl8AoUxegGR3tNM+YKA=="
+      },
+      "Microsoft.AspNet.WebPages": {
+        "type": "CentralTransitive",
+        "requested": "[3.0.0, )",
+        "resolved": "3.0.0",
+        "contentHash": "wkz/rBJlALE/tVfhVFpadcaBK0oLGOb8AbuyWQ5qr84JPHtqWjsJUe3Lfyzu2ZixdYrQ9NuKMNlKIshaJUsCFA==",
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "3.0.0",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        }
+      },
+      "Microsoft.Web.Infrastructure": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg=="
+      }
+    }
+  }
+}

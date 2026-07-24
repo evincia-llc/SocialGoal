@@ -144,7 +144,7 @@ create table [dbo].[AspNetRoles] (
 );
 create table [dbo].[AspNetUsers] (
     [Id] [nvarchar](128) not null,
-    [UserName] [nvarchar](max) null,
+    [UserName] [nvarchar](max) not null,
     [PasswordHash] [nvarchar](max) null,
     [SecurityStamp] [nvarchar](max) null,
     [Email] [nvarchar](max) null,

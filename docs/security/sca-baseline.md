@@ -16,22 +16,27 @@ Artifacts in this folder:
 - `retire-baseline.txt` -- accepted retire.js findings over the vendored
   browser assets (`file|component|version`); same new-finding gate.
 
-## Known-vulnerable NuGet packages (nuget.org audit, 2026-07-23)
+## Known-vulnerable NuGet packages (original baseline audit 2026-07-23; dispositions updated 2026-07-24)
 
-| Package | Version | Severity | Advisories |
-|---|---|---|---|
-| AutoMapper | 3.1.1-ci1000 | High | GHSA-rvv3-g6hj-g44x |
-| bootstrap | 3.0.0 | Moderate | GHSA-3mgp-fx93-9xv5, GHSA-4p24-vmcr-4gqj, GHSA-ph58-4vrj-w6hr, GHSA-3wqf-4x89-9g79, GHSA-9v3m-8fp8-mj99, GHSA-7mvr-5x2g-wfc8 |
-| jQuery | 1.10.2 | Moderate | GHSA-rmxg-73gg-4p98, GHSA-6c3j-c64m-qhgq, GHSA-jpcq-cgw6-v4j6 |
-| jQuery.Validation | 1.11.1 | High | GHSA-jxwx-85vp-gvwm |
-| Microsoft.AspNet.Identity.Owin | 1.0.0 | High | GHSA-25c8-p796-jg6r |
-| Microsoft.Owin | 2.0.0 | High | GHSA-hxrm-9w7p-39cc, GHSA-3rq8-h3gj-r5c6 |
-| Microsoft.Owin.Security.Cookies | 2.0.0 | High | GHSA-3rq8-h3gj-r5c6 |
-| Newtonsoft.Json | 5.0.6 | High | GHSA-5crp-9r3c-p9vr |
+Sprint 4 (2026-07-24, D13) remediated the critical subset; per-package
+disposition below. The audit baseline file now holds only the two surviving
+entries. Full analysis of what did NOT move and why:
+`docs/security/package-bump-analysis.md`.
 
-Planned disposition: Newtonsoft.Json and other non-breaking bumps in Sprint 4
-(critical subset); OWIN/Identity family replaced by ASP.NET Core Identity in
-Sprint 8; bootstrap/jQuery packages superseded in Sprint 12.
+| Package | Version | Severity | Advisories | Disposition (Sprint 4) |
+|---|---|---|---|---|
+| AutoMapper | 3.1.1-ci1000 | High | GHSA-rvv3-g6hj-g44x | REMAINS -- every fixed version is API-breaking (static Mapper API removed); mapping layer is rebuilt in Phase 2 |
+| bootstrap | 3.0.0 | Moderate | GHSA-3mgp-fx93-9xv5, GHSA-4p24-vmcr-4gqj, GHSA-ph58-4vrj-w6hr, GHSA-3wqf-4x89-9g79, GHSA-9v3m-8fp8-mj99, GHSA-7mvr-5x2g-wfc8 | PACKAGE REMOVED -- content-only under PackageReference; the served copies are the vendored files (retire.js baseline, Sprint 12) |
+| jQuery | 1.10.2 | Moderate | GHSA-rmxg-73gg-4p98, GHSA-6c3j-c64m-qhgq, GHSA-jpcq-cgw6-v4j6 | PACKAGE REMOVED -- same as bootstrap |
+| jQuery.Validation | 1.11.1 | High | GHSA-jxwx-85vp-gvwm | PACKAGE REMOVED -- same as bootstrap |
+| Microsoft.AspNet.Identity.Owin | 1.0.0 | High | GHSA-25c8-p796-jg6r | REMAINS -- fixed line is Identity 2.x, which changes the pinned AspNet* schema; replaced by ASP.NET Core Identity in Sprint 8 |
+| Microsoft.Owin | 2.0.0 | High | GHSA-hxrm-9w7p-39cc, GHSA-3rq8-h3gj-r5c6 | REMEDIATED -- Katana unified at 4.2.3 |
+| Microsoft.Owin.Security.Cookies | 2.0.0 | High | GHSA-3rq8-h3gj-r5c6 | REMEDIATED -- 4.2.3 |
+| Newtonsoft.Json | 5.0.6 | High | GHSA-5crp-9r3c-p9vr | REMEDIATED -- 13.0.4 |
+
+Remaining plan: AutoMapper superseded by the Phase 2 mapping rebuild;
+Identity.Owin replaced by ASP.NET Core Identity in Sprint 8; vendored
+bootstrap/jQuery files superseded in Sprint 12.
 
 ## Vulnerable vendored browser assets (retire.js, `Scripts/`)
 
