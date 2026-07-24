@@ -56,8 +56,18 @@ IDs). Identity 1.0 password hashes are ASP.NET Identity "v2" format
 Identity's `PasswordHasher` verifies natively and reports
 `SuccessRehashNeeded` -- rehash-on-login upgrades users to v3 transparently.
 
-**Spike evidence (pending):** a hash produced by the legacy Identity 1.0
-stack verifies under Core Identity and rehashes on successful login.
+**Spike evidence (PASSED 2026-07-24):**
+`src/SocialGoal.Web.Tests/Spikes/IdentityPasswordCompatSpikeTests.cs`. The
+test hash was produced by the real legacy stack (Microsoft.AspNet.Identity.Core
+1.0.0 net45 assembly on the .NET Framework 4.8 CLR -- provenance in the test),
+not a reimplementation. Proven: (1) Core Identity's `PasswordHasher` verifies
+it and reports `SuccessRehashNeeded`; (2) wrong passwords fail; (3) the full
+`UserManager.CheckPasswordAsync` path over the legacy-shaped AspNetUsers table
+(baseline schema, string IDs, LocalDB) authenticates and transparently
+rewrites the stored hash to v3 format (marker 0x01), which then verifies as
+plain `Success`. Sprint 8 needs no custom compatibility hasher -- the built-in
+compat path suffices; the spike's minimal user store is throwaway scaffolding
+the real Sprint 8 store replaces.
 
 ## Vertical slice (proof shape)
 
