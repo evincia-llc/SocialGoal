@@ -73,9 +73,17 @@ jobs:
       # (The repo-wide security.yml lane still covers secrets/vendored JS.)
       - name: SCA gate (no known-vulnerable packages)
         run: |
+          # NuGet 6.8+ exits 1 when vulnerabilities are FOUND, so the exit code
+          # cannot distinguish "tool failed" from "gate should fire" (security
+          # review S5 LOW-3). Trust the JSON: parse failure = tool failure;
+          # parsed report = evaluate it.
           $raw = dotnet list src\SocialGoal.Modern.slnx package --vulnerable --include-transitive --format json
-          if ($LASTEXITCODE -ne 0) { Write-Host "::error::dotnet list package failed"; exit 1 }
-          $report = $raw | ConvertFrom-Json
+          $exit = $LASTEXITCODE
+          try { $report = $raw | ConvertFrom-Json } catch { $report = $null }
+          if (-not $report -or -not $report.projects) {
+            Write-Host "::error::dotnet list package produced no usable report (exit $exit): $raw"
+            exit 1
+          }
           $vulnerable = @(
             foreach ($project in $report.projects) {
               foreach ($framework in $project.frameworks) {

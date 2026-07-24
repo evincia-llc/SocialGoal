@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SocialGoal.Web.Data;
@@ -26,7 +27,12 @@ public class Program
                 .Enrich.FromLogContext()
                 .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture));
 
-            builder.Services.AddControllersWithViews();
+            // Global antiforgery from day one (security review S5 LOW-1):
+            // free while the host is GET-only, and the Phase 2 standing
+            // constraint becomes the pipeline default rather than something
+            // each mutating slice must remember.
+            builder.Services.AddControllersWithViews(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             builder.Services.AddHealthChecks();
             builder.Services.AddSingleton(TimeProvider.System);
 

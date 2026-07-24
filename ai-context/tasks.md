@@ -26,6 +26,14 @@ PR/Copilot loop in flight this session. (update this line every session)
 
 ## Later (scheduled automation)
 
+- Sprint 9 (goal slices; security review S5 LOW-2): when the goal-detail slice
+  re-lands under auth, the negative-test matrix must include
+  private-goal/anonymous and private-goal/unrelated-user cases explicitly, not
+  just "requires login". Sprint 11 cutover gate: verify no anonymous data
+  route survives.
+- Sprint 8 (security review S5 INFO-4): Data Protection at D2 deploy = Azure
+  Blob persistence + Key Vault key protection + explicit SetApplicationName
+  (persistence alone is not protection).
 - Sprint 9: create `slice-migration` skill after the first vertical slice lands;
   reuse for the remaining six slices.
 - (done 2026-07-24) `characterization-tests` skill minted at S2 gate close from
