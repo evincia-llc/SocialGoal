@@ -1,20 +1,20 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 implementation complete
-**Current sprint:** Sprint 4 (foundation retarget) -- deliverables done locally,
-PR loop next
-**Branch state:** `sprint/s4-foundation-retarget` (off master @ c030de6),
-8 commits, not yet pushed: D11/D12 ratifications, D13 + CPM scaffold, 6-project
-SDK conversion, D14 schema re-cut, Web on MSBuild.SDK.SystemWeb, Katana 4.2.3,
-Core net10.0, CI/docs rework. Build 7/7 clean, 187/187 green, app smoke green.
+**Phase:** PHASE 1 (foundation retarget) -- Sprint 4 PR loop complete
+**Current sprint:** Sprint 4 -- PR #9 awaiting operator merge
+**Branch state:** `sprint/s4-foundation-retarget` @ 311202a pushed; PR #9 open
+(security review PASS; Copilot runs 1-2 = 3 comments all fixed, run 3 clean;
+all CI checks green incl. first run of the reworked legacy-ci and one
+self-inflicted red round fixed + journaled).
 (update this line every session)
 
 ## Now (next actions, in order)
 
-1. security-reviewer agent on the sprint diff, then pr-flow (push, PR to
-   evincia-llc master, Copilot loop until clean). Operator merges.
-2. After merge: sprint-gate S4 against the epic exit gate (SDK-style CI build;
-   Core compiles net10.0; legacy app runs; suites green).
+1. Operator merges PR #9.
+2. After merge: sprint-gate S4 against the epic exit gate (SDK-style CI build
+   green on master; Core compiles net10.0; legacy app runs; suites green).
+   Then start Sprint 5 (modern host + gating spikes) in a fresh session
+   (sprint-start ritual applies).
 
 ## Blocked / waiting
 
