@@ -25,6 +25,25 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 2 · OpenCover profiler silently produces empty coverage
+
+- **Problem:** on the same commit, the pull_request-event CI run passed the
+  coverage gate while the push-event run failed it with "SocialGoal.Data
+  missing from coverage results" -- OpenCover's `-register:user` profiler
+  failed to attach (its "No results" warning), tests all passed, and the empty
+  coverage.xml flowed into a misleading gate error.
+- **Where:** `.github/workflows/legacy-ci.yml` coverage step, hosted runner.
+- **Impact:** one red CI run on a green commit; ~20 minutes to diagnose from
+  logs.
+- **Resolution:** fixed -- switched to registration-free `-register:path64`,
+  added a module-data verification with one retry, and split the error
+  messages so a profiler failure is no longer reported as a coverage-floor
+  breach. Both event runs green on the following commit.
+- **Report note:** tooling gap. Coverage-as-gate needs the collector's own
+  health checked; "tests passed + no coverage" is a distinct failure mode
+  from "coverage dropped," and conflating them sends investigation the wrong
+  way.
+
 ### 2026-07-24 · Sprint 2 · LocalDB instance corrupted by an orphaned engine process
 
 - **Problem:** first EF connect to `(localdb)\MSSQLLocalDB` hung the test

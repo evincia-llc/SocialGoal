@@ -9,8 +9,8 @@ c24f86e; the crashed-session stray branch was reconciled -- see journal).
 
 ## Now (next actions, in order)
 
-1. Raise the Sprint 2 PR (security-reviewer on the diff first), run the
-   Copilot loop, then operator merges.
+1. Operator: merge PR #5 (Sprint 2; Copilot loop complete -- 4 runs, run 4
+   clean; security-reviewer PASS; all CI lanes green on head).
 2. Run `sprint-gate` for Sprint 2 post-merge, then start Sprint 3 (Safety net
    II: authz matrix + CSRF characterization, test-infra refresh to NUnit 3)
    on `sprint/s3-safety-net-2`.
@@ -31,6 +31,16 @@ c24f86e; the crashed-session stray branch was reconciled -- see journal).
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 2, later) -- PR #5 + security review + Copilot loop
+- security-reviewer on the sprint diff: PASS, zero findings. PR #5 raised;
+  Copilot runs 1-3 produced 3 comments, all fixed (undisposed NewRepo
+  factories -> TearDown disposal; triggers.md evidence-claim scoping; code
+  span reflow). Run 4 clean.
+- Mid-loop CI flake diagnosed and fixed: OpenCover -register:user attached no
+  profiler on one run (empty coverage, tests green) -- switched to path64 +
+  module-data verify/retry; journaled. All 4 CI runs green on head eb95135.
+- Next: operator merges PR #5; then sprint-gate S2 and start Sprint 3.
 
 ### 2026-07-24 (Sprint 2) -- Safety net I: all deliverables in one session
 - Recovered from a crashed prior session's stray pushed branch (journaled),
