@@ -1,26 +1,22 @@
 # Tasks -- current state
 
-**Phase:** Phase 0 (safety gate); Sprints 1-2 done (gates PASSED), Sprint 3
-implementation complete on branch, gate not yet run
-**Current sprint:** Sprint 3 (Safety net II) -- all deliverables built,
-187/187 green locally and on CI; security review clean; **PR #7 open, Copilot
-loop CLEAN (run 2), awaiting operator merge**, then sprint-gate
-**Branch state:** master @ 333f8f8 (PR #6 merged). Working branch
-`sprint/s3-safety-net-2` pushed as **PR #7** (all 4 CI checks green): NUnit
-3/Moq 4.20/net48 test infra, 16 enforcement-surface + 27 behavioral
-authz-matrix tests, matrix
-summary doc, coverage baseline S3, D11 recorded. (update this line every session)
+**Phase:** PHASE 0 COMPLETE (Sprints 1-3 gates PASSED); Phase 1 next
+**Current sprint:** between sprints -- Sprint 4 (foundation retarget) is next
+**Branch state:** Sprint 3 merged (PR #7, master @ 1359be1, CI green); gate
+tag `s3-gate` pushed. S3 gate close-out (gate record, README status +
+evincia.co links, sprint-start ritual) = PR from `docs/s3-gate-close`.
+(update this line every session)
 
 ## Now (next actions, in order)
 
-1. **Operator: merge PR #7.** CI green (4/4), security-reviewer clean, Copilot
-   loop clean (run 1: 3 comments -- 2 fixed, 1 rejected with reason; run 2: no
-   new comments).
-2. After merge: run `sprint-gate` for Sprint 3 (gate = matrix suite in CI +
-   three R-007 seams lit + sign-off for structural work).
-3. Operator decisions to surface at gate: ratify **D11** (matrix test level);
-   confirm the multi-user *screenshot* golden-paths deferral to the Sprint 10
-   slice (behavior is pinned by the matrix now).
+1. Operator at this gate: ratify **D11** (matrix test level:
+   reflection surface + controller-invocation instead of out-of-proc HTTP;
+   flips to true HTTP tests on the Core host in Phase 2) and confirm the
+   multi-user *screenshot* golden-paths deferral to the Sprint 10 slice.
+2. Start Sprint 4 (Phase 1: SDK-style conversion of all 7 projects,
+   platform-agnostic libs toward net10.0, EF unified stable, critical vuln
+   subset) on `sprint/s4-foundation-retarget` -- fresh session; sprint-start
+   ritual applies (confirm /effort auto).
 
 ## Blocked / waiting
 
@@ -34,6 +30,17 @@ summary doc, coverage baseline S3, D11 recorded. (update this line every session
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 3 gate + close-out) -- PASSED; PHASE 0 COMPLETE
+- Gate evidence @ merged 1359be1 (CI green post-merge): 187/187 matrix suite in
+  CI; all three R-007 seams lit -- data 87.6% line, auth enforcement surface
+  pinned (149-action census + 27 behavioral tests + inert filters proven dead),
+  triggers closed (S2). Structural-work sign-off granted; D11 + golden-paths
+  deferral surfaced for operator ratification.
+- Close-out: backlog S3 done; `s3-gate` tag; README status refresh + 3
+  evincia.co citation links (URLs verified live); sprint-start ritual added to
+  CLAUDE.md (effective Sprint 4); S3 + Phase 0 effort rows (~2.5 days total vs
+  "a few weeks").
 
 ### 2026-07-24 (Sprint 3) -- Safety net II: authz/CSRF matrix + test-infra refresh
 - Test infra: NUnit 2.6.3->3.14, Moq 4.1->4.20.72, Tests retargeted net48

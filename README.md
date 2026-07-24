@@ -22,10 +22,11 @@ The modernization is real. The purpose is the evidence.
 
 ## Why this exists
 
-Evincia's Modernization Shield produces LMRRs: evidence-based risk reports on
-legacy codebases, built from static analysis plus senior-architect review. This
-repo asks the follow-up question: **if you actually perform the modernization
-the report scoped, what does the experience prove?**
+Evincia's [Modernization Shield](https://www.evincia.co/modernization-shield.html)
+produces LMRRs: evidence-based risk reports on legacy codebases, built from
+static analysis plus senior-architect review. This repo asks the follow-up
+question: **if you actually perform the modernization the report scoped, what
+does the experience prove?**
 
 Three instruments capture the answer, all versioned in this repo:
 
@@ -36,7 +37,9 @@ Three instruments capture the answer, all versioned in this repo:
 | Effort actuals | `ai-context/lmrr-feedback.md` | Measured effort per sprint vs the report's illustrative estimates |
 
 The subject report is the sample LMRR for this codebase:
-[`docs/Evincia-Sample-LMRR-SocialGoal.pdf`](docs/Evincia-Sample-LMRR-SocialGoal.pdf).
+[`docs/Evincia-Sample-LMRR-SocialGoal.pdf`](docs/Evincia-Sample-LMRR-SocialGoal.pdf),
+also published at
+[evincia.co/sample-lmrr-socialgoal](https://www.evincia.co/sample-lmrr-socialgoal.html).
 
 ## Status
 
@@ -45,10 +48,10 @@ Updated at each sprint gate. Gate tags: `s1-gate`, `s2-gate`, ...
 | | |
 |---|---|
 | Plan | 14 sprints, 4 phases: [`docs/SocialGoal_Modernization_Epic.md`](docs/SocialGoal_Modernization_Epic.md) |
-| Phase | Phase 0 (safety gate) -- building the test coverage the migration rides on |
-| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed) |
-| Suite | 144 tests green in CI; coverage 50.7% line (data layer 72%, was 0%) |
-| Next | Sprint 3: authorization/CSRF characterization matrix |
+| Phase | **Phase 0 complete** -- the safety net the migration rides on is built; Phase 1 (foundation retarget) is next |
+| Gates passed | Sprint 1 (containment + reproducible build), Sprint 2 (data-layer characterization, schema baseline, trigger unknown closed), Sprint 3 (authorization/CSRF matrix, test-infra refresh to NUnit 3) |
+| Suite | 187 tests green in CI; ~55% line coverage (data layer 87.6%); enforcement surface of all 149 controller actions pinned (`docs/security/authorization-matrix.md`) |
+| Next | Sprint 4: SDK-style conversion and platform retarget toward .NET 10 |
 | LMRR readiness trajectory | 44/100 (Red) at baseline, target ~88 (Green) after Phase 3 |
 
 ## How the work is organized
@@ -72,5 +75,6 @@ application (last upstream commit June 2014), preserved unmodified at the
 ([LICENSE.md](LICENSE.md)); attribution to Marlabs and the original team.
 
 Evincia is not affiliated with Marlabs. This is independent analysis and
-modernization of publicly available code, undertaken as a methodology
+modernization of publicly available code, undertaken as a
+[public-codebase teardown](https://www.evincia.co/teardowns.html) methodology
 demonstration.
