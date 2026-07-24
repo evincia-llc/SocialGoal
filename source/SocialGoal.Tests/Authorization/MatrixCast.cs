@@ -226,6 +226,20 @@ namespace SocialGoal.Tests.Authorization
             return goal;
         }
 
+        internal static Focus SeedFocus(SocialGoalEntities context, int groupId, string name)
+        {
+            var focus = new Focus
+            {
+                FocusName = name,
+                Description = "seeded",
+                GroupId = groupId,
+                CreatedDate = new DateTime(2020, 1, 1)
+            };
+            context.Focuses.Add(focus);
+            context.SaveChanges();
+            return focus;
+        }
+
         internal static GroupRequest SeedGroupRequest(SocialGoalEntities context, int groupId, string userId)
         {
             var request = new GroupRequest { GroupId = groupId, UserId = userId, Accepted = false };

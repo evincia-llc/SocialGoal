@@ -279,5 +279,103 @@ namespace SocialGoal.Tests.Authorization
                 Assert.That(db.GroupUsers.Count(gu => gu.GroupId == groupId && gu.UserId == MatrixCast.UnrelatedId),
                     Is.EqualTo(1), "Any authenticated user self-joined the group with no invitation/approval.");
         }
+
+        // WHY: CreateFocus (POST) writes a focus into a caller-supplied group with no
+        // membership/admin check -- any authenticated user adds a focus to any group.
+        // BOLA (R-007); unprotected POST.
+        [Test]
+        public void CreateFocus_ByUnrelatedUser_CreatesFocusInGroup()
+        {
+            int groupId;
+            using (var db = new SocialGoalEntities())
+                groupId = MatrixCast.SeedGroupWithMembers(db, "group",
+                    MatrixCast.GroupAdminId, MatrixCast.GroupMemberId).GroupId;
+
+            var controller = NewGroupController(MatrixCast.UnrelatedId);
+            var form = new FocusFormModel { FocusName = "focus-by-unrelated", Description = "added by a non-member", GroupId = groupId };
+
+            controller.CreateFocus(form);
+
+            using (var db = new SocialGoalEntities())
+                Assert.That(db.Focuses.Count(f => f.GroupId == groupId && f.FocusName == "focus-by-unrelated"),
+                    Is.EqualTo(1), "An unrelated user created a focus in a group they do not belong to (BOLA).");
+        }
+
+        // WHY: EditFocus (POST) trusts the caller-supplied FocusId/GroupId with no
+        // membership/admin check -- any authenticated user rewrites any focus.
+        // BOLA (R-007); unprotected POST.
+        [Test]
+        public void EditFocus_ByUnrelatedUser_MutatesFocus()
+        {
+            int focusId, groupId;
+            using (var db = new SocialGoalEntities())
+            {
+                groupId = MatrixCast.SeedGroupWithMembers(db, "group",
+                    MatrixCast.GroupAdminId, MatrixCast.GroupMemberId).GroupId;
+                focusId = MatrixCast.SeedFocus(db, groupId, "focus-original").FocusId;
+            }
+
+            var controller = NewGroupController(MatrixCast.UnrelatedId);
+            var form = new FocusFormModel { FocusId = focusId, FocusName = "hijacked-focus", Description = "changed", GroupId = groupId };
+
+            controller.EditFocus(form);
+
+            using (var db = new SocialGoalEntities())
+                Assert.That(db.Focuses.Find(focusId).FocusName, Is.EqualTo("hijacked-focus"),
+                    "An unrelated user mutated a focus (BOLA).");
+        }
+
+        // WHY: DeleteConfirmedFocus (POST, ActionName "DeleteFocus") deletes by
+        // caller-supplied id with no membership/admin check. BOLA (R-007).
+        [Test]
+        public void DeleteConfirmedFocus_ByUnrelatedUser_DeletesFocus()
+        {
+            int focusId;
+            using (var db = new SocialGoalEntities())
+            {
+                var groupId = MatrixCast.SeedGroupWithMembers(db, "group",
+                    MatrixCast.GroupAdminId, MatrixCast.GroupMemberId).GroupId;
+                focusId = MatrixCast.SeedFocus(db, groupId, "focus").FocusId;
+            }
+
+            var controller = NewGroupController(MatrixCast.UnrelatedId);
+
+            controller.DeleteConfirmedFocus(focusId);
+
+            using (var db = new SocialGoalEntities())
+                Assert.That(db.Focuses.Find(focusId), Is.Null, "An unrelated user deleted a focus (BOLA).");
+        }
+
+        // WHY (incidental gate, NOT authorization): CreateGoal (POST) looks up the
+        // caller's GroupUser via GetGroupUser(caller, groupId) and dereferences it
+        // for GroupUserId. For a NON-member that lookup is null, so the action throws
+        // NullReferenceException before persisting. This accidental effect (there is
+        // no membership CHECK -- the code simply assumes the caller is a member) must
+        // not be mistaken for an access control. Pinned as-is; not "fixed".
+        [Test]
+        public void CreateGoal_ByNonMember_ThrowsNullReference_NoGoalPersisted()
+        {
+            int groupId;
+            using (var db = new SocialGoalEntities())
+                groupId = MatrixCast.SeedGroupWithMembers(db, "group",
+                    MatrixCast.GroupAdminId, MatrixCast.GroupMemberId).GroupId;
+
+            var controller = NewGroupController(MatrixCast.UnrelatedId);
+            var form = new GroupGoalFormModel
+            {
+                GoalName = "non-member-goal",
+                Description = "should not persist",
+                StartDate = new DateTime(2020, 1, 1),
+                EndDate = new DateTime(2020, 12, 31),
+                GroupId = groupId
+            };
+
+            Assert.Throws<NullReferenceException>(() => controller.CreateGoal(form),
+                "A non-member's GroupUser lookup is null and is dereferenced (incidental gate, not an authz check).");
+
+            using (var db = new SocialGoalEntities())
+                Assert.That(db.GroupGoal.Count(g => g.GroupId == groupId), Is.EqualTo(0),
+                    "No group goal was persisted.");
+        }
     }
 }

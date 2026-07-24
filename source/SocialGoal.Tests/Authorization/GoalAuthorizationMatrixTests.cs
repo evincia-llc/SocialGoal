@@ -205,6 +205,27 @@ namespace SocialGoal.Tests.Authorization
                     Is.EqualTo(1), "The owner's support must survive an unrelated user's UnSupportGoal.");
         }
 
+        // WHY (correctly-scoped positive): SupportGoal(id) records the supporter as
+        // User.Identity.GetUserId() -- the supporter id cannot be forged. There is no
+        // gate on supporting (any user may support any goal), but the identity is
+        // caller-bound. This is the safe create-side shape shared by SupportGoal/
+        // SupportGoalNow/SupportUpdate; UnSupportGoal above pins the delete side.
+        [Test]
+        public void SupportGoal_ByAnyUser_RecordsSupportAsCallerNotAForgedSupporter()
+        {
+            int goalId;
+            using (var db = new SocialGoalEntities())
+                goalId = MatrixCast.SeedGoal(db, MatrixCast.OwnerId, "owner-goal").GoalId;
+
+            var controller = NewGoalController(MatrixCast.UnrelatedId);
+
+            controller.SupportGoal(goalId);
+
+            using (var db = new SocialGoalEntities())
+                Assert.That(db.Support.Count(s => s.GoalId == goalId && s.UserId == MatrixCast.UnrelatedId),
+                    Is.EqualTo(1), "The support was recorded with the caller as supporter.");
+        }
+
         private static int GoalIdOf(int updateId)
         {
             using (var db = new SocialGoalEntities())
