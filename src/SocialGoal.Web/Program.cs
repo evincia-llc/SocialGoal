@@ -69,8 +69,10 @@ public class Program
             }
 
             app.UseHttpsRedirection();
-            app.UseSerilogRequestLogging();
             app.UseRouting();
+            // After UseRouting so completion events can carry endpoint/route
+            // data (Copilot run 2).
+            app.UseSerilogRequestLogging();
 
             app.UseAuthorization();
 
