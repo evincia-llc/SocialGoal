@@ -25,6 +25,102 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 6 · gh CLI friction in the PR flow (Copilot reviewer login, multiline --body)
+
+- **Problem:** two gh quirks in one PR flow: (1) `gh pr edit --add-reviewer
+  copilot` fails with a GraphQL "Could not resolve user" (the CLI hint says
+  `@copilot`, the GraphQL path wants a resolvable login); the REST endpoint
+  with `reviewers[]=copilot-pull-request-reviewer[bot]` works. (2) `gh pr edit
+  --body $var` with a multiline PowerShell string mangled argument passing --
+  body content beginning with `- ` was parsed as flags; `--body-file` is the
+  reliable route on Windows.
+- **Where:** PR #14 flow (`pr-flow` skill), PowerShell 7 + gh.
+- **Impact:** ~5 minutes at the time; but see the follow-on defect below, which
+  shipped a corrupted PR description the operator had to catch.
+- **Resolution:** worked around (REST for the reviewer request, `--body-file`
+  for body edits). Note for the pr-flow skill if it recurs next sprint.
+- **Follow-on defect (operator-caught):** the `--body-file` workaround itself
+  corrupted the PR body. PowerShell captures multi-line native output
+  (`gh ... --jq .body`) as an *array of lines*; the multi-line regex intended
+  to update the checklist silently matched nothing across array elements,
+  `$new -ne $body` on two arrays is element-wise and truthy anyway (so the
+  script *reported success*), and `Set-Content -NoNewline` with an array joins
+  elements with **no separator** -- the entire PR description collapsed onto
+  one line and rendered as a single giant heading. Fixed by rebuilding the
+  body from the authored source and re-editing via `--body-file`; the safe
+  pattern is `-join "`n"` immediately after capture, and never trusting an
+  array-vs-array `-ne` as a change check.
+- **Report note:** tooling gap (CI/CLI ergonomics) compounded by a
+  shell-semantics trap; logged in full because the failure was silent-success
+  shaped -- the automation *said* it updated the body correctly and did not --
+  and it took operator review to surface it. AI-driven delivery leans on these
+  seams every sprint; silent-success failures are the expensive kind.
+
+### 2026-07-24 · Sprint 6 · In-suite migration drift check silently wrong without designTime finalization
+
+- **Problem:** the CI-friendly equivalent of `dotnet ef migrations
+  has-pending-model-changes` (comparing the migration snapshot model to the
+  current model via `IMigrationsModelDiffer`) reported ~20 spurious
+  `AlterColumn` operations -- one per identity PK -- when the snapshot model was
+  initialized as a *runtime* model. Before/after were textually identical; the
+  disagreement was invisible provider annotations. Only a cross-check against
+  the real ef tool (which said "no changes") exposed the false positive; the
+  naive test would have driven a "fix" for non-existent drift.
+- **Where:** `src/SocialGoal.Web.Tests/Data/MigrationModelDriftTests.cs`
+  (work unit 2); resolution is `IModelRuntimeInitializer.Initialize(...,
+  designTime: true)` to match the diff's right-hand side, commented in place.
+  Uses EF-internal APIs (EF1001) because no public equivalent exists.
+- **Impact:** roughly an hour of implementor diagnosis; caught pre-commit.
+- **Resolution:** fixed; the check was then mutation-tested in both directions
+  (model change -> named-column failure + tool agreement).
+- **Report note:** tooling gap -- EF Core exposes drift checking only as a CLI
+  command, so putting the same guarantee in a test suite requires internal
+  APIs and a non-obvious finalization step. Anyone modernizing with
+  "migrations reviewed, drift gated in CI" discipline will hit this.
+
+### 2026-07-24 · Sprint 6 · Migrations toolchain friction (analyzer gate, manifest location, script --no-build)
+
+- **Problem:** three small snags standing up the EF migrations toolchain:
+  (1) scaffolder-generated migration code fails the solution's analyzer gate
+  (`CA1861` under `TreatWarningsAsErrors` + latest-recommended) -- and
+  hand-editing generated code is a trap because the next scaffold reverts it;
+  (2) `dotnet new tool-manifest` wrote `dotnet-tools.json` to the repo root
+  rather than the conventional `.config/`; (3) `dotnet ef migrations script
+  --no-build` right after `migrations add` silently emitted only the history
+  table (add builds *before* writing the new files -- rebuild first).
+- **Where:** `src/SocialGoal.Web/Data/Migrations/` + `.config/dotnet-tools.json`
+  (dotnet-ef 10.0.10 pinned as a local tool).
+- **Impact:** ~15 minutes combined; (1) recurs every sprint that scaffolds a
+  migration.
+- **Resolution:** (1) Migrations-folder-scoped `.editorconfig` suppressing
+  exactly CA1861, with a rule that additions must name the migration that
+  forced them (reviewed and accepted as build policy); (2) manifest moved to
+  `.config/`, tool restore verified; (3) rebuild-then-script noted here.
+- **Report note:** tooling gap (framework scaffolder output vs strict analyzer
+  gates) -- a friction class every analyzer-as-errors modernization will meet
+  the day it adopts EF migrations.
+
+### 2026-07-24 · Sprint 6 · EF Core FK-index convention emits 26 indexes, not one per FK
+
+- **Problem:** the expected "one EF Core index per FK column" delta over the
+  baseline came out at 26 for 28 FKs. EF Core's convention skips a column that
+  already leads an existing index: `AspNetUserLogins.UserId` and
+  `AspNetUserRoles.UserId` lead their tables' composite PKs, so no extra index
+  is created; `AspNetUserRoles.RoleId` (second PK column) still gets one.
+- **Where:** `src/SocialGoal.Web.Tests/Data/SchemaParityTests.cs` index-delta
+  pin, work unit 1 of the EF6 -> EF Core port.
+- **Impact:** minutes (implementor caught it while pinning the delta). Recorded
+  because the baseline migration (work unit 2) must reproduce the same 26 -- if
+  the migration's generated DDL disagrees with the model's EnsureCreated, this
+  convention is the first suspect.
+- **Resolution:** fixed -- the delta is pinned as an exact sorted 26-entry list.
+- **Report note:** dependency surprise (framework convention subtlety), the
+  benign kind: parity tests turned it from a silent divergence into a counted,
+  documented addition. Also worth reporting: the full 30-table port itself
+  landed green on the first parity run with zero mapping iterations -- the
+  Sprint 5 spike (TPH nullability, shadow FKs, datetime, EF6 constraint names)
+  had already absorbed the discovery cost. Spike-first sequencing pays.
+
 ### 2026-07-24 · Phase 1/2 boundary · Which model implemented Sprints 4-5 is unverifiable (floating alias + session vintage)
 
 - **Problem:** two sessions gave contradictory, unprovable answers to "what Opus

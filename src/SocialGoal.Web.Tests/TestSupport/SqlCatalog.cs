@@ -4,12 +4,33 @@ using Microsoft.Data.SqlClient;
 namespace SocialGoal.Web.Tests.TestSupport;
 
 /// <summary>
-/// Reads the parts of a database's catalog the schema-parity spike compares:
-/// column facets, primary-key column sets, and foreign keys. PK/index *names*
-/// are excluded by design -- the EF6 baseline uses system-generated PK names.
+/// Reads the parts of a database's catalog the schema-parity tests compare:
+/// table names, column facets, primary-key column sets, and foreign keys.
+/// PK/index *names* are excluded by design -- the EF6 baseline uses
+/// system-generated PK names.
 /// </summary>
 public static class SqlCatalog
 {
+    /// <summary>
+    /// Every user table in dbo -- unfiltered, so a table appearing on one side
+    /// only is a failure rather than something a filter can hide.
+    /// </summary>
+    public static SortedSet<string> ReadTableNames(string database)
+    {
+        var result = new SortedSet<string>(StringComparer.Ordinal);
+        using var connection = new SqlConnection(LocalDb.ConnectionStringFor(database));
+        connection.Open();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT t.name FROM sys.tables t WHERE SCHEMA_NAME(t.schema_id) = 'dbo'";
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            result.Add(reader.GetString(0));
+        }
+
+        return result;
+    }
+
     public static SortedDictionary<string, string> ReadColumns(string database, IReadOnlyCollection<string> tables)
     {
         var result = new SortedDictionary<string, string>(StringComparer.Ordinal);

@@ -1,28 +1,45 @@
 # Tasks -- current state
 
-**Phase:** PHASE 1 COMPLETE (Sprints 1-5 gates PASSED); Phase 2 next
-**Current sprint:** between sprints -- Phase 2 Sprints 6-7 (EF6 -> EF Core) next
-**Branch state:** Sprints 1-5 + gate close-outs merged (master @ 839250a, all 3
-CI lanes green); gate tags `s1`-`s5` pushed. D16 pin (implementor ->
-claude-opus-5) = PR from `docs/d16-pin-implementor`. (update this line every session)
+**Phase:** PHASE 2 -- Sprint 6 done pending merge (EF6 -> EF Core, first of 6-7)
+**Current sprint:** Sprint 6 -- PR #14 open on `sprint/s6-efcore` @ 9958340
+(15 commits), all CI lanes green, security-reviewer PASS, Copilot run 2 CLEAN.
+Awaiting operator merge. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: merge the D16 PR (pins implementor to `claude-opus-5`).
-2. **Start Phase 2 -- Sprints 6-7 (EF6 -> EF Core)** on `sprint/s6-efcore` --
-   **fresh session** (Opus-5 build + current toolchain); sprint-start ritual
-   applies (confirm /effort auto). First Phase 2 sprint; the standing Phase 2
-   constraints in `.claude/rules/modernization.md` now bind, and the Sprint 2
-   characterization suite is the migration's correctness net (EF Core must
-   reproduce the schema baseline and keep the data-layer tests green).
-3. Housekeeping (non-blocking): the stale `docs/s4-gate-close` branch (orphaned
-   effort commit `8f7fa39`, now superseded on master) can be deleted.
+1. Operator: merge PR #14 (Sprint 6: EF Core model + Baseline migration +
+   characterization port; 30/30 tests).
+2. Post-merge: run `sprint-gate` for Sprint 6 (gate wording spans Sprints 6-7;
+   assess the S6 share: parity + migration + ported suite green in CI at the
+   merged commit; effort row + `s6-gate` tag land there). Then start Sprint 7
+   on `sprint/s7-<slug>` -- sprint-start ritual applies (confirm /effort auto).
+3. Sprint 7 checklist (from S6 findings): every dated entity creation sets
+   dates via injected clock (no ctor defaults; default(DateTime) hard-fails
+   insert); bulk Execute* never mixed with tracked entities (rules file);
+   port GoalRepositoryCharacterizationTests (9 tests) against the new
+   query/service layer incl. zero-based paging quirk; Goal/GroupGoal
+   GoalStatusId=1 default moves to services; constraint-addition decision
+   (14 unconstrained columns); service port = async end to end per rules.
+4. Housekeeping (non-blocking, operator): delete stale `docs/s4-gate-close`
+   branch (orphaned effort commit `8f7fa39`, superseded on master) -- Claude's
+   attempt was blocked by the permission classifier.
 
 ## Blocked / waiting
 
 - None.
 
 ## Later (scheduled automation)
+
+- Sprint 8: the four legacy-shaped Identity POCOs (`IdentityRole`,
+  `IdentityUserClaim`, `IdentityUserLogin`, `IdentityUserRole` in
+  `SocialGoal.Web.Data`) collide by simple name with
+  `Microsoft.AspNetCore.Identity` types -- delete/replace them in the same
+  stroke as adopting Core Identity, and watch using-directives in files that
+  import both namespaces. (Reviewed at S6: kept as-is deliberately; they are
+  placeholders that die in Sprint 8.)
+- Sprint 7: decide (D-entry) whether to add the missing FKs/unique constraints
+  the epic schedules -- 14 unconstrained reference columns catalogued in
+  lmrr-feedback.md Sprint 6 section; any addition is intentional schema drift.
 
 - Sprint 9 (goal slices; security review S5 LOW-2): when the goal-detail slice
   re-lands under auth, the negative-test matrix must include
@@ -38,6 +55,23 @@ claude-opus-5) = PR from `docs/d16-pin-implementor`. (update this line every ses
   the proven harness.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-24 (Sprint 6) -- EF6 -> EF Core: model, migration, characterization; PR #14
+- D17 recorded; full 30-table model + configs ported (implementor/claude-opus-5,
+  3 work units), parity proven by live catalog diff vs baseline (153 cols/30
+  PKs/28 FKs exact, 26-index delta pinned) THROUGH Database.Migrate(); Baseline
+  migration + HasData seed (explicit ids, GoalStatusId 1 = In Progress); drift
+  check as a mutation-tested in-suite test. First parity run green, zero
+  mapping iterations -- S5 spike absorbed the discovery cost.
+- Characterization port: EF6->EF Core gap = 3 nameable deltas (ExecuteDelete
+  bypasses tracker; disposed-context exception type; default(DateTime) now
+  hard-fails insert) -- all in rules/LMRR; everything else identical by test.
+  Suite 12->30. 2 new rules in modernization.md; 5 LMRR entries; 3 journal
+  entries (designTime drift trap, toolchain friction, FK-index convention).
+- PR loop: security-reviewer PASS (0 findings above INFO); PR #14; Copilot
+  run 1 = 2 comments both fixed (PrivateAssets comment precision, tasks.md
+  numbering), run 2 CLEAN; all CI lanes green @ 9958340. Awaiting operator
+  merge, then sprint-gate.
 
 ### 2026-07-24 (Sprint 5 gate + close-out) -- PASSED; PHASE 1 COMPLETE
 - Gate verified independently @ merged 44866f0 (all 3 CI lanes green: legacy,

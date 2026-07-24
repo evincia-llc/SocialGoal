@@ -1,0 +1,15 @@
+# Scoped to EF Core's generated migration code. The solution runs
+# latest-recommended analyzers with TreatWarningsAsErrors, which is right for
+# hand-written code and wrong for scaffolder output: `dotnet ef migrations add`
+# emits code we do not author and must not hand-edit, or the next scaffold
+# silently reverts the edit.
+#
+# Kept deliberately narrow -- one rule, the one that actually fires -- so that
+# real analyzer findings in this folder still break the build. Add to this list
+# only when a new scaffold demonstrably trips something, and say which
+# migration did it.
+
+[*.cs]
+# CA1861: the column-name arrays in migrationBuilder.InsertData/UpdateData.
+# Scaffolder-emitted, executed once per migration, never mutated.
+dotnet_diagnostic.CA1861.severity = none
