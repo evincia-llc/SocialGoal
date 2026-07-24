@@ -1,0 +1,9 @@
+<!-- Solution-wide build props (Sprint 4, D13). Applies to every project under
+     source/. Old-style projects ignore SDK-era properties, so this is safe
+     during any mixed old/SDK state. -->
+<Project>
+  <PropertyGroup>
+    <!-- Lock files are committed; CI restores in locked mode (legacy-ci.yml). -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

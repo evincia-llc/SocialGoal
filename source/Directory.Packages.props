@@ -1,0 +1,57 @@
+<!-- Central package management (Sprint 4, D13). Single source of truth for
+     every NuGet version in the solution. Transitive pinning is ON so the EF6
+     unification at 6.5.2 (R-004/R-012) holds even where EF arrives
+     transitively (e.g. via Microsoft.AspNet.Identity.EntityFramework). -->
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Data / ORM (unified at latest stable EF6; retires the 6.0.2-beta1 pin) -->
+    <PackageVersion Include="EntityFramework" Version="6.5.2" />
+
+    <!-- Identity / OWIN (stays 1.0.0/2.0.0-era until the Sprint 8 re-platform;
+         see docs/security breaking-bump analysis) -->
+    <PackageVersion Include="Microsoft.AspNet.Identity.Core" Version="1.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.Identity.EntityFramework" Version="1.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.Identity.Owin" Version="1.0.0" />
+    <PackageVersion Include="Owin" Version="1.0" />
+    <PackageVersion Include="Microsoft.Owin" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Host.SystemWeb" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.Cookies" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.OAuth" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.Google" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.Facebook" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.Twitter" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Owin.Security.MicrosoftAccount" Version="2.0.0" />
+
+    <!-- Web stack (MVC pinned at the baseline 5.0.0; rebuilt in Phase 2) -->
+    <PackageVersion Include="Microsoft.AspNet.Mvc" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.Razor" Version="3.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.WebPages" Version="3.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.Web.Optimization" Version="1.1.1" />
+    <PackageVersion Include="Microsoft.Web.Infrastructure" Version="1.0.0.0" />
+    <PackageVersion Include="WebGrease" Version="1.5.2" />
+    <PackageVersion Include="Antlr" Version="3.4.1.9004" />
+
+    <!-- App libraries -->
+    <PackageVersion Include="Autofac" Version="3.1.5" />
+    <PackageVersion Include="Autofac.Mvc5" Version="3.0.0" />
+    <PackageVersion Include="AutoMapper" Version="3.1.1-ci1000" />
+    <PackageVersion Include="elmah.corelibrary" Version="1.2.2" />
+    <PackageVersion Include="Elmah.MVC" Version="2.1.1" />
+    <PackageVersion Include="MvcMailer" Version="4.5" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="PagedList" Version="1.17.0.0" />
+    <PackageVersion Include="PagedList.Mvc" Version="4.5.0.0" />
+
+    <!-- Test stack (Sprint 3 refresh levels) -->
+    <PackageVersion Include="NUnit" Version="3.14.0" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Castle.Core" Version="5.1.1" />
+    <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
+    <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+  </ItemGroup>
+</Project>

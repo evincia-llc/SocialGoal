@@ -102,6 +102,43 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   multi-user behavior. The Sprint 10 slice checklist gains a
   capture-before-migrating step.
 
+### D13 -- Sprint 4 SDK-conversion mechanics
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 4 PR review)
+- **Context:** The epic mandates SDK-style conversion of all 7 projects but not
+  the mechanics. Constraints discovered in inventory: `Microsoft.NET.Sdk` has no
+  System.Web web-application support; EF6 latest stable (6.5.2) requires
+  >= net462 while six projects target net45; the Web project depends on
+  `Microsoft.WebApplication.targets` (currently shimmed in CI); packages.config
+  HintPaths are inconsistent (Model references Identity assemblies with no
+  packages.config at all).
+- **Decision:**
+  1. **Whole solution retargets net45 -> net48** (Tests already there). 4.5 is
+     compile-time only -- the app already runs on the 4.8 in-place CLR -- and
+     net48 unlocks EF 6.5.2 and retires the pinned net45 reference-assembly shim.
+  2. **Web project converts via `MSBuild.SDK.SystemWeb` (pinned 4.0.107 in the
+     csproj `Sdk` attribute)** -- the community SDK for SDK-style System.Web
+     apps (desktop MSBuild only, which CI already uses). The other six use
+     `Microsoft.NET.Sdk`.
+  3. **PackageReference everywhere + central package management**
+     (`Directory.Packages.props`, transitive pinning on so EF unifies at 6.5.2
+     even where transitive) **+ committed lock files**, restored in locked mode
+     in CI.
+  4. **Content-only NuGet packages are dropped** (bootstrap, jQuery,
+     jQuery.Validation, Microsoft.jQuery.Unobtrusive.Validation, Modernizr,
+     Respond, T4Scaffolding.Core): under PackageReference they deliver nothing
+     (the app serves the vendored copies in `Scripts/`/`Content/`, tracked by
+     the retire.js baseline until Sprint 12). This shrinks the NuGet audit
+     baseline -- allowed without decision, noted here for transparency.
+  5. **Hand-written `AssemblyInfo.cs` files are deleted** in favor of
+     SDK-generated attributes.
+- **Consequence:** BUILD.md and legacy-ci.yml lose the net45 targeting-pack and
+  VSToolsPath shims; test/coverage paths move to `bin\Release\net48\`. The
+  legacy app must be re-proven running (exit-gate criterion). MVC stays 5.0.0
+  and Identity stays 1.0.0 (schema-coupled; Phase 2), recorded in the Sprint 4
+  breaking-bump analysis.
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |
