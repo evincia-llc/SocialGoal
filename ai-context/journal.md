@@ -25,6 +25,23 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 2 · Crashed session left a divergent pushed branch
+
+- **Problem:** a prior Sprint 2 attempt died on an API error after creating
+  and pushing `sprint/s2-safety-net-1` with its own Sprint 1 gate-record
+  commit (a2b6f58, ai-context only) -- parallel to the gate record that
+  landed on master via PR #4. Starting Sprint 2 fresh hit "branch already
+  exists" with a remote tracking a superseded commit.
+- **Where:** git branch state at Sprint 2 kickoff.
+- **Impact:** ~10 minutes to diagnose and reconcile; no content lost (the
+  stray commit was a duplicate of the merged PR #4 record).
+- **Resolution:** fixed -- verified the stray commit was ai-context-only and
+  had no PR, hard-reset the branch onto merged master (c24f86e), force-pushed
+  the replacement.
+- **Report note:** tooling/process gap. AI sessions that crash mid-flow can
+  leave pushed state behind; a session restart must reconcile remote branches
+  against merged history before resuming, not assume a clean start.
+
 ### 2026-07-23 · Sprint 1 · Permission layer blocked delegated governance actions
 
 - **Problem:** the epic's "protect master" bullet could not be executed:
