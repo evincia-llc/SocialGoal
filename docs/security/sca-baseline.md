@@ -16,7 +16,7 @@ Artifacts in this folder:
 - `retire-baseline.txt` -- accepted retire.js findings over the vendored
   browser assets (`file|component|version`); same new-finding gate.
 
-## Known-vulnerable NuGet packages (nuget.org audit, 2026-07-23)
+## Known-vulnerable NuGet packages (original baseline audit 2026-07-23; dispositions updated 2026-07-24)
 
 Sprint 4 (2026-07-24, D13) remediated the critical subset; per-package
 disposition below. The audit baseline file now holds only the two surviving

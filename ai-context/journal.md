@@ -25,6 +25,26 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · "--" in an XML comment broke CPM on CI (red PR run)
+
+- **Problem:** a Copilot-run-1 comment reword reintroduced `--` inside an XML
+  comment in `Directory.Packages.props` (invalid XML). NuGet then behaved as
+  if the CPM file were absent: every project failed NU1015 ("no version
+  specified") + NU1004 lock-file inconsistency on CI. Third occurrence of the
+  same typo pattern this sprint (the writing convention "spaced double
+  hyphen" leaking into XML), and the first to reach CI -- because the fix
+  commit changed "only a comment" and was pushed without re-running restore.
+- **Where:** commit 710ecfd; PR #9 checks red (build-and-test, nuget-audit).
+- **Impact:** one red CI round, ~15 min.
+- **Resolution:** fixed (comment reworded; repo-wide scan for `--` inside
+  csproj/props comments now clean; locked restore re-proven locally before
+  push). Lesson recorded: there is no such thing as a comment-only change to
+  an MSBuild file; restore is the cheapest possible gate and runs before any
+  push.
+- **Report note:** tooling gap / process -- XML comment syntax rejects `--`,
+  and MSBuild surfaces the parse failure as bewildering downstream NuGet
+  errors rather than an XML error at the file.
+
 ### 2026-07-24 · Sprint 4 · No single toolchain can build the mixed net48/net10 solution
 
 - **Problem:** the .NET 10 SDK declares `minimumMSBuildVersion` 18.0.0, so

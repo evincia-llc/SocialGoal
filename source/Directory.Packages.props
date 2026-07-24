@@ -13,8 +13,8 @@
 
     <!-- Identity stays 1.0.0 until the Sprint 8 re-platform (2.x changes the
          pinned schema; see docs/security/package-bump-analysis.md). Katana
-         (Microsoft.Owin*) was remediated to 4.2.3 in Sprint 4 -- comment on
-         the block below. -->
+         (Microsoft.Owin*) was remediated to 4.2.3 in Sprint 4; see the
+         comment on the block below. -->
     <PackageVersion Include="Microsoft.AspNet.Identity.Core" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Identity.EntityFramework" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Identity.Owin" Version="1.0.0" />
