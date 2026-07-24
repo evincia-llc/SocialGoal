@@ -18,9 +18,26 @@ namespace SocialGoal.Tests.Data
     {
         private static string RepoPath(string relative)
         {
-            // Test assembly runs from source\SocialGoal.Tests\bin\Release.
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            return Path.GetFullPath(Path.Combine(baseDir, @"..\..\..\..", relative));
+            // Locate the repo root by walking up from the test assembly's base
+            // directory until an ancestor holds a "docs\schema" directory or a
+            // ".git" marker. The build output layout is not fixed -- the
+            // SDK-style project emits to bin\Release\net48, the old layout to
+            // bin\Release -- so a hard-coded number of "..\" segments is fragile.
+            var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (dir != null)
+            {
+                if (Directory.Exists(Path.Combine(dir.FullName, "docs", "schema"))
+                    || Directory.Exists(Path.Combine(dir.FullName, ".git"))
+                    || File.Exists(Path.Combine(dir.FullName, ".git")))
+                {
+                    return Path.GetFullPath(Path.Combine(dir.FullName, relative));
+                }
+                dir = dir.Parent;
+            }
+            throw new DirectoryNotFoundException(
+                "Could not locate the repository root: no ancestor of '"
+                + AppDomain.CurrentDomain.BaseDirectory
+                + "' contains a 'docs\\schema' directory or a '.git' marker.");
         }
 
         private static string GenerateModelDdl()
