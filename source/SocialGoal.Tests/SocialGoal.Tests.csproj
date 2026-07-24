@@ -119,6 +119,9 @@
     <Compile Include="Authorization\AuthorizationDatabase.cs" />
     <Compile Include="Authorization\MatrixCast.cs" />
     <Compile Include="Authorization\GoalAuthorizationMatrixTests.cs" />
+    <Compile Include="Authorization\GroupAuthorizationMatrixTests.cs" />
+    <Compile Include="Authorization\AccountAuthorizationMatrixTests.cs" />
+    <Compile Include="Authorization\EmailRequestAuthorizationMatrixTests.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Controllers\EmailRequestControllerTest.cs" />
     <Compile Include="Controllers\GoalControllerTest.cs" />
