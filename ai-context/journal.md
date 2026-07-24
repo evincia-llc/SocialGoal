@@ -25,6 +25,29 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 5 · Minor frictions standing up the modern host (bundled)
+
+- **Problem:** nothing sprint-threatening; three small surprises worth the
+  honest record. (1) `dotnet new sln` on the .NET 10 SDK emits the new `.slnx`
+  XML solution format by default -- D15's wording assumed `.sln` and was
+  amended; scripts/CI had to reference `.slnx`. (2) The analyzer posture
+  (latest-recommended + warnings-as-errors) collided with the suite's
+  underscored test-name convention (CA1707) and Serilog's culture-sensitive
+  console sink (CA1305) on day one -- resolved via a test-project-scoped
+  .editorconfig carve-out and explicit `CultureInfo.InvariantCulture`.
+  (3) `UserManager`'s ctor takes a non-nullable `IServiceProvider` under
+  nullable reference types; the spike passes an empty built provider.
+- **Where:** src/ scaffolding; SchemaParitySpikeTests; IdentityPasswordCompat
+  SpikeTests.
+- **Impact:** ~20 minutes total. Notably, the Sprint 4 toolchain-split
+  prediction held exactly: the dotnet-CLI-only `src/` solution needed zero new
+  shims, and all three gating spikes passed on first or second run.
+- **Resolution:** fixed inline; D15 records the .slnx choice.
+- **Report note:** tooling drift -- new-SDK defaults and analyzer strictness
+  are cheap one-time costs on greenfield, in sharp contrast to the legacy
+  lane's shim archaeology. The asymmetry itself is report material: the
+  expensive half of a two-solution period is entirely the legacy half.
+
 ### 2026-07-24 · Sprint 4 · "--" in an XML comment broke CPM on CI (red PR run)
 
 - **Problem:** a Copilot-run-1 comment reword reintroduced `--` inside an XML
