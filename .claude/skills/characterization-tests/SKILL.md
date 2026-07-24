@@ -38,8 +38,8 @@ Reference implementation: `source/SocialGoal.Tests/Data/` -- copy its shape.
 
 ## CI integration
 
-* `legacy-ci.yml` pre-starts LocalDB on windows-latest (`sqllocaldb`), then
-  runs the suite via NUnit console.
+* `.github/workflows/legacy-ci.yml` pre-starts LocalDB on windows-latest
+  (`sqllocaldb`), then runs the suite via NUnit console.
 * Coverage: OpenCover with `-register:path64` (NOT `-register:user` -- it
   flaked profiler attach), then verify the profiled module actually appears
   in coverage.xml and retry once if not; enforce the data-layer floor.
