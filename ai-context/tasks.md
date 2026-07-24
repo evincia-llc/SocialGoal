@@ -3,9 +3,9 @@
 **Phase:** PHASE 1 (foundation retarget); Sprint 5 work COMPLETE, PR loop next
 **Current sprint:** Sprint 5 (modern .NET 10 host + spikes) -- all
 deliverables done, all three gating spikes PASSED
-**Branch state:** `sprint/s5-modern-host` pushed; all three CI lanes green on
-first push (legacy-ci, modern-ci NEW, security). Security-reviewer pass +
-PR/Copilot loop in flight this session. (update this line every session)
+**Branch state:** `sprint/s5-modern-host` = PR #11 (all three CI lanes green
+incl. the NEW modern-ci; security-reviewer PASS, LOW fixes in). Copilot run 1
+requested. (update this line every session)
 
 ## Now (next actions, in order)
 

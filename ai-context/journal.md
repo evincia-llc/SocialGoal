@@ -25,6 +25,23 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 5 · GitHub PR-creation outage mid pr-flow
+
+- **Problem:** `gh pr create` failed with GraphQL 500s (3 attempts), and the
+  REST fallback (`POST /repos/.../pulls`) returned HTTP 500 with an empty
+  body even for a minimal payload -- PR creation itself was down server-side
+  while pushes, Actions runs, and reads all worked.
+- **Where:** pr-flow step 8, Sprint 5 PR.
+- **Impact:** delayed PR open; retry loop.
+- **Resolution:** background retry loop (75s interval) succeeded on attempt 3
+  (~3 min outage window) -- PR #11. The `gh pr edit --add-reviewer Copilot`
+  GraphQL path also failed ("could not resolve user"); the REST
+  `requested_reviewers` endpoint with `copilot-pull-request-reviewer[bot]`
+  worked.
+- **Report note:** tooling gap (external service) -- the PR step is the one
+  pipeline stage with no local fallback; worth remembering that "raise the PR"
+  can fail independently of everything CI proves.
+
 ### 2026-07-24 · Sprint 5 · Legacy publish is code-only under MSBuild.SDK.SystemWeb (Sprint 4 regression, found by the transform proof)
 
 - **Problem:** the one-time Web.Release.config publish proof (Sprint 4
