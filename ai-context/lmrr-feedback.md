@@ -299,7 +299,7 @@ today) covering 5 sprints, against LMRR illustrative estimates of "a few weeks"
 |---|---|---|---|
 | Foundation (pre-S1) | -- | 2026-07-23 eve | Evaluation, epic, governance, tooling |
 | Sprint 1 | 2 weeks | 2026-07-23 eve | Proven build + CI, initializer switch, ELMAH lock, SSRF flag, SBOM/SCA + security lane, golden paths. Multi-user golden paths deferred to S3 |
-| Sprint 2 | 2 weeks | ~1h20m (2026-07-24 AM) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix). Includes crashed-session recovery |
-| Sprint 3 | 2 weeks | ~2h | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11 |
-| Sprint 4 | 2 weeks | ~1h45m | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0 |
+| Sprint 2 | 2 weeks | ~1h23m (2026-07-24 AM) | Harness + 31 data tests (142->144 suite), schema baseline + drift tests, trigger closed, OpenCover in CI (incl. profiler-flake fix). Includes crashed-session recovery |
+| Sprint 3 | 2 weeks | ~2h05m | NUnit 3/Moq 4.20/net48 refresh, 149-action surface census, 27-test behavioral matrix (suite 187), matrix doc = Phase 2 enforcement spec, D11 |
+| Sprint 4 | 2 weeks | ~1h42m | All 7 projects SDK-style net48 (Web on MSBuild.SDK.SystemWeb), CPM + lock files, EF 6.5.2 unified (D14 baseline re-cut), Newtonsoft 13.0.4 + Katana 4.2.3, audit baseline 8->2, Core on net10.0 |
 | Sprint 5 | 2-4 weeks | ~1h45m | Modern host in `src/` (ASP.NET Core MVC net10.0, `.slnx`, NUnit 4); three gating spikes PASSED (EF Core schema parity, Identity hash compat, in-process HTTP slice); ADR-001; modern-ci lane. Phase 1 exit |
