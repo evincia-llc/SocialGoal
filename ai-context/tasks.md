@@ -3,20 +3,19 @@
 **Phase:** PHASE 1 (foundation retarget); Sprint 5 work COMPLETE, PR loop next
 **Current sprint:** Sprint 5 (modern .NET 10 host + spikes) -- all
 deliverables done, all three gating spikes PASSED
-**Branch state:** `sprint/s5-modern-host` = PR #11 (all three CI lanes green
-incl. the NEW modern-ci; security-reviewer PASS, LOW fixes in). Copilot run 1
-requested. (update this line every session)
+**Branch state:** `sprint/s5-modern-host` = PR #11, READY FOR OPERATOR MERGE:
+all three CI lanes green on head f44c51a; security-reviewer PASS (fixes in);
+Copilot loop complete -- runs 1-4 produced 8 comments (7 fixed, 1 rejected
+with reason), run 5 clean. (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Finish the Sprint 5 PR loop: security-reviewer findings (if any), raise PR
-   via pr-flow, Copilot iterate-until-clean.
-2. Operator: review/merge the Sprint 5 PR. Flagged for explicit operator
+1. Operator: review/merge PR #11. Flagged for explicit operator
    attention at review: D15 (src/ layout, .slnx, NUnit 4), ADR-001 PROPOSED
    status, and the deliberately-unfixed legacy publish-content regression
    (journal 2026-07-24 -- legacy publish is code-only under the SystemWeb SDK;
    no consumer exists, legacy retires S11; overturn = add Content globs).
-3. Then sprint-gate for Sprint 5 / Phase 1 exit (LMRR Phase 2 entry:
+2. Then sprint-gate for Sprint 5 / Phase 1 exit (LMRR Phase 2 entry:
    ADR + proven auth/data approach + slice running -- all evidence in
    docs/adr/ADR-001-modern-host.md and src/SocialGoal.Web.Tests).
 
@@ -55,8 +54,14 @@ requested. (update this line every session)
 - Web.Release.config publish proof (delegated): transforms PASS; found the
   SystemWeb SDK publishes code-only (no .cshtml/static globs) -- documented
   (journal/LMRR/BUILD.md), deliberately unfixed, operator may overturn.
-- 3 LMRR entries (R-004 mapping-fidelity classes, R-005 confirmed, publish
-  risk class) + 2 journal entries. Next: security review, PR, Copilot loop.
+- 4 LMRR entries (R-004 mapping-fidelity classes, R-005 confirmed, publish
+  risk class, D11 note) + 3 journal entries (incl. GitHub PR-outage).
+- PR loop: security-reviewer PASS (0 H/M, LOW-1/LOW-3 fixed, LOW-2/INFO-4 as
+  forward obligations); PR #11 (raised through a GitHub 500 outage via retry);
+  Copilot runs 1-4 = 8 comments, 7 fixed (incl. one that corrected my own
+  wrong doc claim -- verified empirically), 1 rejected with reason (upstream
+  license metadata in template-vendored assets); run 5 CLEAN. All lanes green
+  on f44c51a. Awaiting operator merge, then sprint-gate.
 
 ### 2026-07-24 (Sprint 4 gate + close-out) -- PASSED
 - Gate verified independently @ merged 40fa23a (both CI lanes green): 7/7 csproj
