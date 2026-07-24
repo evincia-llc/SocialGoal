@@ -64,6 +64,34 @@ nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -
   source\SocialGoal.Tests\bin\Release\net48\SocialGoal.Tests.dll --result=TestResult.xml
 ```
 
+## Modern solution (`src/`, Sprint 5 onward)
+
+The .NET 10 solution (`src/SocialGoal.Modern.slnx`, D15) is dotnet-CLI-only --
+desktop MSBuild cannot build it, and the dotnet CLI cannot build the legacy
+solution; the toolchain boundary is the directory boundary. CI:
+`.github/workflows/modern-ci.yml`.
+
+```powershell
+# Restore (CPM + committed lock files, same locked posture as the legacy lane)
+dotnet restore src\SocialGoal.Modern.slnx --locked-mode
+
+# Build -- TreatWarningsAsErrors + latest-recommended analyzers are on, so a
+# clean build is also the analyzer gate
+dotnet build src\SocialGoal.Modern.slnx -c Release --no-restore
+
+# Formatting gate
+dotnet format src\SocialGoal.Modern.slnx --verify-no-changes --no-restore
+
+# Tests (spike + slice suites create throwaway LocalDB catalogs from
+# docs/schema/schema-baseline.sql and drop them afterwards)
+sqllocaldb start MSSQLLocalDB
+dotnet test src\SocialGoal.Modern.slnx -c Release --no-build
+```
+
+Run the host locally: `dotnet run --project src\SocialGoal.Web` (Development
+uses the `SocialGoal_ModernDev` LocalDB catalog from
+`appsettings.Development.json`; `/health` answers without a database).
+
 ## Notes
 
 - Web project output lands in `source\SocialGoal\bin\` (classic web layout,
@@ -81,3 +109,13 @@ nuget install NUnit.ConsoleRunner -Version 3.22.0 -OutputDirectory .buildtools -
 - Smoke-run: `& "C:\Program Files\IIS Express\iisexpress.exe"
   /path:$PWD\source\SocialGoal /port:5002`, then browse
   `http://localhost:5002/`.
+- Release publish (proven 2026-07-24, Sprint 5): XDT transforms DO execute
+  under the SystemWeb SDK -- the published Web.config carries
+  `DatabaseInitializer=None` and no `debug` attribute. Two caveats: a
+  file-system publish requires **both** `/p:DeployOnBuild=true
+  /p:DeployTarget=WebPublish /p:WebPublishMethod=FileSystem "/p:publishUrl=..."`
+  (without `DeployTarget=WebPublish` the publish silently produces a WebDeploy
+  package instead), and the SDK's default Content globs exclude `.cshtml` and
+  `Scripts`/`Content`/`fonts`/`Images`, so the output is code-only and NOT a
+  runnable MVC app (journal 2026-07-24; deliberately unfixed -- no legacy
+  deploy path exists (D1) and the legacy Web project retires in Sprint 11).

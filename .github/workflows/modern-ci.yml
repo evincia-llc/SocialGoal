@@ -1,0 +1,103 @@
+# Modern CI: the .NET 10 solution under src/ (D15), dotnet-CLI-only -- the
+# toolchain boundary with the legacy desktop-MSBuild lane (legacy-ci.yml) is
+# the directory boundary. Sprint 5 epic deliverable: build, tests, analyzers,
+# formatting, SCA gate.
+name: modern-ci
+
+on:
+  push:
+    branches: [master, "sprint/**", "docs/**"]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: modern-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same pin as the legacy lane's net10 step (BUILD.md-validated; patch
+      # drift allowed within 10.0.3xx).
+      - name: Pin .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.3xx"
+
+      # The spike/slice tests create throwaway catalogs on (localdb)\MSSQLLocalDB
+      # from docs/schema/schema-baseline.sql (same convention as the legacy
+      # characterization harness). Fail loudly here, not as a hang in the run.
+      - name: Ensure LocalDB is up
+        run: |
+          sqllocaldb info MSSQLLocalDB
+          sqllocaldb start MSSQLLocalDB
+
+      # Committed lock files, locked mode: CI proves the dependency graph is
+      # exactly what is in the repo (mirrors the legacy lane's D13 posture).
+      - name: Restore (locked mode)
+        run: dotnet restore src\SocialGoal.Modern.slnx --locked-mode
+
+      # TreatWarningsAsErrors + latest-recommended analyzers are on in
+      # src/Directory.Build.props, so a clean build IS the analyzer gate.
+      - name: Build (Release, analyzers as errors)
+        run: dotnet build src\SocialGoal.Modern.slnx -c Release --no-restore
+
+      - name: Verify formatting
+        run: dotnet format src\SocialGoal.Modern.slnx --verify-no-changes --no-restore
+
+      - name: Test
+        run: >-
+          dotnet test src\SocialGoal.Modern.slnx -c Release --no-build
+          --logger "trx;LogFileName=modern-tests.trx"
+          --results-directory test-results
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: modern-test-results
+          path: test-results
+
+      # SCA gate: zero-tolerance for the modern dependency graph -- no
+      # baseline, unlike the legacy lane, because this graph started clean.
+      # (The repo-wide security.yml lane still covers secrets/vendored JS.)
+      - name: SCA gate (no known-vulnerable packages)
+        run: |
+          # NuGet 6.8+ exits 1 when vulnerabilities are FOUND, so the exit code
+          # cannot distinguish "tool failed" from "gate should fire" (security
+          # review S5 LOW-3). Trust the JSON: parse failure = tool failure;
+          # parsed report = evaluate it.
+          $raw = dotnet list src\SocialGoal.Modern.slnx package --vulnerable --include-transitive --format json
+          $exit = $LASTEXITCODE
+          try { $report = $raw | ConvertFrom-Json } catch { $report = $null }
+          if (-not $report -or -not $report.projects) {
+            Write-Host "::error::dotnet list package produced no usable report (exit $exit): $raw"
+            exit 1
+          }
+          $vulnerable = @(
+            foreach ($project in $report.projects) {
+              foreach ($framework in $project.frameworks) {
+                foreach ($package in @($framework.topLevelPackages) + @($framework.transitivePackages)) {
+                  if ($package -and $package.vulnerabilities) { $package }
+                }
+              }
+            }
+          )
+          if ($vulnerable.Count -gt 0) {
+            foreach ($package in $vulnerable) {
+              $worst = ($package.vulnerabilities | ForEach-Object { $_.severity }) -join ", "
+              Write-Host "::error::Vulnerable package $($package.id) $($package.resolvedVersion) (severity: $worst)"
+            }
+            exit 1
+          }
+          Write-Host "No known-vulnerable packages in the modern graph."

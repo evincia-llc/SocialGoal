@@ -17,7 +17,7 @@ here; see `ai-context/README.md`). Status values: `todo` / `active` / `done` /
 | Sprint | Theme | Status | Exit gate |
 |---|---|---|---|
 | 4 | SDK-style conversion; platform-agnostic libs toward net10.0; EF unified stable; critical vuln subset | done | **Gate PASSED 2026-07-24**: all 7 csproj SDK-style (verified); Central Package Management (EF 6.5.2 + D14, Katana 4.2.3, Newtonsoft 13.0.4); `SocialGoal.Core` compiles on net10.0 -- CI step "Prove SocialGoal.Core on .NET 10" = success @ 40fa23a; legacy app builds + 187/187 suite green; nuget-audit baseline 8->2; post-merge both CI lanes green @ 40fa23a; tag `s4-gate` |
-| 5 | Modern .NET 10 host + gating spikes (EF Core mapping, Identity hash compat, one read-only slice) | todo | ADR recorded; auth + data approach proven; one production-shaped slice runs. Decision gate cleared (D1, D2 decided 2026-07-23) |
+| 5 | Modern .NET 10 host + gating spikes (EF Core mapping, Identity hash compat, one read-only slice) | active | ADR recorded; auth + data approach proven; one production-shaped slice runs. Decision gate cleared (D1, D2 decided 2026-07-23). 2026-07-24: all three spikes PASSED (schema parity via live catalog diff; Identity v2 hash verifies + v3 rehash persisted; slice serves /Goal/Details over TestServer from baseline schema); ADR-001 PROPOSED; modern-ci lane green; Web.Release.config transform proof PASSED (publish-content regression documented, not fixed). PR pending |
 
 ## Phase 2 -- The two big rebuilds
 

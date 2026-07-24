@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SocialGoal.Web.Tests/SocialGoal.Web.Tests.csproj" />
+  <Project Path="SocialGoal.Web/SocialGoal.Web.csproj" />
+</Solution>

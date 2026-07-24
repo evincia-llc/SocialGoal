@@ -25,6 +25,76 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 5 · GitHub PR-creation outage mid pr-flow
+
+- **Problem:** `gh pr create` failed with GraphQL 500s (3 attempts), and the
+  REST fallback (`POST /repos/.../pulls`) returned HTTP 500 with an empty
+  body even for a minimal payload -- PR creation itself was down server-side
+  while pushes, Actions runs, and reads all worked.
+- **Where:** pr-flow step 8, Sprint 5 PR.
+- **Impact:** delayed PR open; retry loop.
+- **Resolution:** background retry loop (75s interval) succeeded on attempt 3
+  (~3 min outage window) -- PR #11. The `gh pr edit --add-reviewer Copilot`
+  GraphQL path also failed ("could not resolve user"); the REST
+  `requested_reviewers` endpoint with `copilot-pull-request-reviewer[bot]`
+  worked.
+- **Report note:** tooling gap (external service) -- the PR step is the one
+  pipeline stage with no local fallback; worth remembering that "raise the PR"
+  can fail independently of everything CI proves.
+
+### 2026-07-24 · Sprint 5 · Legacy publish is code-only under MSBuild.SDK.SystemWeb (Sprint 4 regression, found by the transform proof)
+
+- **Problem:** the one-time Web.Release.config publish proof (Sprint 4
+  security-reviewer question) PASSED on both transform criteria
+  (DatabaseInitializer -> None; debug attribute stripped) but exposed two
+  surprises. (1) `/p:WebPublishMethod=FileSystem` alone is silently ignored --
+  `DeployOnBuild=true` defaults to a WebDeploy package and reports success
+  while the requested publish folder is never created; `/p:DeployTarget=
+  WebPublish` is mandatory. (2) MSBuild.SDK.SystemWeb 4.0.107's default
+  Content globs cover Web.configs and WebForms extensions but **no `.cshtml`
+  and no Scripts/Content/fonts/Images**, so the published tree is code-only
+  (bin + Global.asax + Web.config) -- not runnable as an MVC app. The publish
+  path regressed at the Sprint 4 SDK conversion (D13) and nothing noticed
+  because no path publishes the legacy app.
+- **Where:** source\SocialGoal\SocialGoal.Web.csproj publish
+  (delegated proof run, 2026-07-24; output verified in scratch).
+- **Impact:** none operationally (D1: no deployment exists; the legacy app
+  runs from the source folder under IIS Express, which is how every gate
+  smoke-proof runs it). But "we could still publish the legacy app" would be
+  false comfort if anyone relied on it as a rollback path.
+- **Resolution:** documented, deliberately NOT fixed -- the legacy publish
+  path has no consumer for the remainder of the epic (D2 deploys the modern
+  host; legacy Web retires Sprint 11). Advisor call, flagged for operator at
+  the Sprint 5 PR. If a legacy publish is ever actually needed, the fix is
+  explicit Content globs in SocialGoal.Web.csproj plus a re-proof.
+- **Report note:** dependency surprise / hidden behavior -- an SDK-style
+  conversion of a System.Web project can pass build, tests, and app smoke
+  while silently breaking deployability. Publish-output verification belongs
+  in any conversion checklist.
+
+### 2026-07-24 · Sprint 5 · Minor frictions standing up the modern host (bundled)
+
+- **Problem:** nothing sprint-threatening; three small surprises worth the
+  honest record. (1) `dotnet new sln` on the .NET 10 SDK emits the new `.slnx`
+  XML solution format by default -- D15's wording assumed `.sln` and was
+  amended; scripts/CI had to reference `.slnx`. (2) The analyzer posture
+  (latest-recommended + warnings-as-errors) collided with the suite's
+  underscored test-name convention (CA1707) and Serilog's culture-sensitive
+  console sink (CA1305) on day one -- resolved via a test-project-scoped
+  .editorconfig carve-out and explicit `CultureInfo.InvariantCulture`.
+  (3) `UserManager`'s ctor takes a non-nullable `IServiceProvider` under
+  nullable reference types; the spike passes an empty built provider.
+- **Where:** src/ scaffolding; SchemaParitySpikeTests; IdentityPasswordCompat
+  SpikeTests.
+- **Impact:** ~20 minutes total. Notably, the Sprint 4 toolchain-split
+  prediction held exactly: the dotnet-CLI-only `src/` solution needed zero new
+  shims, and all three gating spikes passed on first or second run.
+- **Resolution:** fixed inline; D15 records the .slnx choice.
+- **Report note:** tooling drift -- new-SDK defaults and analyzer strictness
+  are cheap one-time costs on greenfield, in sharp contrast to the legacy
+  lane's shim archaeology. The asymmetry itself is report material: the
+  expensive half of a two-solution period is entirely the legacy half.
+
 ### 2026-07-24 · Sprint 4 · "--" in an XML comment broke CPM on CI (red PR run)
 
 - **Problem:** a Copilot-run-1 comment reword reintroduced `--` inside an XML

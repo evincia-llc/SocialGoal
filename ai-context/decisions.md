@@ -157,6 +157,44 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   change emitted DDL -- a hidden-risk class the LMRR's R-004 wording does not
   call out explicitly (candidate engine predicate).
 
+### D15 -- Modern solution layout: top-level `src/`, own toolchain and CPM
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 5 PR review)
+- **Context:** Sprint 5 stands up the modern .NET 10 host. The Sprint 4 journal
+  established that no single toolchain builds a mixed net48/net10 solution
+  (desktop MSBuild cannot compile net10.0; the dotnet CLI cannot build the
+  System.Web project). The legacy solution, its CPM
+  (`source/Directory.Packages.props`), and its lock files are scoped to
+  `source/`.
+- **Decision:**
+  1. The modern solution lives in a new top-level `src/` directory:
+     `src/SocialGoal.Modern.slnx` (the .NET 10 SDK's default XML solution
+     format; the modern solution is dotnet-CLI-only so the classic format
+     buys nothing), built exclusively with the dotnet CLI (.NET 10 SDK).
+     `source/` remains desktop-MSBuild-only. The toolchain boundary is the
+     directory boundary.
+  2. Initial projects: `src/SocialGoal.Web` (ASP.NET Core MVC host, net10.0)
+     and `src/SocialGoal.Web.Tests`. The Sprint 5 spikes land as tests in the
+     test project so they persist as regression evidence into Phases 2-3
+     (the hash-compat test is reused at Sprint 8, the mapping comparisons at
+     Sprints 6-7).
+  3. `src/` gets its own `Directory.Build.props` + `Directory.Packages.props`
+     + committed lock files (locked-mode restore in the modern CI lane) --
+     separate from `source/` because the package universes and toolchains do
+     not overlap.
+  4. **Test framework: NUnit 4.x** for the modern test project. Continuity
+     with the 187-test legacy suite (NUnit 3.14) keeps the Sprint 6-7
+     characterization-test port mechanical (assertion dialect, lifecycle
+     attributes), which xUnit would not.
+  5. Legacy project names are never reused while both solutions coexist; the
+     modern web project is `SocialGoal.Web` (legacy web project is
+     `SocialGoal`), so no ProjectReference or output-name collision arises.
+- **Consequence:** Two CI lanes per push (legacy-ci + modern-ci) until
+  Sprint 11 retires the legacy Web/Web.Core/Tests projects. The Sprint 5 ADR
+  (`docs/adr/ADR-001-modern-host.md`) records the host architecture on top of
+  this layout.
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |

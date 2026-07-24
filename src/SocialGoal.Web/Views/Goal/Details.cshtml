@@ -1,0 +1,39 @@
+@model SocialGoal.Web.Models.GoalDetailViewModel
+@{
+    ViewData["Title"] = Model.GoalName;
+}
+
+<div class="card mt-4" id="goal-detail">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h1 class="h4 mb-0">@Model.GoalName</h1>
+        <span class="badge text-bg-secondary">@Model.GoalStatusType</span>
+    </div>
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(Model.Desc))
+        {
+            <p class="lead">@Model.Desc</p>
+        }
+        <dl class="row">
+            <dt class="col-sm-3">Owner</dt>
+            <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.OwnerDisplayName) ? "-" : Model.OwnerDisplayName)</dd>
+
+            <dt class="col-sm-3">Visibility</dt>
+            <dd class="col-sm-9">@(Model.GoalType ? "Public" : "Private")</dd>
+
+            <dt class="col-sm-3">Start date</dt>
+            <dd class="col-sm-9">@Model.StartDate.ToString("yyyy-MM-dd")</dd>
+
+            <dt class="col-sm-3">End date</dt>
+            <dd class="col-sm-9">@Model.EndDate.ToString("yyyy-MM-dd")</dd>
+
+            @if (Model.Target is not null)
+            {
+                <dt class="col-sm-3">Target</dt>
+                <dd class="col-sm-9">@Model.Target @Model.MetricType</dd>
+            }
+
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">@Model.CreatedDate.ToString("yyyy-MM-dd")</dd>
+        </dl>
+    </div>
+</div>
