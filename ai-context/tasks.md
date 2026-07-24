@@ -22,6 +22,11 @@ Core net10.0, CI/docs rework. Build 7/7 clean, 187/187 green, app smoke green.
 
 ## Later (scheduled automation)
 
+- Sprint 5 host spike (or first D2 deploy prep at latest): one-time publish
+  proof that Web.Release.config transforms still execute under the SDK-style
+  pipeline (DatabaseInitializer -> None, debug attribute stripped) --
+  security-reviewer question, Sprint 4 review.
+
 - Sprint 9: create `slice-migration` skill after the first vertical slice lands;
   reuse for the remaining six slices.
 - (done 2026-07-24) `characterization-tests` skill minted at S2 gate close from

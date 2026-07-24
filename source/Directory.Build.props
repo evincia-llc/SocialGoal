@@ -5,5 +5,10 @@
   <PropertyGroup>
     <!-- Lock files are committed; CI restores in locked mode (legacy-ci.yml). -->
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- Audit the full closure, not just direct refs: packages.config audited
+         everything as top-level, and the PackageReference default (direct)
+         would have silently narrowed the security gate when packages moved to
+         transitive in Sprint 4 (security-reviewer LOW finding, 2026-07-24). -->
+    <NuGetAuditMode>all</NuGetAuditMode>
   </PropertyGroup>
 </Project>
