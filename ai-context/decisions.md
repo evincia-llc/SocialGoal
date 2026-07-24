@@ -139,6 +139,24 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   and Identity stays 1.0.0 (schema-coupled; Phase 2), recorded in the Sprint 4
   breaking-bump analysis.
 
+### D14 -- Schema baseline re-cut under EF 6.5.2 (UserName NOT NULL)
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Claude (session decision; operator
+  may overturn at Sprint 4 PR review)
+- **Context:** The Sprint 4 EF unification (6.0.x -> 6.5.2, D13/R-004/R-012)
+  changes exactly one line of generated DDL: `AspNetUsers.UserName` becomes
+  `nvarchar(max) NOT NULL` (was `NULL`). The column comes from Identity 1.0's
+  `IdentityUser` base; the schema drift test caught the divergence as designed.
+- **Decision:** Re-cut the schema baseline of record (`docs/schema/`) under
+  EF 6.5.2. The shipped runtime is now 6.5.2, so the baseline must describe the
+  schema the app actually creates. No live database exists (D1) and Identity
+  always populates UserName, so the tightened constraint has no migration risk
+  and is semantically correct.
+- **Consequence:** The EF Core target schema (Sprints 6-7) inherits
+  `UserName NOT NULL`. LMRR feedback: EF6 minor-version unification alone can
+  change emitted DDL -- a hidden-risk class the LMRR's R-004 wording does not
+  call out explicitly (candidate engine predicate).
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |

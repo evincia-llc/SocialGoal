@@ -134,6 +134,33 @@ methodology input, not scoring errors.
   as themselves. Signal: a capability token consumed without checking it was
   issued to the current principal.
 
+### Sprint 4 findings (foundation retarget, 2026-07-24)
+
+- **R-004/R-012 · CONFIRMED, plus an uncalled-out consequence:** the version
+  skew was real and unification was clean mechanically -- but unifying
+  EF 6.0.x -> 6.5.2 with zero model/code change flipped `AspNetUsers.UserName`
+  from `NULL` to `NOT NULL` in generated DDL (caught by the Sprint 2 drift
+  test; accepted under D14, journal 2026-07-24). The LMRR treats version skew
+  as a dependency-hygiene risk; the evidence shows ORM version drift is also a
+  *schema-change vector*. Candidate engine signal: EF6 version spread across
+  projects scores higher when a Code First model exists (generated DDL is
+  version-dependent), independent of the packages' own advisories.
+- **R-001 · CORRECTION-CANDIDATE (layering nuance):** the retarget confirmed
+  the framework pins, but the LMRR's "platform-agnostic libraries" framing
+  overstates the seam: `SocialGoal.Model` is not platform-agnostic (its
+  `ApplicationUser : IdentityUser` welds the domain model to ASP.NET Identity
+  1.0/EF6, and `ProfilePic.cs` pulls `System.Web` into the entity layer), and
+  `SocialGoal.Service` carries a service->web-layer reference to
+  `SocialGoal.Web.Core` -- vestigial on inspection (a single dead
+  `using SocialGoal.Web.Core.Models;` in `GroupUpdateServices.cs:6`, no type
+  usage), but it prices as a real edge until proven dead, which is itself the
+  point: the dependency graph overstates coupling and only inspection shows it.
+  Of the three nominally portable libraries only
+  `SocialGoal.Core` (one file) reaches net10.0 in Phase 1. Candidate engine
+  signals: auth-framework base classes in the entity/model assembly;
+  System.Web references outside web-named projects; service->web project
+  edges. All three are statically detectable and directly price the migration.
+
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 
 - **Destructive initializer · MISSED-CANDIDATE:** `Database.SetInitializer` +

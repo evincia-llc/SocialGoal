@@ -25,6 +25,37 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · EF6 minor-version unification alone changes emitted DDL
+
+- **Problem:** unifying EF 6.0.x -> 6.5.2 (no model change, no code change)
+  flips `AspNetUsers.UserName` from `NULL` to `NOT NULL` in generated DDL. The
+  Sprint 2 schema drift test caught it as a 1-line divergence from the baseline.
+- **Where:** `SchemaSnapshotTests.SchemaBaseline_MatchesGeneratedModelDdl`,
+  first full test run after the SDK-style/EF-6.5.2 conversion.
+- **Impact:** ~30 min to diagnose and decide; baseline re-cut under D14. Would
+  have been invisible without the Phase 0 schema referee -- on a live database
+  this class of change surfaces as a surprise migration step at cutover.
+- **Resolution:** fixed (D14: baseline re-cut; EF Core target schema inherits
+  NOT NULL). LMRR feedback candidate recorded against R-004/R-012.
+- **Report note:** dependency surprise / hidden behavior -- ORM version drift as
+  a schema-change vector, distinct from the "version skew" risk as written.
+
+### 2026-07-24 · Sprint 4 · Test repo-path logic broke on the SDK TFM output subfolder
+
+- **Problem:** `SchemaSnapshotTests` located the repo root by counting `..`
+  segments from the test assembly's directory, asserting it runs from
+  `bin\Release`. SDK-style output adds a `net48` subfolder, so the tests
+  silently resolved `docs/schema` to a nonexistent `source\docs\schema` and
+  reported the committed baseline as "missing" (and self-primed a stray file
+  there).
+- **Where:** `source/SocialGoal.Tests/Data/SchemaSnapshotTests.cs` RepoPath.
+- **Impact:** 2 spurious test failures entangled with a real schema finding
+  (above); cost was mostly the care needed to separate the two.
+- **Resolution:** fixed -- path now walks upward to a repo marker instead of
+  assuming output depth.
+- **Report note:** tooling gap -- output-layout assumptions embedded in test
+  infra are a hidden cost of project-format modernization.
+
 ### 2026-07-24 · Sprint 3 · Absent authorization masked by runtime crashes (accidental gates)
 
 - **Problem:** two mutating actions "reject" an unauthorized caller only because
