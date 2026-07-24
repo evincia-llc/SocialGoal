@@ -32,7 +32,14 @@ namespace SocialGoal
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication();
+            // Sprint 4: parameterless UseGoogleAuthentication() (OpenID 2.0,
+            // retired by Google in 2014, dead at baseline) does not exist in
+            // Katana 4.x -- the security bump forced its removal. Whether a
+            // configured Google OAuth 2.0 login is wanted remains decision D5
+            // (Sprint 8).
+            //app.UseGoogleAuthentication(
+            //   clientId: "",
+            //   clientSecret: "");
         }
     }
 }

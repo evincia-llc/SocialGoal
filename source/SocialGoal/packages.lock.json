@@ -106,100 +106,101 @@
       },
       "Microsoft.Owin": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "os1K9NezNGFPMkjtkNGnTDkgnKYUQCQniHYoTHtqQFhf/uiHCpcT9457hyHXZSWEglAZFaXJZQr74bZkgdE7Bw==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "uoOKm7Ouj06+ULS7Ss60tRM2E5t0ku7rQ7cJk864jArtE35WTJKMzUxgHxs7gdiqHZYnC3ddZSr9zj8yRjguEA==",
         "dependencies": {
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Host.SystemWeb": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "/n98MbCYG50DSDqkEawL8ft0npoZ9bp+rrFev88bhTdY1Taak9z+ZLQMdfGNEGtsRxzWuczw6GgZlPCRzR+39Q==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "vYb7xhw93lFZrevsDtgzn9l72YaP9y908o9ngubrOqwJDv+xwLBG+qC2Fupy+jKTSucUQD0fv8fgip4pkGIJLA==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
+          "Microsoft.Owin": "4.2.3",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "muW0KIdRksubB5J5U3tndiRxd/1uXHO6bqdPaEkLL73GowgA439jSU+nrRzEXRI65tOFLde3Jr3fqqkt4OdnFQ==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "pt71Bo7qMHZNU/ut/c0KVViljZmTOedqdVFKJSO6QPlkbxScHAf9TrSVlS6SsQHihgTKtQOzmk3itqmm8vECPw==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
+          "Microsoft.Owin": "4.2.3",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.Cookies": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "2TFMGLb91DeqB3hJ+J1cfL5K2asXxTeI3nKpon4CAod9GYFosac8mkizBNmqGpWw7HRwfgb3vESr+NAMZPNSTA==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "xDlpUvgLAXJTSe7PjtFo07qwcapKa1/qubi+hqRTQs4L4FZGmvHo7enX4AOFlfXomqI6QNmvEb47ZMktp9633A==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.Facebook": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "nuYXPGYHiuGpgFIh2lxfJs59nEJnftc3edseMWTAkoaEhV+2SV4meNljtbrkN4rznNYKw/ztygYKTBpyktTk/w==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "QxITEslgyFyTdi5wVKgjDRsmNa16xAYxWI4P0nHJv1LERNEplj1VTfgok4GiKeZLBZL+o9rnPk/VatAv/2WmHw==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
-          "Newtonsoft.Json": "4.5.11",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
+          "Newtonsoft.Json": "13.0.1",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.Google": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "9Lj2xSN1v73QI4YerGymZVYBHneUctzjxktX9JrlcwQsuT0EOSR+CHlv6iO6mLOHH9OQIoAnEatrRioQy+8Ddg==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "IU84HN3uTyjOAXM/ApEyceRjcLscPzLwltSSq5QJ65FrnA7FyQpMIlWMzGC0PBLkA2vEDnx0RccI9PKRwqVzkg==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
+          "Newtonsoft.Json": "13.0.1",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.MicrosoftAccount": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "5e87sYzIdw6Z7XU+CgdP12/mtG/f/7Sj1wlrrJmxTWAsALsopJkFIzyjaD2E1/8kfnfvAiQJIfwPKhwJ7xRiOw==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "ZpZ1oCdBmOUBIw8HEpmznR32pYQxd67fmJn2MVNK88Ljwk07okZ8WsxDEsF2bHOPaDwB9LvfYZ7oM4C60WCFDA==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
-          "Newtonsoft.Json": "4.5.11",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
+          "Newtonsoft.Json": "13.0.1",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.OAuth": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "RXW1OTwTCmYTTacCb/e4tjxUXYdFp07X5b/t4pI5fbBys1Ev6dTtsZWMqfIESW/z6+sPeKDn/8zkTsFTe9DsPw==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "ObxHo9LNoHHdy/I+MHbfxa/PVm1ipQgXQUmaWYZV1dIczVIMHvrpsABwYyG1oau5NQK0QIgas4ARt4LDOFbsDQ==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
-          "Newtonsoft.Json": "4.5.11",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
+          "Newtonsoft.Json": "13.0.1",
           "Owin": "1.0.0"
         }
       },
       "Microsoft.Owin.Security.Twitter": {
         "type": "Direct",
-        "requested": "[2.0.0, )",
-        "resolved": "2.0.0",
-        "contentHash": "xM5gM0lpIdCOQEEsInkRuR2EpjG/M7pg0TAExMSxN2j048HyOPrzHaMPq/1SqSvAE14MsF00oWk3GyLyzRBvPQ==",
+        "requested": "[4.2.3, )",
+        "resolved": "4.2.3",
+        "contentHash": "i0tigXfwQiPOatQSHv87hkA6PHpSrNhE2zoCXHB/iFvbxEmancGKMqPqHSJG8gBGpGpexSXH/AxRQ61hlpUIqQ==",
         "dependencies": {
-          "Microsoft.Owin": "2.0.0",
-          "Microsoft.Owin.Security": "2.0.0",
-          "Newtonsoft.Json": "4.5.11",
+          "Microsoft.Owin": "4.2.3",
+          "Microsoft.Owin.Security": "4.2.3",
+          "Newtonsoft.Json": "13.0.1",
           "Owin": "1.0.0"
         }
       },

@@ -25,6 +25,24 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 4 · Katana 4 removes the dead Google OpenID call (forced source edit)
+
+- **Problem:** the Katana 2.0.0 -> 4.2.3 security bump fails compilation on
+  `app.UseGoogleAuthentication()` (Startup.Auth.cs:35): the parameterless
+  OpenID 2.0 overload no longer exists (Google retired the protocol in 2014;
+  the login was dead at baseline per the LMRR evaluation).
+- **Where:** `App_Start/Startup.Auth.cs`, Web project build under Katana 4.2.3.
+- **Impact:** ~10 min; one behavior-visible change -- the (nonfunctional)
+  Google button disappears from the login page. Only source edit forced by the
+  entire Sprint 4 package move.
+- **Resolution:** fixed -- call commented out alongside the other provider
+  stubs with a D5 pointer (Sprint 8 still decides whether a configured Google
+  OAuth 2.0 login is wanted). Register + fresh login smoke green on 4.2.3
+  (.AspNet.ApplicationCookie issued, authenticated redirect).
+- **Report note:** dependency surprise -- a security bump deleting the API a
+  dead feature sat on; the compiler, not the risk report, is what finally
+  removed it.
+
 ### 2026-07-24 · Sprint 4 · View compilation (first ever) exposes two broken views
 
 - **Problem:** the SystemWeb SDK enables MvcBuildViews-style view compilation
@@ -72,6 +90,11 @@ decision ID.
   this class of change surfaces as a surprise migration step at cutover.
 - **Resolution:** fixed (D14: baseline re-cut; EF Core target schema inherits
   NOT NULL). LMRR feedback candidate recorded against R-004/R-012.
+  Runtime confirmation same day: the app 500s against the pre-existing local
+  dev DB ("model backing SocialGoalEntities has changed") because even the
+  benign CreateDatabaseIfNotExists initializer runs a model-compatibility
+  check -- on any long-lived environment this bump is a hard outage, not a
+  silent drift. Local dev DB dropped and recreated under 6.5.2.
 - **Report note:** dependency surprise / hidden behavior -- ORM version drift as
   a schema-change vector, distinct from the "version skew" risk as written.
 

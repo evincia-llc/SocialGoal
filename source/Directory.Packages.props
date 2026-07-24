@@ -17,15 +17,18 @@
     <PackageVersion Include="Microsoft.AspNet.Identity.EntityFramework" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Identity.Owin" Version="1.0.0" />
     <PackageVersion Include="Owin" Version="1.0" />
-    <PackageVersion Include="Microsoft.Owin" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Host.SystemWeb" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.Cookies" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.OAuth" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.Google" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.Facebook" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.Twitter" Version="2.0.0" />
-    <PackageVersion Include="Microsoft.Owin.Security.MicrosoftAccount" Version="2.0.0" />
+    <!-- Katana bumped 2.0.0 -> 4.2.3 (Sprint 4 critical vuln subset:
+         GHSA-3rq8-h3gj-r5c6, GHSA-hxrm-9w7p-39cc). Identity stays 1.0.0
+         (2.x changes the pinned schema; Sprint 8). -->
+    <PackageVersion Include="Microsoft.Owin" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Host.SystemWeb" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.Cookies" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.OAuth" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.Google" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.Facebook" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.Twitter" Version="4.2.3" />
+    <PackageVersion Include="Microsoft.Owin.Security.MicrosoftAccount" Version="4.2.3" />
 
     <!-- Web stack (MVC pinned at the baseline 5.0.0; rebuilt in Phase 2) -->
     <PackageVersion Include="Microsoft.AspNet.Mvc" Version="5.0.0" />

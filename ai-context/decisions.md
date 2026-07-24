@@ -163,7 +163,7 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
 |---|---|---|---|
 | D3 | Image URL import: remove or harden | Remove | Sprint 11 |
 | D4 | `SearchController`: authorize or documented-public | Add `[Authorize]` | Sprint 11 |
-| D5 | External logins | Remove dead Google OpenID; add Google OAuth 2.0 only if wanted | Sprint 8 |
+| D5 | External logins | Remove dead Google OpenID; add Google OAuth 2.0 only if wanted. (Dead OpenID call already removed Sprint 4 -- Katana 4.2.3 deleted the API; journal 2026-07-24. Open question is OAuth 2.0 yes/no.) | Sprint 8 |
 | D6 | Bootstrap 3.4.1 parity vs Bootstrap 5 rebuild | 3.4.1 parity this epic; BS5 as follow-on | Sprint 12 |
 | D7 | Must email flows actually send? | No-op mailer with logging unless invites/reset required | Sprint 13 |
 | D8 | Observability backend (App Insights vs OTel+APM) | Application Insights (per D2 = Azure); confirm at Sprint 13 | Sprint 13 |
