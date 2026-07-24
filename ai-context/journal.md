@@ -25,6 +25,29 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Phase 1/2 boundary · Which model implemented Sprints 4-5 is unverifiable (floating alias + session vintage)
+
+- **Problem:** two sessions gave contradictory, unprovable answers to "what Opus
+  version ran the implementor?" The implementor was pinned to the `opus` tier
+  alias, which floats to the running Claude Code build's current Opus. Opus 5
+  shipped mid-epic. A monitor session opened the night before (older build)
+  probed the alias and got `claude-opus-4-8`; the Sprint 5 session (launched
+  after, newer build) reported `claude-opus-5` but by its own account had no hard
+  evidence -- transcripts don't record a subagent's resolved model per run.
+- **Where:** `.claude/agents/implementor.md` (`model: opus`); cross-session.
+- **Impact:** no delivery impact, but a real auditability gap for a POC whose
+  headline is "which AI did this, how fast." The concrete version that built
+  Sprints 4-5 cannot be established after the fact.
+- **Resolution:** fixed forward -- pinned to explicit `claude-opus-5` (D16);
+  Sprints 4-5 stay attributed as "Opus, unverified, most likely 5" in the effort
+  record.
+- **Report note:** tooling gap / reproducibility hazard. A long-lived agent
+  session can silently keep running an OLDER model than a freshly-launched one,
+  and floating model aliases make "who did the work" unanswerable in hindsight.
+  The mitigation is to pin explicit model IDs, not aliases, in any auditable
+  AI-delivery pipeline -- a transferable methodology finding, not SocialGoal-
+  specific.
+
 ### 2026-07-24 · Sprint 5 · GitHub PR-creation outage mid pr-flow
 
 - **Problem:** `gh pr create` failed with GraphQL 500s (3 attempts), and the

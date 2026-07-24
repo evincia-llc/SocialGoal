@@ -198,6 +198,29 @@ depend on an OPEN decision. D1-D9 originate in the epic doc's decision register.
   (`docs/adr/ADR-001-modern-host.md`) records the host architecture on top of
   this layout.
 
+### D16 -- Pin the `implementor` subagent to an explicit `claude-opus-5`
+
+- **Status:** DECIDED · 2026-07-24 · Owner: Jerry (operator confirmed Opus 5
+  available; exact ID from `/model`).
+- **Context:** `implementor.md` was pinned to the `opus` **tier alias**, which
+  floats to whatever the running Claude Code build maps "opus" to. Opus 5 shipped
+  mid-epic. Two sessions of different vintage disagreed on the resolved version --
+  a monitor session opened before the Opus-5 build reported 4.8; a session
+  launched after reported 5 -- and transcripts do not record the per-run resolved
+  model, so which concrete version implemented Sprints 4-5 is unverifiable after
+  the fact. For an auditable AI-delivery POC that is a real gap.
+- **Decision:** Pin `.claude/agents/implementor.md` to the explicit ID
+  `claude-opus-5` (confirmed via `/model`). Effective the Phase 2 boundary
+  (Sprint 6 onward). Fable 5 remains the main-loop advisor/orchestrator/reviewer;
+  the split is unchanged -- only the alias becomes a fixed ID.
+- **Consequence:** The implementation model is now a recorded, stable fact rather
+  than a floating alias; future Opus releases do not silently change it (a
+  deliberate D-entry would). Sprints 4-5 remain attributed as "Opus (unverified;
+  most likely Opus 5 given the build-vintage evidence)" in the effort record.
+- **Journal note (added):** long-lived agent sessions can silently run an older
+  model than freshly-launched ones -- a reproducibility gotcha for auditable AI
+  delivery, and the concrete argument for pinning models over aliases.
+
 ## Open (blocking noted per epic)
 
 | ID | Decision | Default recommendation | Blocks |
