@@ -54,6 +54,13 @@ jobs:
       # needs desktop MSBuild 17, so this flavor builds via the dotnet CLI as
       # an opt-in (journal 2026-07-24). The scratch lock path keeps the
       # committed net48 lock file out of the throwaway net10 restore graph.
+      # SDK pinned explicitly rather than trusting the runner image
+      # (BUILD.md-validated line; allows patch drift within 10.0.3xx).
+      - name: Pin .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.3xx"
+
       - name: Prove SocialGoal.Core on .NET 10
         run: >-
           dotnet build source\SocialGoal.Core\SocialGoal.Core.csproj

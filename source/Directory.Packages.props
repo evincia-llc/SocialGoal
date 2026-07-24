@@ -11,8 +11,10 @@
     <!-- Data / ORM (unified at latest stable EF6; retires the 6.0.2-beta1 pin) -->
     <PackageVersion Include="EntityFramework" Version="6.5.2" />
 
-    <!-- Identity / OWIN (stays 1.0.0/2.0.0-era until the Sprint 8 re-platform;
-         see docs/security breaking-bump analysis) -->
+    <!-- Identity stays 1.0.0 until the Sprint 8 re-platform (2.x changes the
+         pinned schema; see docs/security/package-bump-analysis.md). Katana
+         (Microsoft.Owin*) was remediated to 4.2.3 in Sprint 4 -- comment on
+         the block below. -->
     <PackageVersion Include="Microsoft.AspNet.Identity.Core" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Identity.EntityFramework" Version="1.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Identity.Owin" Version="1.0.0" />
