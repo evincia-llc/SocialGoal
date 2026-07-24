@@ -76,14 +76,46 @@ methodology input, not scoring errors.
   quirks pinned (`Focus->Foci`, `GoalStatus->GoalStatus`); `RegistrationToken`
   enters the model via registration despite having no DbSet.
 
+### Sprint 3 characterization findings (authz/CSRF surface, 2026-07-24)
+
+- **State-changing GETs · count corrected:** the secondary report's "~17"
+  mutating GETs is, on a full reflection census, **23** -- Goal 5, Group 10
+  (incl. `SaveUpdate` whose `[HttpPost]` is commented out), Account 6 (incl.
+  `LogOff`), EmailRequest 2. Pinned by `EnforcementDefectPinTests` over the
+  149-action surface table. Sharpens the MISSED-candidate below with an exact,
+  test-enforced number.
+- **CSRF split · confirmed exactly:** 32 POSTs, exactly 7 with
+  `[ValidateAntiForgeryToken]` (all `AccountController`), 25 without. No global
+  antiforgery filter; the would-be global provider is dead (below).
+- **Inert security filters · CONFIRMED (was pending):** the "defined but never
+  registered" missed-candidate is now test-proven, not just inferred --
+  `FilterConfig` registers only `HandleErrorAttribute`;
+  `SocialGoalAuthorizeAttribute` and `AntiForgeryTokenFilterProvider` are
+  referenced by no controller/action/registration (`InertFilterCharacterization
+  Tests`). `Bootstrapper.cs:45` `RegisterFilterProvider()` is Autofac's provider,
+  not the custom one -- worth noting as a false-comfort trap for a human
+  reviewer (a declared "authorize filter" that does nothing).
+- **`GroupUser.Admin` gates nothing · MISSED-CANDIDATE (new):** the admin flag
+  is persisted and read only for UI rendering (`GroupController.cs:93`), never
+  as an authorization check on any group mutation. Group admin, member, and
+  unrelated user are the same authorization principal on edit/delete/member/
+  focus/goal/accept/reject. Candidate engine signal: a persisted role/permission
+  field that is written and read-for-display but never used in an authorization
+  branch. (Category 11 scope caveat applies; strengthens the BOLA candidate.)
+- **`Account.EditProfile` cross-user write · new BOLA instance:** binds the
+  target from `editedProfile.UserId` (posted model), so any authenticated user
+  edits any other user's profile/name/email. Not in the original gap
+  enumeration's named examples; found by the action census.
+
 ### Missed candidates (Category 11 scope caveat applies; candidate engine signals)
 
 - **Destructive initializer · MISSED-CANDIDATE:** `Database.SetInitializer` +
   `DropCreateDatabaseIfModelChanges` subclass (`GoalsSampleData.cs:11`,
   `Global.asax.cs:16`). Statically detectable -- strong engine-predicate
   candidate.
-- **State-changing GET actions · MISSED-CANDIDATE:** ~17 mutating actions with
-  no `[HttpPost]`. Detectable via attribute analysis on controller actions that
+- **State-changing GET actions · MISSED-CANDIDATE:** 23 mutating actions with
+  no `[HttpPost]` (census-corrected from the report's ~17; see Sprint 3
+  findings). Detectable via attribute analysis on controller actions that
   call known-mutating service methods; even the attribute-only heuristic has
   signal.
 - **Defined-but-never-registered security filters · MISSED-CANDIDATE:**
