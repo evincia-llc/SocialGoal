@@ -22,6 +22,7 @@ public class GoalDetailSliceTests
     private WebApplicationFactory<Program> factory = null!;
     private HttpClient client = null!;
     private int seededGoalId;
+    private int partialNameGoalId;
 
     [OneTimeSetUp]
     public async Task CreateDatabaseAndHost()
@@ -55,8 +56,29 @@ public class GoalDetailSliceTests
                 GoalStatus = new GoalStatus { GoalStatusType = "In Progress" },
             };
             context.Goals.Add(goal);
+
+            // Owner with only a first name: pins the NULL-coalescing in the
+            // projection (SQL + would null the whole concat; Copilot run 1).
+            var partialGoal = new Goal
+            {
+                GoalName = "Read twelve books",
+                StartDate = new DateTime(2014, 6, 1, 0, 0, 0, DateTimeKind.Unspecified),
+                EndDate = new DateTime(2014, 12, 31, 0, 0, 0, DateTimeKind.Unspecified),
+                GoalType = false,
+                CreatedDate = new DateTime(2014, 6, 1, 0, 0, 0, DateTimeKind.Unspecified),
+                User = new ApplicationUser
+                {
+                    Id = "slice-user-0002",
+                    UserName = "partialuser",
+                    FirstName = "Mononym",
+                    LastName = null,
+                },
+                GoalStatus = new GoalStatus { GoalStatusType = "Not Started" },
+            };
+            context.Goals.Add(partialGoal);
             await context.SaveChangesAsync();
             seededGoalId = goal.GoalId;
+            partialNameGoalId = partialGoal.GoalId;
         }
 
         factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
@@ -86,6 +108,17 @@ public class GoalDetailSliceTests
         Assert.That(html, Does.Contain("In Progress"), "status from the GoalStatus lookup");
         Assert.That(html, Does.Contain("Kms"), "metric from the Metrics lookup");
         Assert.That(html, Does.Contain("Slice Owner"), "owner display name from AspNetUsers");
+    }
+
+    [Test]
+    public async Task GoalDetail_OwnerWithOnlyFirstName_RendersThePresentPart()
+    {
+        var response = await client.GetAsync($"/Goal/Details/{partialNameGoalId}");
+
+        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+        var html = await response.Content.ReadAsStringAsync();
+        Assert.That(html, Does.Contain("Mononym"),
+            "A NULL LastName must not blank the whole owner display name.");
     }
 
     [Test]

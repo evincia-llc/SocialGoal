@@ -31,7 +31,13 @@ public class GoalController(SocialGoalDbContext context) : Controller
                 GoalType = g.GoalType,
                 MetricType = g.Metric != null ? g.Metric.Type : null,
                 GoalStatusType = g.GoalStatus != null ? g.GoalStatus.GoalStatusType : null,
-                OwnerDisplayName = g.User != null ? g.User.FirstName + " " + g.User.LastName : null,
+                // Coalesce before concatenating: SQL's + yields NULL if either
+                // side is NULL, which would blank the whole display name when
+                // only one part is missing (Copilot run 1). Legacy CLR concat
+                // kept partial names; this preserves that behavior server-side.
+                OwnerDisplayName = g.User != null
+                    ? ((g.User.FirstName ?? "") + " " + (g.User.LastName ?? "")).Trim()
+                    : null,
                 CreatedDate = g.CreatedDate,
             })
             .SingleOrDefaultAsync(cancellationToken);
