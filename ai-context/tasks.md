@@ -1,29 +1,24 @@
 # Tasks -- current state
 
-**Phase:** Phase 0 (safety gate), Sprint 1
-**Current sprint:** Sprint 1 (containment + reproducible legacy build) --
-deliverables complete, PR pending
-**Branch state:** current branch `sprint/s1-containment`; PR #3 raised, Copilot
-loop complete (4 runs, run 4 clean), all CI lanes green. Branched from PR #2
-head, so merge order is #2 then #3 (#3's diff collapses once #2 merges). Both
-PRs pending operator merge (update this line every session)
+**Phase:** Phase 0 (safety gate), Sprint 1 GATE PASSED -- Sprint 2 next
+**Current sprint:** none in flight (S1 closed 2026-07-23; S2 not started)
+**Branch state:** PRs #2 and #3 merged to `master` (cd75621); master branch
+protection live (4 required checks, PR-only, no force push). Current branch
+`docs/s1-gate-close` -- gate record PR pending (update this line every session)
 
 ## Now (next actions, in order)
 
-1. Operator: review and merge PR #2, then the Sprint 1 PR (raised from
-   `sprint/s1-containment`; includes #2's commits until #2 merges).
-2. Operator: enable master branch protection (Claude's API call was
-   permission-blocked). Required checks `build-and-test`, `secret-scan`,
-   `nuget-audit`, `retire-js`:
-   `gh api -X PUT repos/evincia-llc/SocialGoal/branches/master/protection --input protection.json`
-   (epic Sprint 1 bullet; any settings route is fine).
-3. Run the `sprint-gate` review for Sprint 1, then start Sprint 2 (data-layer
-   characterization, schema snapshot, trigger question) on `sprint/s2-safety-net-1`.
+1. Operator: merge the Sprint 1 gate close-out PR (this branch).
+2. Start Sprint 2 (Safety net I) on `sprint/s2-safety-net-1`: LocalDB
+   characterization harness for the data layer, DbContext mapping smoke tests,
+   schema snapshot committed as baseline of record, trigger question closed in
+   writing, coverage instrumentation in CI.
+3. During Sprint 2, once the LocalDB harness pattern is proven: create the
+   `characterization-tests` skill (deferred item from foundation).
 
 ## Blocked / waiting
 
-- Master branch protection: needs operator (permission classifier blocks repo
-  settings changes from Claude).
+- None.
 
 ## Later (scheduled automation)
 
@@ -33,6 +28,15 @@ PRs pending operator merge (update this line every session)
   reuse for the remaining six slices.
 
 ## Session log (newest first; 2-4 lines each)
+
+### 2026-07-23 (Sprint 1 gate) -- PASSED, all five criteria on evidence
+- Gate review post-merge: CI green on master merge commit cd75621 (legacy-ci
+  run 30052286151, security 30052286169); zero DropCreateDatabase references
+  in source; ELMAH auth'd+role-gated in Web.config:32; URL import flag false
+  (Web.config:31) + pinning test; SBOM at docs/security/sbom-nuget.cdx.json.
+- Operator merged #2/#3 and branch protection went live (applied via gh api at
+  operator request; 4 required checks, PR-only, no force push/deletion).
+- Sequencing law: no Phase 2 work briefed; Sprint 2 (Phase 0) may start.
 
 ### 2026-07-23 (Sprint 1, later) -- PR #3 + security review + Copilot loop
 - security-reviewer agent on the sprint diff: PASS; 2 LOW supply-chain items
