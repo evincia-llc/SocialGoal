@@ -59,7 +59,7 @@ record, D17 ratified, README/effort) = PR from `docs/s6-gate-close`.
 
 ### 2026-07-24 (Sprint 6 gate + close-out) -- S6 share PASSED (Phase 2 begins)
 - Gate verified independently @ merged 97d3953 (all 3 CI lanes green; modern-ci
-  "Passed! Failed:0, Passed:30, Total:30"): full 30-table EF Core model at exact
+  "Passed! Failed: 0, Passed: 30, Total: 30"): full 30-table EF Core model at exact
   parity via Database.Migrate() (verified in `src/SocialGoal.Web/Data/` +
   SchemaParityTests), Baseline migration, mutation-tested drift check. D17
   ratified. 6-7 block gate stays open until S7 (service/query port).
