@@ -23,6 +23,17 @@ baseline migration + HasData seed). (update this line every session)
 
 ## Later (scheduled automation)
 
+- Sprint 8: the four legacy-shaped Identity POCOs (`IdentityRole`,
+  `IdentityUserClaim`, `IdentityUserLogin`, `IdentityUserRole` in
+  `SocialGoal.Web.Data`) collide by simple name with
+  `Microsoft.AspNetCore.Identity` types -- delete/replace them in the same
+  stroke as adopting Core Identity, and watch using-directives in files that
+  import both namespaces. (Reviewed at S6: kept as-is deliberately; they are
+  placeholders that die in Sprint 8.)
+- Sprint 7: decide (D-entry) whether to add the missing FKs/unique constraints
+  the epic schedules -- 14 unconstrained reference columns catalogued in
+  lmrr-feedback.md Sprint 6 section; any addition is intentional schema drift.
+
 - Sprint 9 (goal slices; security review S5 LOW-2): when the goal-detail slice
   re-lands under auth, the negative-test matrix must include
   private-goal/anonymous and private-goal/unrelated-user cases explicitly, not

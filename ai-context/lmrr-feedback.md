@@ -256,6 +256,44 @@ methodology input, not scoring errors.
   System.Web/EF6-bound projects stay net48 until Phase 2, exactly as the LMRR's
   recommended action sequenced it.
 
+### Sprint 6 EF Core port findings (data layer, 2026-07-24)
+
+- **R-004 / R-012 / R-015 · CONFIRMED in execution, spike-gating validated:**
+  the full 30-table EF Core model (commits `8baa20f`/`91a5488`) reproduced the
+  EF6 baseline exactly on the *first* parity run -- 153 columns, 30 PKs
+  (incl. two composite), 28 FKs with names and cascade actions, verified by
+  live catalog diff; zero mapping iterations. The LMRR's recommended sequencing
+  (mapping spike before rebuild budget, R-004) is what made this mechanical:
+  the four genuinely hard shapes (Identity TPH nullability + Discriminator,
+  EF6 shadow FK columns, `datetime` vs `datetime2`, EF6 constraint naming) were
+  solved in the Sprint 5 spike, and nothing new surfaced across the remaining
+  25 tables. Evidence against treating EF6->EF Core parity as an open-ended
+  discovery exercise *when a schema baseline of record exists* -- the Sprint 2
+  baseline is what the parity is measured against at all.
+- **Unenforced referential integrity (14 FK-less reference columns) ·
+  MISSED-CANDIDATE (Category 11 caveat):** the baseline schema has exactly
+  28 FKs; 14 columns that look like references have none. Eleven are bare
+  string user ids with no navigation (`CommentUsers.UserId`,
+  `FollowRequests.From/ToUserId`, `GroupCommentUsers.UserId`,
+  `GroupInvitations.From/ToUserId`, `GroupUpdateUsers.UserId`,
+  `GroupUsers.UserId`, `Supports.UserId`, `SupportInvitations.From/ToUserId`,
+  `UpdateSupports.UserId`, `UserProfiles.UserId`) and three are structural
+  (`GroupUsers.GroupId`, `GroupGoals.AssignedGroupUserId`,
+  `GroupUpdateSupports.GroupUserId`). `GroupUsers` -- the group-membership
+  table `GroupGoals` cascades off -- has **no referential integrity at all**:
+  orphaned memberships are representable in the legacy schema today. Now
+  pinned by the 28-FK parity assertion; reproduced faithfully, constraint
+  additions deferred to a Sprint 7 decision. Engine predicate candidate:
+  entity property named `<OtherEntity>Id`/`*UserId` whose type matches another
+  entity's key but which has no navigation/FK in the built model -- a
+  three-line walk over the EF metadata, statically detectable.
+- **`UserProfiles.UserId` `nvarchar(50)` vs the 128-char Identity id ·
+  MISSED-CANDIDATE (extends the dead-config family):** a *registered*, live
+  config caps the column at 50 while every stored value is a 128-capable
+  Identity id -- works only because GUID-based ids are 36 chars. Truncation
+  risk class: length constraint narrower than the domain of the value stored.
+  Reproduced faithfully (commented as defect in the modern config).
+
 ### Methodology notes
 
 - **Trigger unknown closable by construction:** with no live DB and Code First
@@ -270,11 +308,11 @@ Phase 2 "3-5 months, 1-2 eng"; Phase 3 "1-2 months, 1 eng".
 
 **What is measured:** operator-observed **wall-clock elapsed** per working day
 (ground truth from the operator), not engineer-hours. Work is AI-executed (Fable
-orchestrating; implementation delegated to the `implementor` subagent, pinned to
-the `opus` tier alias -- the exact Opus version that served each past run is not
-recorded in transcripts and two sessions resolved the alias differently when
-probed, so the concrete version is currently unverified, to be pinned by a pending
-decision (D16, tracked in `ai-context/tasks.md` until recorded)) under
+orchestrating; implementation delegated to the `implementor` subagent -- pinned
+to the explicit id `claude-opus-5` from Sprint 6 onward per D16 (DECIDED
+2026-07-24); for Sprints 4-5 the agent ran on the floating `opus` tier alias and
+the concrete version remains unverified, most likely Opus 5 per the
+build-vintage evidence in D16) under
 solo-operator review; much of the elapsed time is CI runs and Copilot review
 loops the operator is not heads-down for. This is **not the same unit** as the LMRR's engineer-effort
 estimates, which model a human team. The honest read is the order-of-magnitude

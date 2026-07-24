@@ -25,6 +25,27 @@ decision ID.
 
 ## Log (newest first)
 
+### 2026-07-24 · Sprint 6 · EF Core FK-index convention emits 26 indexes, not one per FK
+
+- **Problem:** the expected "one EF Core index per FK column" delta over the
+  baseline came out at 26 for 28 FKs. EF Core's convention skips a column that
+  already leads an existing index: `AspNetUserLogins.UserId` and
+  `AspNetUserRoles.UserId` lead their tables' composite PKs, so no extra index
+  is created; `AspNetUserRoles.RoleId` (second PK column) still gets one.
+- **Where:** `src/SocialGoal.Web.Tests/Data/SchemaParityTests.cs` index-delta
+  pin, work unit 1 of the EF6 -> EF Core port.
+- **Impact:** minutes (implementor caught it while pinning the delta). Recorded
+  because the baseline migration (work unit 2) must reproduce the same 26 -- if
+  the migration's generated DDL disagrees with the model's EnsureCreated, this
+  convention is the first suspect.
+- **Resolution:** fixed -- the delta is pinned as an exact sorted 26-entry list.
+- **Report note:** dependency surprise (framework convention subtlety), the
+  benign kind: parity tests turned it from a silent divergence into a counted,
+  documented addition. Also worth reporting: the full 30-table port itself
+  landed green on the first parity run with zero mapping iterations -- the
+  Sprint 5 spike (TPH nullability, shadow FKs, datetime, EF6 constraint names)
+  had already absorbed the discovery cost. Spike-first sequencing pays.
+
 ### 2026-07-24 · Phase 1/2 boundary · Which model implemented Sprints 4-5 is unverifiable (floating alias + session vintage)
 
 - **Problem:** two sessions gave contradictory, unprovable answers to "what Opus
